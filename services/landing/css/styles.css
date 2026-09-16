@@ -1,0 +1,469 @@
+/*****************************************************
+  1. VARIABLES GENERALES Y TONOS
+******************************************************/
+:root {
+  --primary-color: #a8d7a9; 
+  --secondary-color: #a5abe7;  
+  --bg-color: #faf9f9;
+  --dark-color: #333;
+  --light-color: #fff;
+  --border-color: #ddd;
+
+  --font-family: "Poppins", sans-serif;
+}
+
+/*****************************************************
+  2. RESET Y ESTILOS GENERALES
+******************************************************/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg-color);
+  font-family: var(--font-family);
+  color: var(--dark-color);
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/*****************************************************
+  3. BOTÓN PARA ACTIVAR EL CHAT
+*****************************************************/
+.toggle-chat-btn {
+  background: var(--secondary-color);
+  color: var(--light-color);
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease;
+}
+
+.toggle-chat-btn:hover {
+  background: var(--primary-color);
+}
+
+/*****************************************************
+  4. CONTENEDOR TRANSFORMABLE CON ASPCT RATIO
+*****************************************************/
+.transform-container {
+  margin: 5vh auto;
+  border: 2px solid var(--border-color);
+  border-radius: 20px;
+  background: var(--light-color);
+  position: relative;
+  overflow: hidden;
+
+  transition: all 0.5s ease;
+
+  max-width: 60vw;  
+
+  aspect-ratio: 16 / 9;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.transform-container.show-chat {
+  aspect-ratio: 16 / 9;
+  grid-template-columns: 3fr 2fr;
+}
+
+/*****************************************************
+  5. CARRUSEL
+*****************************************************/
+.carousel-section {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+  flex: 0 0 100%;
+  position: relative;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide-text {
+  position: absolute;
+  bottom: 10%;
+  left: 5%;
+  color: var(--light-color);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 1rem;
+  border-radius: 10px;
+  max-width: 90%;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+.slide-text h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.slide-text p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+.carousel-controls {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between; 
+  pointer-events: none; 
+}
+
+.carousel-btn {
+  pointer-events: auto; 
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  border-radius: 50%;
+  width: 40px; 
+  height: 40px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  margin: 0 1rem; 
+  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-btn:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+/*****************************************************
+  6. SECCIÓN DEL CHAT
+*****************************************************/
+.chat-section {
+  display: none;
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+
+  background: var(--light-color);
+  border-left: 1px solid var(--border-color);
+  overflow: hidden;
+  flex-direction: column;
+  transition: all 0.5s ease;
+}
+
+.transform-container.show-chat .chat-section {
+  display: flex;
+}
+
+.chat-header {
+  background: var(--primary-color);
+  color: var(--dark-color);
+  font-weight: bold;
+  padding: 0.8rem;
+  position: relative;
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.close-chat {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  cursor: pointer;
+}
+
+.close-chat:hover {
+  color: var(--secondary-color);
+}
+
+.chat-content {
+  flex: 1;
+  padding: 0.8rem;
+  overflow-y: auto;
+  background: #f7f7f7;
+}
+
+.chatbox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chat {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.chat.incoming {
+  justify-content: flex-start;
+}
+
+.chat.outgoing {
+  justify-content: flex-end;
+}
+
+.chat p {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  margin: 0.2rem 0;
+  max-width: 80%;
+  word-break: break-word;
+  display: inline-block;
+}
+
+.chat.incoming p {
+  background: #f1f1f1; 
+  color: #333;
+}
+
+.chat.outgoing p {
+  background: #a5abe7; 
+  color: #fff;
+  text-align: right;
+}
+
+.chat .material-symbols-outlined {
+  font-size: 1.5rem;
+}
+
+.chat.incoming .material-symbols-outlined {
+  color: var(--secondary-color);
+}
+
+.chat.outgoing .material-symbols-outlined {
+  display: none;
+}
+
+.chat-input {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-top: 1px solid var(--border-color);
+  background: #f9f9f9;
+  gap: 0.5rem;
+}
+
+.chat-input textarea {
+  flex: 1;
+  resize: none;
+  border: 1px solid var(--border-color);
+  outline: none;
+  padding: 0.7rem;
+  font-family: var(--font-family);
+  font-size: 1rem;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, height 0.3s ease;
+  min-height: 3rem;
+  max-height: 3rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary-color) var(--light-color);
+}
+
+.chat-input textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-input textarea::-webkit-scrollbar-thumb {
+  background-color: var(--secondary-color);
+  border-radius: 3px;
+}
+
+.chat-input textarea::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary-color);
+}
+
+.chat-input textarea::-webkit-scrollbar-track {
+  background: var(--light-color);
+}
+
+.chat-input textarea:focus {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-color: var(--primary-color);
+}
+
+.chat-input span {
+  font-size: 1.8rem;
+  color: var(--secondary-color);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.chat-input span:hover {
+  color: var(--primary-color);
+}
+
+/*****************************************************
+  7. FOOTER
+*****************************************************/
+.main-footer {
+  background: var(--primary-color);
+  color: var(--dark-color);
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+  margin-top: auto;
+}
+
+.main-footer p {
+  margin: 0;
+}
+
+/*****************************************************
+  8. RESPONSIVE
+*****************************************************/
+
+@media (max-width: 768px) {
+  .transform-container {
+    margin: 0 !important; 
+    border: none !important;
+    border-radius: 0 !important;
+    width: 100% !important; 
+    max-width: 100% !important;
+    aspect-ratio: auto !important; 
+    height: 100vh !important;
+    display: block !important;
+  }
+
+  .transform-container.show-chat .chat-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background: var(--light-color);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .transform-container.show-chat .carousel-section {
+    display: none;
+  }
+
+  .toggle-chat-btn {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 100;
+  }
+
+  .chat-header {
+    flex-shrink: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 1rem;
+    background: var(--primary-color);
+    color: var(--dark-color);
+  }
+
+  .chat-content {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .chat-input {
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-input textarea {
+    font-size: 0.9rem;
+  }
+
+  .slide-text h3 {
+    font-size: 1rem;
+  }
+
+  .slide-text p {
+    font-size: 0.8rem;
+  }
+
+  .toggle-chat-btn {
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 1.2rem;
+  }
+}
+
+
+/*
+    MIT License (with attribution required)
+
+    Copyright (c) 2025 Pedro Antonio Ibarra Facio
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    1. Attribution must be given to the original author (e.g., "Developed by Pedro Antonio Ibarra Facio").
+    2. If used by an educational institution or organization, visible credit must be included on the website, promotional materials, or related documentation.
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
+
