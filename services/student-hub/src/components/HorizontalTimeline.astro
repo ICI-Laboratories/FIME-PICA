@@ -26,31 +26,30 @@ interface TimelineNode {
 const nodes: TimelineNode[] = [];
 
 // Procesar Licenciatura
-if (academicFormation.licenciatura) {
+if (academicFormation && academicFormation.licenciatura) {
   const lic = academicFormation.licenciatura;
-  // Abreviar Ingeniería o Licenciatura
-  let short = lic.degree;
+  let short = lic.degree || '';
   if (short.toLowerCase().startsWith('ingeniería en ')) {
     short = short.substring(14);
   } else if (short.toLowerCase().startsWith('licenciatura en ')) {
     short = short.substring(16);
   }
-  // Limitar longitud
   if (short.length > 22) short = short.slice(0, 20) + '...';
 
   nodes.push({
     label: 'Lic.',
     degreeShort: short,
-    degreeFull: lic.degree,
-    institution: lic.institution,
-    year: lic.year
+    degreeFull: lic.degree || '',
+    institution: lic.institution || '',
+    year: lic.year || 0
   });
 }
 
 // Procesar Maestrias
-if (academicFormation.maestrias) {
+if (academicFormation && academicFormation.maestrias && Array.isArray(academicFormation.maestrias)) {
   academicFormation.maestrias.forEach(mae => {
-    let short = mae.degree;
+    if (!mae) return;
+    let short = mae.degree || '';
     if (short.toLowerCase().startsWith('maestría en ')) {
       short = short.substring(12);
     }
@@ -59,17 +58,18 @@ if (academicFormation.maestrias) {
     nodes.push({
       label: 'Mtro.',
       degreeShort: short,
-      degreeFull: mae.degree,
-      institution: mae.institution,
-      year: mae.year
+      degreeFull: mae.degree || '',
+      institution: mae.institution || '',
+      year: mae.year || 0
     });
   });
 }
 
 // Procesar Doctorados
-if (academicFormation.doctorados) {
+if (academicFormation && academicFormation.doctorados && Array.isArray(academicFormation.doctorados)) {
   academicFormation.doctorados.forEach(doc => {
-    let short = doc.degree;
+    if (!doc) return;
+    let short = doc.degree || '';
     if (short.toLowerCase().startsWith('doctorado en ')) {
       short = short.substring(13);
     } else if (short.toLowerCase().startsWith('doctor en ')) {
@@ -82,9 +82,9 @@ if (academicFormation.doctorados) {
     nodes.push({
       label: 'Dr.',
       degreeShort: short,
-      degreeFull: doc.degree,
-      institution: doc.institution,
-      year: doc.year
+      degreeFull: doc.degree || '',
+      institution: doc.institution || '',
+      year: doc.year || 0
     });
   });
 }

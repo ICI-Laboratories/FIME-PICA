@@ -15,7 +15,7 @@ try {
 const schedulesJson = JSON.stringify(schedules);
 ---
 
-<InstitutionalLayout title="Mapa de Instalaciones">
+<InstitutionalLayout title="Mapa de Instalaciones" fromLanding={Astro.url.searchParams.get("from") === "landing"}>
 
   <!-- ==========================================
        1. ENCABEZADO ASIMÉTRICO (Diseño Suizo)

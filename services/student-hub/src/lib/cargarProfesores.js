@@ -2,6 +2,36 @@ import { fetchFromService } from './api-client.js';
 import fs from 'fs';
 import path from 'path';
 
+function resolveTeacherPhoto(slug, existingPhotoUrl) {
+  if (existingPhotoUrl) return existingPhotoUrl;
+  if (!slug) return null;
+  const baseSlug = slug.replace(/-\d+$/, '');
+  
+  const possibleDirs = [
+    path.join(process.cwd(), 'public', 'images', 'profesores'),
+    path.join(process.cwd(), 'services', 'student-hub', 'public', 'images', 'profesores'),
+  ];
+  
+  for (const dir of possibleDirs) {
+    if (fs.existsSync(dir)) {
+      const exactFile = path.join(dir, `${baseSlug}.jpg`);
+      if (fs.existsSync(exactFile)) {
+        return `/images/profesores/${baseSlug}.jpg`;
+      }
+      try {
+        const files = fs.readdirSync(dir);
+        const match = files.find(f => f.endsWith('.jpg') && f.includes(baseSlug));
+        if (match) {
+          return `/images/profesores/${match}`;
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
+  }
+  return null;
+}
+
 export async function cargarProfesores() {
   try {
     const rows = await fetchFromService('professors', '/professors');
@@ -12,11 +42,7 @@ export async function cargarProfesores() {
       profile.fullName = row.full_name;
       profile.institutionalEmail = row.email;
       profile.delegation_id = row.delegation_id;
-      const baseImageSlug = row.slug.replace(/-\d+$/, '');
-      const photoPath = path.join(process.cwd(), 'services', 'student-hub', 'public', 'images', 'profesores', `${baseImageSlug}.jpg`);
-      if (!profile.photoUrl && fs.existsSync(photoPath)) {
-        profile.photoUrl = `/images/profesores/${baseImageSlug}.jpg`;
-      }
+      profile.photoUrl = resolveTeacherPhoto(row.slug, profile.photoUrl);
       
       const careerIdsFromAssignments = row.group_assignments ? row.group_assignments.map(a => a.career_id).filter(Boolean) : [];
       const combinedCareers = new Set(careerIdsFromAssignments);
@@ -54,11 +80,7 @@ export async function cargarProfesor(slug) {
       profile.institutionalEmail = profile.institutionalEmail || prof.email;
       profile.department = profile.department || null;
       profile.admissionYear = profile.admissionYear || null;
-      const baseImageSlug = prof.slug.replace(/-\d+$/, '');
-      const photoPath = path.join(process.cwd(), 'services', 'student-hub', 'public', 'images', 'profesores', `${baseImageSlug}.jpg`);
-      if (!profile.photoUrl && fs.existsSync(photoPath)) {
-        profile.photoUrl = `/images/profesores/${baseImageSlug}.jpg`;
-      }
+      profile.photoUrl = resolveTeacherPhoto(prof.slug, profile.photoUrl);
       
       return profile;
     }
@@ -68,3 +90,4 @@ export async function cargarProfesor(slug) {
     return null;
   }
 }
+
