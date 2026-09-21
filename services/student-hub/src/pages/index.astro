@@ -10,7 +10,8 @@ const fimeCareerIds = [349, 371, 418, 99];
 const careers = allCareers.filter(c => fimeCareerIds.includes(c.id));
 const allGroups = await cargarTodosLosGrupos();
 
-const activeGroupSlug = student?.class_group_slug || Astro.url.searchParams.get("group");
+const forceSelect = Astro.url.searchParams.has("select_group");
+const activeGroupSlug = forceSelect ? null : (Astro.url.searchParams.get("group") || Astro.cookies.get("pica_selected_group")?.value || student?.class_group_slug);
 let activeGroup = null;
 let schedules = [];
 let examDates = [];
@@ -224,7 +225,7 @@ function getDailySchedule(day: string) {
 }
 ---
 
-{!student ? (
+{!activeGroup ? (
   <InstitutionalLayout title="Selección de Grupo">
     <div style="max-width: 800px; margin: 80px auto; padding: 0 24px; min-height: 400px;">
       
@@ -340,7 +341,7 @@ function getDailySchedule(day: string) {
                 grpBtn.addEventListener('click', () => {
                   selectedGroupSlug = grp.slug;
                   document.cookie = `pica_selected_group=${selectedGroupSlug}; path=/; max-age=${60 * 60 * 24 * 365}`;
-                  window.location.href = '/';
+                  window.location.href = window.location.pathname;
                 });
 
                 groupsGrid.appendChild(grpBtn);
@@ -384,6 +385,7 @@ function getDailySchedule(day: string) {
           {activeGroup.tutor_name && (
             <> &mdash; Tutor: {activeGroup.tutor_name}</>
           )}
+          <a href={`${Astro.url.pathname}?select_group=true`} class="link" style="margin-left: 12px; font-weight: 700; color: var(--color-primary);">[Cambiar Grupo]</a>
         </p>
       )}
     </div>
