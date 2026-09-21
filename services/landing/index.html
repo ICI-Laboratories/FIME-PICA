@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>FIME - Facultad de Ingeniería Mecánica y Eléctrica | FimeBot</title>
-    <link rel="stylesheet" href="css/header.css"/>
-    <link rel="stylesheet" href="css/styles.css"/>
+    <title>FIME - Facultad de Ingeniería Mecánica y Eléctrica | Universidad de Colima</title>
+    <link rel="stylesheet" href="/css/header.css?v=1.0.4"/>
+    <link rel="stylesheet" href="/css/styles.css?v=1.0.4"/>
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
 </head>
@@ -17,7 +17,7 @@
     <header class="site-header" id="site-header">
       <div class="header-inner">
         <!-- Wordmark: "UNIVERSIDAD DE COLIMA / FIMEBot" -->
-        <a href="/" class="wordmark" aria-label="FIME — Inicio">
+        <a href="/" class="wordmark" aria-label="FIMEBot — Inicio">
           <span class="wordmark__overline">Universidad de Colima</span>
           <span class="wordmark__title">
             FIME<em>Bot</em>
@@ -33,8 +33,8 @@
           </ul>
         </nav>
 
-        <button id="toggle-chat-btn" class="btn-header-chat">
-          <span class="material-symbols-outlined">smart_toy</span> FimeBot
+        <button id="toggle-chat-btn" class="btn-header-chat" aria-label="Abrir asistente virtual FimeBot">
+          <span class="material-symbols-outlined" aria-hidden="true">smart_toy</span> FimeBot
         </button>
       </div>
       <hr style="border: none; border-top: 1px solid #E0E0E0; margin: 0;" />
@@ -126,8 +126,8 @@
                 </div>
               </div>
               <!-- Controles del carrusel -->
-              <button class="carousel-control prev">&lt;</button>
-              <button class="carousel-control next">&gt;</button>
+              <button class="carousel-control prev" id="prev-slide" aria-label="Imagen anterior">&lt;</button>
+              <button class="carousel-control next" id="next-slide" aria-label="Siguiente imagen">&gt;</button>
               <!-- Indicadores -->
               <div class="carousel-indicators"></div>
           </div>
@@ -139,7 +139,9 @@
                     <span class="overline overline--primary">ASISTENTE VIRTUAL</span>
                     <h2>FimeBot</h2>
                   </div>
-                  <span id="close-chat-btn" class="material-symbols-outlined">close</span>
+                  <button id="close-chat-btn" style="background:none; border:none; cursor:pointer;" aria-label="Cerrar ventana de chat">
+                    <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                  </button>
               </div>
               <div class="chat-content">
                   <ul class="chatbox">
@@ -149,7 +151,7 @@
                   </ul>
               </div>
               <div class="chat-input">
-                  <textarea placeholder="Escribe tu consulta..."></textarea>
+                  <textarea placeholder="Escribe tu consulta..." aria-label="Mensaje para FimeBot"></textarea>
                   <button class="btn-send" id="send-btn">Enviar</button>
               </div>
           </div>
@@ -163,12 +165,11 @@
             FIME · UNIVERSIDAD DE COLIMA
           </span>
           <span style="font-size: 0.625rem; color: #B4B4B4;">
-            SISTEMA DE INFORMACIÓN ACADÉMICA
+            SISTEMA DE INFORMACIÓN ACADÉMICA · STUDENTHUB
           </span>
         </div>
     </footer>
 
-    <script src="js/chatbot.js" defer></script>
-
+    <script src="/js/chatbot.js?v=1.0.4" defer></script>
 </body>
 </html>

@@ -1,77 +1,76 @@
-# PICA-UCOL - Plataforma Académica Integrada (Monorepo)
+# Student Hub - Producción Standalone
 
-PICA-UCOL es una plataforma profesional, desacoplada y modular diseñada para la gestión y consulta de la actividad académica en la Universidad de Colima.
-
-Esta solución está organizada en un **Monorepo** orquestado mediante **Docker Compose** y cuenta con una arquitectura de múltiples subproyectos para separar la interacción estudiantil, la administración docente y los planes futuros de colaboración científica.
+Este repositorio contiene la versión migrada e independiente de **Student Hub** lista para ser desplegada en producción.
 
 ---
 
-## 📁 Estructura del Monorepo
+## 🔒 Arquitectura y Aislamiento de Red
 
-```
-PICA-UCOL/
-├── data/
-│   └── reference/
-│       ├── delegations.yaml        # Lista inmutable de Delegaciones
-│       ├── careers.yaml            # Lista inmutable de Carreras
-│       └── faculties.yaml          # Lista inmutable de Facultades
-├── scripts/
-│   ├── init.sql                    # Inicialización DDL de PostgreSQL + Semillas extendidas
-│   └── generate-static-data.js     # Script extractor de BD a JSONs locales
-├── services/
-│   ├── student-hub/                # StudentHUB: Horarios, materias y aulas (Astro SSR)
-│   ├── admin-hub-frontend/         # AdminHUB: Panel administrativo y editor (Astro static)
-│   ├── admin-hub-backend/          # AdminHUB: API REST (Express) + Python Extractor
-│   ├── project-hub/                # ProjectHUB: Placeholder del módulo de investigación
-│   └── proxy/                      # Nginx Reverse Proxy y ruteador
-├── docker-compose.yml              # Orquestador del monorepo
-├── .env.production                 # Variables de entorno
-└── README.md                       # Esta guía
-```
+Por motivos de seguridad y cumplimiento del principio de menor privilegio:
+- **Red Privada Interna:** Todos los microservicios (`auth-service`, `professors-service`, `academic-service`, `reference-service`, `cv-extractor-service`), la base de datos (`postgres`) y la capa de caché (`redis`) se ejecutan dentro de la red privada Docker `student-hub-network`.
+- **Puertos del Host No Expuestos:** Ninguno de los servicios backend expone puertos hacia la interfaz externa del sistema anfitrión (`0.0.0.0`). Esto garantiza que los servicios no sean accesibles desde fuera de la red interna de contenedores.
+- **Acceso Exclusivo por Nginx:** Únicamente el Reverse Proxy `proxy` expone el puerto público `80` (o el configurado en `HOST_PORT`), redirigiendo las solicitudes hacia la aplicación frontend de `student-hub`.
+- **Filtro de Rutas:** Se han eliminado las pasarelas hacia otros servicios como `admin-hub-frontend` y `project-hub`.
 
 ---
 
-## ⚙️ Reglas de Enrutamiento del Proxy (Nginx)
+## 🚀 Despliegue en Producción
 
-El servicio `proxy` expone el puerto `80` y enruta el tráfico interno de la siguiente manera:
-- **`/`** &rarr; Dirige a `student-hub` (StudentHUB - Horarios y materias).
-- **`/admin`** &rarr; Dirige a `admin-hub-frontend` (AdminHUB - Panel administrativo y de docentes).
-- **`/api`** &rarr; Dirige a `admin-hub-backend` (Endpoints REST, protegidos por Basic Auth).
-- **`/project`** &rarr; Dirige a `project-hub` (ProjectHUB - Módulo científico).
+### Requisitos Previos
+- Docker Engine `>= 20.10`
+- Docker Compose v2 (`docker compose`)
 
----
+### Instrucciones de Inicio
 
-## 🚀 Despliegue con Docker Compose (Recomendado)
-
-Todo el ecosistema se levanta e inicializa con un único comando:
-
-1. **Configurar el archivo `.env.production`**:
-   Configura las credenciales deseadas para PostgreSQL y el Basic Auth de administración:
-   ```env
-   DB_USER=admin
-   DB_PASSWORD=admin_pass
-   ADMIN_USER=admin
-   ADMIN_PASSWORD=admin_pass
-   ```
-
-2. **Iniciar la aplicación**:
+1. **Configurar variables de entorno:**
    ```bash
-   docker-compose up -d --build
+   cp .env.production .env
    ```
 
-3. **Verificar servicios**:
-   - Accede al **StudentHUB**: **`http://localhost/`**
-   - Accede al **AdminHUB**: **`http://localhost/admin`**
-     *(Las credenciales por defecto son `admin` / `admin_pass`)*
-   - Accede al **ProjectHUB**: **`http://localhost/project`**
+2. **Iniciar el clúster de contenedores:**
+   ```bash
+   docker compose --env-file .env up --build -d
+   ```
+
+3. **Verificar el estado del clúster:**
+   ```bash
+   docker compose ps
+   ```
+
+4. **Acceso al portal:**
+   Abre un navegador web e ingresa a `http://localhost/` (o la IP del servidor).
 
 ---
 
-## 🗄️ Modelo de Datos (PostgreSQL)
+## 🛠️ Estructura del Proyecto
 
-El archivo `scripts/init.sql` inicializa las tablas necesarias:
-1. **`professors`**: Almacena identificador, slug, adscripción y el objeto estructurado JSONB `profile_data` del docente.
-2. **`class_groups`**: Contiene los grupos dinámicos creados desde el panel (con referencia a la carrera y tutor académico).
-3. **`schedules`**: Tabla con la grilla horaria semanal asignada a un grupo y materia (día, hora inicio/fin, aula o laboratorio).
-4. **`exam_dates`**: Calendario de fechas de evaluaciones y exámenes programados por materia y grupo.
-5. **`subject_syllabus`**: Contiene los programas de estudio, criterios de calificación y bibliografía didáctica.
+```text
+.
+├── docker-compose.yml       # Orquestación de producción con red aislada
+├── .env.production          # Variables de entorno por defecto
+├── data/                    # Archivos YAML de datos de referencia (facultades, carreras, delegaciones)
+├── scripts/                 # Scripts SQL de inicialización DDL y datos pre-cargados
+├── packages/                # Definiciones y tipos compartidos
+└── services/
+    ├── student-hub/         # Frontend web en Astro (SSR)
+    ├── auth-service/        # Microservicio de autenticación de estudiantes
+    ├── professors-service/  # Microservicio de consulta de información docente
+    ├── academic-service/    # Microservicio de materias, grupos y horarios
+    ├── reference-service/   # Microservicio de estructuras institucionales
+    ├── cv-extractor-service/# Servicio de procesamiento de semblanzas
+    └── proxy/               # Reverse proxy Nginx aislado
+```
+
+---
+
+## 🧪 Verificación de Aislamiento de Red
+
+Para verificar que la base de datos y microservicios no son alcanzables desde el host exterior:
+```bash
+# Intento de conexión directa a PostgreSQL (debe fallar/ser rechazado)
+nc -zv 127.0.0.1 5432
+
+# Intento de conexión directa a Microservicio de Profesores (debe fallar)
+curl http://localhost:6771/professors
+```
+Ambas pruebas confirmarán que únicamente el puerto 80 del proxy responde peticiones legítimas para Student Hub.
