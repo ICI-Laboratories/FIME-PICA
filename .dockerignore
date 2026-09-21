@@ -1,7 +1,8 @@
 node_modules
 .astro
 dist
-.env
-.env.local
+.git
+.gitignore
+README.md
 *.log
 .DS_Store

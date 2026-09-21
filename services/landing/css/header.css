@@ -1,6 +1,7 @@
 /* ════════════════════════════════════════════════════
    GOBERNANZA GRÁFICA UCOL — HEADER LANDING PAGE
    Estilo Suizo / Minimalismo Funcional Institucional
+   Exactamente idéntico a InstitutionalLayout de StudentHUB
    ════════════════════════════════════════════════════ */
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
@@ -19,7 +20,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 32px;
 }
 
 /* Wordmark "UNIVERSIDAD DE COLIMA / FIMEBot" */
@@ -75,11 +76,16 @@
   transition: color 120ms, border-color 120ms;
   white-space: nowrap;
   text-decoration: none;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  cursor: pointer;
 }
 
 .nav-link:hover {
   color: #1A1A1A;
-  border-bottom-color: #B4B4B4;
+  border-bottom-color: #4E4D4D;
 }
 
 .nav-link.active {
@@ -88,39 +94,7 @@
   font-weight: 700;
 }
 
-/* Desplegable de Grupo en Header */
-.group-selector-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.group-selector-header label {
-  font-family: ui-monospace, "SFMono-Regular", "Menlo", monospace;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  color: #4E4D4D;
-  text-transform: uppercase;
-}
-
-.group-selector-header select {
-  background: #FFFFFF;
-  border: 1px solid #B4B4B4;
-  font-family: ui-monospace, "SFMono-Regular", "Menlo", monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #527630;
-  padding: 4px 8px;
-  cursor: pointer;
-  outline: none;
-  border-radius: 0;
-}
-
-.group-selector-header select:focus {
-  border-color: #527630;
-}
-
-/* Botón Primario Institucional */
+/* Botón Primario FimeBot */
 .btn-header-chat {
   display: inline-flex;
   align-items: center;
@@ -154,6 +128,6 @@
     padding-bottom: 12px;
   }
   .nav-list {
-    gap: 12px;
+    gap: 16px;
   }
 }
