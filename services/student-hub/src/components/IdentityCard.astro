@@ -24,7 +24,7 @@ const yearsOfService = currentYear - admissionYear;
 
 <div class="py-2">
   <!-- Foto de perfil (Cuadrada, Grayscale de Alto Contraste) -->
-  <div class="mb-6 w-full aspect-square border border-rule-strong overflow-hidden relative">
+  <div class="mb-6 w-full aspect-square border border-rule-strong overflow-hidden relative bg-muted flex items-center justify-center">
     {photoUrl ? (
       <img
         src={photoUrl}
@@ -33,14 +33,12 @@ const yearsOfService = currentYear - admissionYear;
         width="300"
         height="300"
         class="w-full h-full object-cover"
-        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+        onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.classList.remove('hidden');"
       />
-      <div class="hidden absolute inset-0 bg-muted select-none">
-      </div>
-    ) : (
-      <div class="bg-muted w-full h-full select-none">
-      </div>
-    )}
+    ) : null}
+    <div class={`w-full h-full ${photoUrl ? 'hidden' : 'flex'} items-center justify-center bg-stone-200 text-primary font-black text-4xl select-none font-mono uppercase`}>
+      {(fullName || '').replace(/^(dr\.|dra\.|mtro\.|mtra\.|lic\.|ing\.|arq\.)\s*/i, '').split(/\s+/).filter(Boolean).map(n => n[0]).slice(0, 2).join('')}
+    </div>
   </div>
 
   <!-- Identidad -->

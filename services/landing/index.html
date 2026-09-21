@@ -3,208 +3,173 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>FimeBot</title>
-    <link rel="stylesheet" href="css/styles.css"/>
-    <link rel="stylesheet" href="css/header.css"/>
+    <title>FIME - Facultad de Ingeniería Mecánica y Eléctrica | Universidad de Colima</title>
+    <link rel="stylesheet" href="/css/header.css?v=1.0.4"/>
+    <link rel="stylesheet" href="/css/styles.css?v=1.0.4"/>
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
 </head>
 <body>
-    <!-- Encabezado con la barra de navegación -->
-    <header class="main-header">
-      <nav class="navbar">
-          <div class="navbar-brand">
-              <a href="https://portal.ucol.mx/fime/">FIME</a>
-          </div>
-          <ul class="navbar-menu">
-              <li><a href="https://portal.ucol.mx/fime/oferta.htm" target="_blank">Oferta Educativa</a></li>
-              <li><a href="https://portal.ucol.mx/fime/directorio.htm" target="_blank">Contacto</a></li>
+    <!-- Banda primaria institucional UCOL -->
+    <div style="height: 4px; background-color: #527630; width: 100%;"></div>
+
+    <!-- Header Institucional Swiss -->
+    <header class="site-header" id="site-header">
+      <div class="header-inner">
+        <!-- Wordmark: "UNIVERSIDAD DE COLIMA / FIMEBot" -->
+        <a href="/" class="wordmark" aria-label="FIMEBot — Inicio">
+          <span class="wordmark__overline">Universidad de Colima</span>
+          <span class="wordmark__title">
+            FIME<em>Bot</em>
+          </span>
+        </a>
+
+        <!-- Navegación primaria -->
+        <nav aria-label="Navegación principal" style="flex: 1; margin-left: 24px;">
+          <ul class="nav-list" role="list">
+            <li><a href="/studenthub" class="nav-link">StudentHUB</a></li>
+            <li><a href="/profesores?from=landing" class="nav-link">Profesores</a></li>
+            <li><a href="/mapa?from=landing" class="nav-link">Mapa</a></li>
           </ul>
-          <button id="toggle-chat-btn" class="toggle-chat-btn">
-              <span class="material-symbols-outlined">chat</span> FimeBot
-          </button>
-      </nav>
+        </nav>
+
+        <button id="toggle-chat-btn" class="btn-header-chat" aria-label="Abrir asistente virtual FimeBot">
+          <span class="material-symbols-outlined" aria-hidden="true">smart_toy</span> FimeBot
+        </button>
+      </div>
+      <hr style="border: none; border-top: 1px solid #E0E0E0; margin: 0;" />
     </header>
-    <!-- Contenedor principal -->
-    <div class="transform-container" id="transform-container">
-        <!-- Sección del carrusel -->
-        <div class="carousel-section">
-            <div class="carousel">
-              <div class="slide">
-                <img src="img/ActividadesRecre2.jpg" alt="Profesores en actividades recreativas" />
-                <div class="slide-text">
-                    <h3>Profesores participando en actividades recreativas</h3>
-                    <p>Fortaleciendo el trabajo en equipo y creando vínculos que enriquecen el ambiente académico.</p>
-                </div>
-              </div>
-              <!-- Slide 2 -->
-              <div class="slide">
-                  <img src="img/ActividadesRecre.jpg" alt="Comunidad estudiantil en actividades recreativas" />
-                  <div class="slide-text">
-                      <h3>Estudiantes participando en actividades recreativas</h3>
-                      <p>Fomentando la integración y el desarrollo personal en un entorno dinámico y colaborativo.</p>
-                  </div>
-              </div>
-              <!-- Slide 3 -->
-              <div class="slide">
-                  <img src="img/AExtra.jpg" alt="Visita industrial con estudiantes" />
-                  <div class="slide-text">
-                      <h3>Visita Industrial: Aprendizaje en el Campo</h3>
-                      <p>Conectando la teoría con la práctica en experiencias de campo que preparan para la industria real.</p>
-                  </div>
-              </div>
-              <!-- Slide 4 -->
-              <div class="slide">
-                  <img src="img/chacuaco.jpg" alt="El Chacuaco, símbolo de la institución" />
-                  <div class="slide-text">
-                      <h3>El Emblemático Chacuaco: Orgullo Institucional</h3>
-                      <p>Representando nuestra tradición e identidad, un icono que inspira a nuestra comunidad educativa.</p>
-                  </div>
-              </div>
-              <!-- Slide 5 -->
-              <div class="slide">
-                  <img src="img/cursos.jpg" alt="Profesores en cursos de capacitación" />
-                  <div class="slide-text">
-                      <h3>Cursos y Capacitación para Alumnos</h3>
-                      <p>Actualizándose en temas de vanguardia, donde se impulsa una educación de calidad.</p>
-                  </div>
-              </div>
-              <!-- Slide 6 -->
-              <div class="slide">
-                  <img src="img/cursos2.jpg" alt="Laboratorios innovadores de hidráulica" />
-                  <div class="slide-text">
-                      <h3>Hidráulica en Acción: Laboratorios Innovadores</h3>
-                      <p>Espacios de aprendizaje práctico donde se aplican conceptos técnicos a proyectos reales.</p>
-                  </div>
-              </div>
-              <!-- Slide 7 -->
-              <div class="slide">
-                  <img src="img/cursos3.jpg" alt="Laboratorio de automatización y robótica" />
-                  <div class="slide-text">
-                      <h3>Automatización Robótica: Innovación en Movimiento</h3>
-                      <p>Incorporando tecnología de última generación para formar líderes en la industria 4.0.</p>
-                  </div>
-              </div>
-              <!-- Slide 8 -->
-              <div class="slide">
-                  <img src="img/cursos4.jpg" alt="Innovación e inteligencia artificial" />
-                  <div class="slide-text">
-                      <h3>Innovación e Inteligencia Artificial: Ingenieros del Futuro</h3>
-                      <p>Preparando a los estudiantes para diseñar soluciones avanzadas con aplicaciones prácticas en IA.</p>
-                  </div>
-              </div>
-              <!-- Slide 9 -->
-              <div class="slide">
-                  <img src="img/Docentes.jpg" alt="Docentes comprometidos con la educación" />
-                  <div class="slide-text">
-                      <h3>Formación Docente: Excelencia y Liderazgo</h3>
-                      <p>Profesores apasionados que combinan experiencia y compromiso para impulsar el aprendizaje.</p>
-                  </div>
-              </div>
-              <!-- Slide 10 -->
-              <div class="slide">
-                  <img src="img/labBrenda.jpg" alt="Laboratorio de TI y programación" />
-                  <div class="slide-text">
-                      <h3>Centro de Cómputo</h3>
-                      <p>Fomentando la creatividad y el desarrollo tecnológico en un entorno de aprendizaje moderno.</p>
-                  </div>
-              </div>
-              <!-- Slide 11 -->
-              <div class="slide">
-                  <img src="img/labIsaac.jpg" alt="Laboratorio de programación avanzada" />
-                  <div class="slide-text">
-                      <h3>Laboratorio de Programación</h3>
-                      <p>Espacio dedicado a la exploración y aplicación de técnicas avanzadas de programación.</p>
-                  </div>
-              </div>
-              <!-- Slide 12 -->
-              <div class="slide">
-                  <img src="img/labmeca.jpg" alt="Laboratorio de mecatrónica" />
-                  <div class="slide-text">
-                      <h3>Laboratorio de Mecatrónica</h3>
-                      <p>Donde la ingeniería interdisciplinaria cobra vida en proyectos tecnológicos integrales.</p>
-                  </div>
-              </div>
-              <!-- Slide 13 -->
+
+    <!-- Contenido Principal -->
+    <main class="page-container">
+      <div class="page-header">
+        <span class="overline overline--primary">Facultad de Ingeniería Mecánica y Eléctrica</span>
+        <h1 class="page-title">Portal Institucional e Inteligencia Artificial</h1>
+        <p class="page-subtitle">Explora la infraestructura académica, claustro de profesores, asignaturas y consulta al asistente virtual FimeBot para orientación académica y resolución de dudas.</p>
+      </div>
+
+      <!-- Contenedor transformable con carrusel e interfaz de chat -->
+      <div class="transform-container" id="transform-container">
+          <!-- Sección del carrusel -->
+          <div class="carousel-section">
+              <div class="carousel">
                 <div class="slide">
-                    <img src="img/curso.jpg" alt="Curso de Verano en Inteligencia Artificial" /> 
+                  <img src="img/ActividadesRecre2.jpg" alt="Profesores en actividades recreativas" />
+                  <div class="slide-text">
+                      <span class="overline overline--primary">COMUNIDAD DOCENTE</span>
+                      <h3>Profesores en actividades recreativas</h3>
+                      <p>Fortaleciendo el trabajo en equipo y creando vínculos que enriquecen el ambiente académico.</p>
+                  </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="slide">
+                    <img src="img/ActividadesRecre.jpg" alt="Comunidad estudiantil" />
                     <div class="slide-text">
-                        <h3>Curso de Verano en Inteligencia Artificial</h3>
-                        <p>Aprende los fundamentos y aplicaciones prácticas de la inteligencia artificial en un entorno dinámico.</p>
+                        <span class="overline overline--primary">VIDA ESTUDIANTIL</span>
+                        <h3>Estudiantes en actividades recreativas</h3>
+                        <p>Fomentando la integración y el desarrollo personal en un entorno dinámico y colaborativo.</p>
                     </div>
                 </div>
-            </div>
-            <div class="carousel-controls">
-                <button id="prev-slide" class="carousel-btn">‹</button>
-                <button id="next-slide" class="carousel-btn">›</button>
-            </div>
-        </div>
-        <!-- Sección del Chat -->
-        <div class="chat-section" id="chat-section">
-            <header class="chat-header">
-                <h3>FIMEBOT</h3>
-                <span class="close-chat material-symbols-outlined" id="close-chat-btn">
-                    close
-                </span>
-            </header>
-            <div class="chat-content">
-                <ul class="chatbox">
-                    <li class="chat incoming">
-                        <span class="material-symbols-outlined">smart_toy</span>
-                        <p>¡Hola! 👋 Soy tu asistente virtual FimeBot. Estoy aquí para ayudarte a explorar las carreras que ofrecemos y resolver tus dudas. Aunque hago mi mejor esfuerzo por brindarte información precisa, podría cometer algunos errores, así que siempre es buena idea confirmar los detalles directamente con la FIME. ¿En qué puedo ayudarte hoy? 😊</p>
-                    </li>
-                </ul>
-            </div>
-            <div class="chat-input">
-                <textarea placeholder="Escribe tu mensaje..."></textarea>
-                <span id="send-btn" class="material-symbols-outlined">send</span>
-            </div>
-        </div>
-    </div>
-    <!-- Footer -->
-    <footer class="main-footer">
-        <p>&copy; 2025 Facultad de Ingeniería Mecánica y Eléctrica de la Universidad de Colima.</p>
-    </footer>
-    <!-- Aviso de Privacidad -->
-    <div id="privacy-modal" class="modal">
-        <div class="modal-content">
-            <h2>Aviso de Privacidad</h2>
-            <p>
-                Este sitio utiliza cookies y recopila información básica para mejorar su experiencia. Al usar este servicio, aceptas que procesemos tu información.
-            </p>
-        </div>
-    </div>
+                <!-- Slide 3 -->
+                <div class="slide">
+                    <img src="img/AExtra.jpg" alt="Visita industrial" />
+                    <div class="slide-text">
+                        <span class="overline overline--primary">VINCULACIÓN INDUSTRIAL</span>
+                        <h3>Visita Industrial: Aprendizaje en el Campo</h3>
+                        <p>Conectando la teoría con la práctica en experiencias de campo que preparan para la industria real.</p>
+                    </div>
+                </div>
+                <!-- Slide 4 -->
+                <div class="slide">
+                    <img src="img/chacuaco.jpg" alt="El Chacuaco FIME" />
+                    <div class="slide-text">
+                        <span class="overline overline--primary">IDENTIDAD FIME</span>
+                        <h3>El Emblemático Chacuaco: Orgullo Institucional</h3>
+                        <p>Representando nuestra tradición e identidad, un icono que inspira a nuestra comunidad educativa.</p>
+                    </div>
+                </div>
+                <!-- Slide 5 -->
+                <div class="slide">
+                    <img src="img/cursos.jpg" alt="Cursos y capacitación" />
+                    <div class="slide-text">
+                        <span class="overline overline--primary">FORMACIÓN CONTINUA</span>
+                        <h3>Cursos y Capacitación para Alumnos</h3>
+                        <p>Actualización constante en áreas tecnológicas de vanguardia.</p>
+                    </div>
+                </div>
+                <!-- Slide 6 -->
+                <div class="slide">
+                    <img src="img/cursos2.jpg" alt="Laboratorios de hidráulica" />
+                    <div class="slide-text">
+                        <span class="overline overline--primary">LABORATORIOS FIME</span>
+                        <h3>Hidráulica en Acción: Infraestructura Práctica</h3>
+                        <p>Espacios de experimentación donde se aplican criterios técnicos a proyectos reales.</p>
+                    </div>
+                </div>
+                <!-- Slide 7 -->
+                <div class="slide">
+                    <img src="img/labBrenda.jpg" alt="Laboratorio de Cómputo" />
+                    <div class="slide-text">
+                        <span class="overline overline--primary">CENTRO DE CÓMPUTO</span>
+                        <h3>Desarrollo de Software e Inteligencia Artificial</h3>
+                        <p>Equipamiento moderno para desarrollo de proyectos computacionales avanzados.</p>
+                    </div>
+                </div>
+                <!-- Slide 8 -->
+                <div class="slide">
+                    <img src="img/labIsaac.jpg" alt="Laboratorio de Electrónica" />
+                    <div class="slide-text">
+                        <span class="overline overline--primary">AUTOMATIZACIÓN</span>
+                        <h3>Laboratorio de Electrónica y Mecatrónica</h3>
+                        <p>Desarrollo de microcontroladores y prototipos mecatrónicos de precisión.</p>
+                    </div>
+                </div>
+              </div>
+              <!-- Controles del carrusel -->
+              <button class="carousel-control prev" id="prev-slide" aria-label="Imagen anterior">&lt;</button>
+              <button class="carousel-control next" id="next-slide" aria-label="Siguiente imagen">&gt;</button>
+              <!-- Indicadores -->
+              <div class="carousel-indicators"></div>
+          </div>
 
-    <script src="js/chatbot.js" defer></script>
+          <!-- Sección del Chatbot FimeBot -->
+          <div class="chat-section">
+              <div class="chat-header">
+                  <div>
+                    <span class="overline overline--primary">ASISTENTE VIRTUAL</span>
+                    <h2>FimeBot</h2>
+                  </div>
+                  <button id="close-chat-btn" style="background:none; border:none; cursor:pointer;" aria-label="Cerrar ventana de chat">
+                    <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                  </button>
+              </div>
+              <div class="chat-content">
+                  <ul class="chatbox">
+                      <li class="chat incoming">
+                          <p>¡Hola! 👋 Soy tu asistente virtual FimeBot. Estoy aquí para ayudarte a explorar las carreras, asignaturas, horarios y resolver tus dudas sobre la FIME. ¿En qué puedo ayudarte hoy?</p>
+                      </li>
+                  </ul>
+              </div>
+              <div class="chat-input">
+                  <textarea placeholder="Escribe tu consulta..." aria-label="Mensaje para FimeBot"></textarea>
+                  <button class="btn-send" id="send-btn">Enviar</button>
+              </div>
+          </div>
+      </div>
+    </main>
+
+    <!-- Footer Institucional Swiss -->
+    <footer class="main-footer">
+        <div class="footer-inner">
+          <span style="font-size: 0.625rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #767676;">
+            FIME · UNIVERSIDAD DE COLIMA
+          </span>
+          <span style="font-size: 0.625rem; color: #B4B4B4;">
+            SISTEMA DE INFORMACIÓN ACADÉMICA · STUDENTHUB
+          </span>
+        </div>
+    </footer>
+
+    <script src="/js/chatbot.js?v=1.0.4" defer></script>
 </body>
 </html>
-
-<!-- 
-    MIT License (with attribution required)
-
-    Copyright (c) 2025 Pedro Antonio Ibarra Facio
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    1. Attribution must be given to the original author (e.g., "Developed by Pedro Antonio Ibarra Facio").
-    2. If used by an educational institution or organization, visible credit must be included on the website, promotional materials, or related documentation.
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
--->
-
-
-

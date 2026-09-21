@@ -11,21 +11,19 @@ export const onRequest = async (context, next) => {
     return redirect('/', 302);
   }
 
-  // Verificar la cookie de grupo seleccionado
+  // Obtener grupo seleccionado de cookies (sin forzar valor por defecto)
   const selectedGroupCookie = cookies.get('pica_selected_group');
-  if (selectedGroupCookie && selectedGroupCookie.value) {
+  const groupSlug = selectedGroupCookie?.value || null;
+
+  if (groupSlug) {
     locals.student = {
       is_anonymous: true,
-      class_group_slug: selectedGroupCookie.value,
+      class_group_slug: groupSlug,
       full_name: 'Estudiante',
       email: 'estudiante@ucol.mx'
     };
-    return next();
-  }
-
-  // Si no hay grupo seleccionado y no es la raíz, redirigir a la raíz para seleccionar uno (excepto el mapa y sus recursos)
-  if (url.pathname !== '/' && !url.pathname.startsWith('/mapa') && !url.pathname.startsWith('/api/') && url.pathname !== '/campus.geojson') {
-    return redirect('/', 302);
+  } else {
+    locals.student = null;
   }
 
   return next();

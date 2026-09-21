@@ -4,23 +4,29 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description?: string;
+  fromLanding?: boolean;
 }
 
 const {
   title,
   description = "StudentHUB — Consulta de materias, horarios, docentes y aulas en la Universidad de Colima.",
+  fromLanding: fromLandingProp,
 } = Astro.props;
+
+const urlFrom = Astro.url.searchParams.get("from");
+const isFromLanding = fromLandingProp ?? (urlFrom === "landing");
 
 const pathname = Astro.url.pathname;
 
 function isActive(path: string): boolean {
-  if (path === "/") return pathname === "/";
-  return pathname.startsWith(path);
+  if (path === "/" && pathname === "/") return true;
+  if (path !== "/" && pathname.startsWith(path)) return true;
+  return false;
 }
 
 const student = Astro.locals.student;
 const cookieGroup = Astro.cookies.get("pica_selected_group")?.value;
-const activeGroupSlug = student?.class_group_slug || cookieGroup || Astro.url.searchParams.get("group");
+const activeGroupSlug = Astro.url.searchParams.get("group") || cookieGroup || student?.class_group_slug;
 ---
 
 <!doctype html>
@@ -29,9 +35,9 @@ const activeGroupSlug = student?.class_group_slug || cookieGroup || Astro.url.se
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title} | StudentHUB</title>
+    <title>{title} | {isFromLanding ? "FIMEBot" : "StudentHUB"}</title>
     <meta name="description" content={description} />
-    <meta property="og:title" content={`${title} | StudentHUB`} />
+    <meta property="og:title" content={`${title} | ${isFromLanding ? "FIMEBot" : "StudentHUB"}`} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -39,7 +45,7 @@ const activeGroupSlug = student?.class_group_slug || cookieGroup || Astro.url.se
   </head>
 
   <body>
-    <!-- Banda primaria institucional — única presencia de color estructural -->
+    <!-- Banda primaria institucional UCOL -->
     <div
       style="height: 4px; background-color: var(--color-primary); width: 100%;"
     >
@@ -47,93 +53,143 @@ const activeGroupSlug = student?.class_group_slug || cookieGroup || Astro.url.se
 
     <!-- ═══════════════════════════════════════
          HEADER ESCRITORIO
-         Swiss Design: tipografía como identidad.
-         Sin iconos, sin sombras, sin bordes decorativos.
-         La separación es solo el fondo blanco sobre
-         el fondo gris de la página.
          ═══════════════════════════════════════ -->
     <header class="site-header" id="site-header">
       <div class="header-inner">
-        <!-- Wordmark: "PICA / StudentHUB" -->
-        <a href={activeGroupSlug ? `/?group=${activeGroupSlug}` : "/"} class="wordmark" aria-label="StudentHUB — Inicio">
-          <span class="wordmark__overline">Universidad de Colima</span>
-          <span class="wordmark__title">
-            Student<em>HUB</em>
-          </span>
-        </a>
+        {isFromLanding ? (
+          <!-- Header modo Landing: Wordmark FIMEBot -->
+          <a href="/" class="wordmark" aria-label="FIMEBot — Inicio">
+            <span class="wordmark__overline">Universidad de Colima</span>
+            <span class="wordmark__title">
+              FIME<em>Bot</em>
+            </span>
+          </a>
 
-        <!-- Navegación primaria — texto puro, sin iconos -->
-        <nav
-          aria-label="Navegación principal"
-          style="flex: 1; margin-left: 24px;"
-        >
-          <ul class="nav-list" role="list">
-            <li>
-              <a href={activeGroupSlug ? `/?group=${activeGroupSlug}` : "/"} class={`nav-link ${isActive("/") ? "active" : ""}`}>
-                Horario
-              </a>
-            </li>
-            <li>
-              <a
-                href={activeGroupSlug ? `/materias?group=${activeGroupSlug}` : "/materias"}
-                class={`nav-link ${isActive("/materias") ? "active" : ""}`}
-              >
-                Materias
-              </a>
-            </li>
-            <li>
-              <a
-                href="/profesores"
-                class={`nav-link ${isActive("/profesores") ? "active" : ""}`}
-              >
-                Profesores
-              </a>
-            </li>
-            <li>
-              <a
-                href="/mapa"
-                class={`nav-link ${isActive("/mapa") ? "active" : ""}`}
-              >
-                Mapa
-              </a>
-            </li>
+          <!-- Navegación modo Landing -->
+          <nav
+            aria-label="Navegación principal"
+            style="flex: 1; margin-left: 24px;"
+          >
+            <ul class="nav-list" role="list">
+              <li>
+                <a href="/studenthub" class={`nav-link ${isActive("/studenthub") ? "active" : ""}`}>
+                  StudentHUB
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/profesores?from=landing"
+                  class={`nav-link ${isActive("/profesores") ? "active" : ""}`}
+                >
+                  Profesores
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/mapa?from=landing"
+                  class={`nav-link ${isActive("/mapa") ? "active" : ""}`}
+                >
+                  Mapa
+                </a>
+              </li>
+            </ul>
+          </nav>
 
-            <li>
-              <a
-                href={activeGroupSlug ? `/fechas?group=${activeGroupSlug}` : "/fechas"}
-                class={`nav-link ${isActive("/fechas") ? "active" : ""}`}
-              >
-                Fechas de evaluación
-              </a>
-            </li>
-          </ul>
-        </nav>
+          <a href="/#chat" class="btn-header-chat" style="padding: 8px 16px; background: var(--color-primary); color: white; border-radius: 4px; text-decoration: none; font-size: 0.8125rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+            🤖 FimeBot
+          </a>
+        ) : (
+          <!-- Header modo StudentHUB: Wordmark StudentHUB -->
+          <a href="/studenthub" class="wordmark" aria-label="StudentHUB — Inicio">
+            <span class="wordmark__overline">Universidad de Colima</span>
+            <span class="wordmark__title">
+              Student<em>HUB</em>
+            </span>
+          </a>
 
-        <!-- Grupo Activo (Escritorio) -->
-        {
-          activeGroupSlug && (
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <span style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--color-ink-2); text-transform: uppercase; background: var(--color-muted); padding: 4px 8px;">
-                Grupo: {activeGroupSlug.toUpperCase()}
-              </span>
-              <button
-                id="btn-change-group-header"
-                style="background: none; border: 1px solid var(--color-rule-strong); font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 700; color: var(--color-ink-2); cursor: pointer; text-transform: uppercase; padding: 4px 8px; transition: all 120ms;"
-              >
-                Volver a inicio
-              </button>
-            </div>
-          )
-        }
+          <!-- Navegación modo StudentHUB -->
+          <nav
+            aria-label="Navegación principal"
+            style="flex: 1; margin-left: 24px;"
+          >
+            <ul class="nav-list" role="list">
+              <li>
+                <a href="/" class="nav-link">
+                  Inicio
+                </a>
+              </li>
+              <li>
+                <a href="/studenthub" class={`nav-link ${isActive("/studenthub") ? "active" : ""}`}>
+                  Horario
+                </a>
+              </li>
+              <li>
+                <a
+                  href={activeGroupSlug ? `/materias?group=${activeGroupSlug}` : "/materias"}
+                  class={`nav-link ${isActive("/materias") ? "active" : ""}`}
+                >
+                  Materias
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/profesores?from=studenthub"
+                  class={`nav-link ${isActive("/profesores") ? "active" : ""}`}
+                >
+                  Profesores
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/mapa?from=studenthub"
+                  class={`nav-link ${isActive("/mapa") ? "active" : ""}`}
+                >
+                  Mapa
+                </a>
+              </li>
 
-        <!-- Regla divisora bajo el header -->
-        <hr class="rule" style="margin: 0;" />
+              <li>
+                <a
+                  href={activeGroupSlug ? `/fechas?group=${activeGroupSlug}` : "/fechas"}
+                  class={`nav-link ${isActive("/fechas") ? "active" : ""}`}
+                >
+                  Fechas de evaluación
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          <!-- Botón de Cambiar Grupo en la parte superior derecha -->
+          <a
+            href="/studenthub?select_group=true"
+            class="btn-change-group-header"
+            style="
+              padding: 8px 16px;
+              background: transparent;
+              color: var(--color-primary);
+              border: 1px solid var(--color-primary);
+              border-radius: 4px;
+              text-decoration: none;
+              font-size: 0.75rem;
+              font-weight: 700;
+              font-family: var(--font-mono);
+              text-transform: uppercase;
+              letter-spacing: 0.05em;
+              display: inline-flex;
+              align-items: center;
+              gap: 6px;
+              transition: all 120ms ease;
+              white-space: nowrap;
+            "
+          >
+            🔄 Cambiar Grupo
+          </a>
+        )}
       </div>
+      <hr class="rule" style="margin: 0;" />
     </header>
 
-      <!-- ═══════════════════════════════════════
-         MAIN
-         ═══════════════════════════════════════ -->
+      <!-- MAIN -->
       <main
         id="main-content"
         style="
@@ -146,9 +202,7 @@ const activeGroupSlug = student?.class_group_slug || cookieGroup || Astro.url.se
         <slot />
       </main>
 
-      <!-- ═══════════════════════════════════════
-         FOOTER
-         ═══════════════════════════════════════ -->
+      <!-- FOOTER -->
       <footer
         style="
       border-top: 1px solid var(--color-rule);
@@ -170,9 +224,7 @@ const activeGroupSlug = student?.class_group_slug || cookieGroup || Astro.url.se
         </div>
       </footer>
 
-      <!-- ═══════════════════════════════════════
-         NAV MÓVIL — barra inferior
-         ═══════════════════════════════════════ -->
+      <!-- NAV MÓVIL -->
       <nav
         class="mobile-nav"
         aria-label="Navegación móvil"
@@ -303,21 +355,6 @@ const activeGroupSlug = student?.class_group_slug || cookieGroup || Astro.url.se
                 </a>
               ))
             }
-            {
-              student && (
-                <div style="padding: 14px 0; border-bottom: 1px solid var(--color-rule); display: flex; justify-content: space-between; align-items: center;">
-                  <span style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--color-ink-2); text-transform: uppercase;">
-                    Grupo: {student.class_group_slug.toUpperCase()}
-                  </span>
-                  <button
-                    id="btn-change-group-mobile"
-                    style="background: none; border: none; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--color-ink-3); text-transform: uppercase; cursor: pointer; padding: 4px;"
-                  >
-                    Cambiar
-                  </button>
-                </div>
-              )
-            }
           </nav>
         </div>
       </div>
@@ -350,22 +387,6 @@ const activeGroupSlug = student?.class_group_slug || cookieGroup || Astro.url.se
           document.addEventListener("keydown", (e) => {
             if (e.key === "Escape") closeDrawer();
           });
-
-          const btnChangeGroupMobile = document.getElementById(
-            "btn-change-group-mobile",
-          );
-          btnChangeGroupMobile?.addEventListener("click", () => {
-            document.cookie = "pica_selected_group=; path=/; max-age=0;";
-            window.location.href = "/";
-          });
-
-          const btnChangeGroupHeader = document.getElementById(
-            "btn-change-group-header",
-          );
-          btnChangeGroupHeader?.addEventListener("click", () => {
-            document.cookie = "pica_selected_group=; path=/; max-age=0;";
-            window.location.href = "/";
-          });
         }
 
         setupMobileNav();
@@ -375,9 +396,6 @@ const activeGroupSlug = student?.class_group_slug || cookieGroup || Astro.url.se
   </body>
 
   <style>
-    /* ══════════════════════════════════
-     LAYOUT — Header institucional
-     ══════════════════════════════════ */
     .site-header {
       position: sticky;
       top: 0;
@@ -396,7 +414,6 @@ const activeGroupSlug = student?.class_group_slug || cookieGroup || Astro.url.se
       gap: 32px;
     }
 
-    /* Wordmark tipográfico */
     .wordmark {
       display: flex;
       flex-direction: column;
@@ -406,7 +423,7 @@ const activeGroupSlug = student?.class_group_slug || cookieGroup || Astro.url.se
     }
 
     .wordmark__overline {
-      font-size: 0.5625rem; /* 9px */
+      font-size: 0.5625rem;
       font-weight: 500;
       letter-spacing: 0.16em;
       text-transform: uppercase;
@@ -423,13 +440,11 @@ const activeGroupSlug = student?.class_group_slug || cookieGroup || Astro.url.se
       line-height: 1;
     }
 
-    /* "HUB" en cursiva es el acento tipográfico, no de color */
     .wordmark__title em {
       font-style: normal;
       color: var(--color-primary);
     }
 
-    /* Lista de navegación */
     .nav-list {
       display: flex;
       align-items: center;
@@ -439,33 +454,6 @@ const activeGroupSlug = student?.class_group_slug || cookieGroup || Astro.url.se
       padding: 0;
     }
 
-    /* Avatar de usuario */
-    .user-avatar {
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid var(--color-rule-strong);
-      color: var(--color-ink-2);
-      text-decoration: none;
-      transition:
-        background-color 120ms,
-        border-color 120ms;
-    }
-    .user-avatar.active {
-      border-color: var(--color-ink);
-      color: var(--color-ink);
-      background-color: var(--color-muted);
-    }
-    .user-avatar:hover {
-      background-color: var(--color-muted);
-      border-color: var(--color-ink-3);
-    }
-
-    /* ══════════════════════════════════
-     NAVEGACIÓN MÓVIL
-     ══════════════════════════════════ */
     .mobile-nav {
       position: fixed;
       bottom: 0;
@@ -541,7 +529,7 @@ const activeGroupSlug = student?.class_group_slug || cookieGroup || Astro.url.se
     }
 
     .mobile-nav__label {
-      font-size: 0.5rem; /* 8px */
+      font-size: 0.5rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;

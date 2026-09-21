@@ -1,162 +1,180 @@
 version: '3.8'
 
+networks:
+  student-hub-network:
+    driver: bridge
+    internal: false
+
 services:
-  # 1. Base de datos PostgreSQL
+  # 1. Base de Datos PostgreSQL (Privada / Sin puertos expuestos al host)
   postgres:
     image: postgres:15-alpine
-    container_name: pica-postgres
+    container_name: student-hub-postgres
     restart: always
     environment:
-      POSTGRES_DB: pica_db
+      POSTGRES_DB: ${DB_NAME:-pica_db}
       POSTGRES_USER: ${DB_USER:-admin}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-admin_pass}
-    ports:
-      - "5432:5432"
+    networks:
+      - student-hub-network
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./scripts/import_horarios.sql:/docker-entrypoint-initdb.d/02-import.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-  # 2. Auth Service
+  # 2. Redis Cache & Sessions (Privado / Sin puertos expuestos al host)
+  redis:
+    image: redis:7-alpine
+    container_name: student-hub-redis
+    restart: always
+    networks:
+      - student-hub-network
+    volumes:
+      - redis_data:/data
+
+  # 3. Auth Service (Privado / Sin puertos expuestos al host)
   auth-service:
     build:
       context: ./services/auth-service
       dockerfile: Dockerfile
-    container_name: pica-auth-service
+    container_name: student-hub-auth-service
     restart: always
     environment:
-      DATABASE_URL: postgres://${DB_USER:-admin}:${DB_PASSWORD:-admin_pass}@postgres:5432/pica_db
-      JWT_SECRET: ${JWT_SECRET:-pica-ucol-jwt-secret-2026}
+      DATABASE_URL: postgres://${DB_USER:-admin}:${DB_PASSWORD:-admin_pass}@postgres:5432/${DB_NAME:-pica_db}
+      JWT_SECRET: ${JWT_SECRET:-pica-student-hub-jwt-prod-2026}
+    networks:
+      - student-hub-network
     depends_on:
       postgres:
         condition: service_healthy
 
-  # 3. Professors Service
+  # 4. Professors Service (Privado / Sin puertos expuestos al host)
   professors-service:
     build:
       context: ./services/professors-service
       dockerfile: Dockerfile
-    container_name: pica-professors-service
+    container_name: student-hub-professors-service
     restart: always
     environment:
-      DATABASE_URL: postgres://${DB_USER:-admin}:${DB_PASSWORD:-admin_pass}@postgres:5432/pica_db
-      JWT_SECRET: ${JWT_SECRET:-pica-ucol-jwt-secret-2026}
+      DATABASE_URL: postgres://${DB_USER:-admin}:${DB_PASSWORD:-admin_pass}@postgres:5432/${DB_NAME:-pica_db}
+      JWT_SECRET: ${JWT_SECRET:-pica-student-hub-jwt-prod-2026}
       CV_EXTRACTOR_URL: http://cv-extractor-service:6774
       REFERENCE_SERVICE_URL: http://reference-service:6773
+    networks:
+      - student-hub-network
     depends_on:
       postgres:
         condition: service_healthy
 
-  # 4. Academic Service
+  # 5. Academic Service (Privado / Sin puertos expuestos al host)
   academic-service:
     build:
       context: ./services/academic-service
       dockerfile: Dockerfile
-    container_name: pica-academic-service
+    container_name: student-hub-academic-service
     restart: always
     environment:
-      DATABASE_URL: postgres://${DB_USER:-admin}:${DB_PASSWORD:-admin_pass}@postgres:5432/pica_db
-      JWT_SECRET: ${JWT_SECRET:-pica-ucol-jwt-secret-2026}
+      DATABASE_URL: postgres://${DB_USER:-admin}:${DB_PASSWORD:-admin_pass}@postgres:5432/${DB_NAME:-pica_db}
+      JWT_SECRET: ${JWT_SECRET:-pica-student-hub-jwt-prod-2026}
+    networks:
+      - student-hub-network
     depends_on:
       postgres:
         condition: service_healthy
 
-  # 5. Reference Service
+  # 6. Reference Service (Privado / Sin puertos expuestos al host)
   reference-service:
     build:
       context: ./services/reference-service
       dockerfile: Dockerfile
-    container_name: pica-reference-service
+    container_name: student-hub-reference-service
     restart: always
+    networks:
+      - student-hub-network
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
-  # 6. CV Extractor Service
+  # 7. CV Extractor Service (Privado / Sin puertos expuestos al host)
   cv-extractor-service:
     build:
       context: ./services/cv-extractor-service
       dockerfile: Dockerfile
-    container_name: pica-cv-extractor-service
+    container_name: student-hub-cv-extractor-service
     restart: always
+    networks:
+      - student-hub-network
 
-  # 7. Redis
-  redis:
-    image: redis:7-alpine
-    container_name: pica-redis
-    restart: always
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-
-  # 8. Interfaz Administrativa (admin-hub-frontend)
-  admin-hub-frontend:
+  # 8. Landing Page & FimeBot Chatbot (Privado / Sin puertos expuestos al host)
+  landing:
     build:
-      context: .
-      dockerfile: services/admin-hub-frontend/Dockerfile
-    container_name: pica-admin-hub-frontend
+      context: ./services/landing
+      dockerfile: Dockerfile
+    container_name: student-hub-landing
     restart: always
-    depends_on:
-      - auth-service
-      - professors-service
-      - academic-service
+    networks:
+      - student-hub-network
 
-  # 9. StudentHUB Frontend (student-hub)
+  # 9. StudentHUB Frontend SSR (Privado / Comunicado sólo con Nginx)
   student-hub:
     build:
       context: .
       dockerfile: services/student-hub/Dockerfile
       args:
-        DATABASE_URL: postgres://${DB_USER:-admin}:${DB_PASSWORD:-admin_pass}@postgres:5432/pica_db
-    container_name: pica-student-hub
+        DATABASE_URL: postgres://${DB_USER:-admin}:${DB_PASSWORD:-admin_pass}@postgres:5432/${DB_NAME:-pica_db}
+    container_name: student-hub-frontend
     restart: always
     environment:
-      DATABASE_URL: postgres://${DB_USER:-admin}:${DB_PASSWORD:-admin_pass}@postgres:5432/pica_db
+      DATABASE_URL: postgres://${DB_USER:-admin}:${DB_PASSWORD:-admin_pass}@postgres:5432/${DB_NAME:-pica_db}
+      AUTH_SERVICE_URL: http://auth-service:6770
+      PROFESSORS_SERVICE_URL: http://professors-service:6771
+      ACADEMIC_SERVICE_URL: http://academic-service:6772
+      REFERENCE_SERVICE_URL: http://reference-service:6773
+      COOKIE_SECRET: ${COOKIE_SECRET:-pica_student_hub_production_cookie_secret_2026}
+    networks:
+      - student-hub-network
     depends_on:
       postgres:
         condition: service_healthy
+      auth-service:
+        condition: service_started
+      professors-service:
+        condition: service_started
+      academic-service:
+        condition: service_started
+      reference-service:
+        condition: service_started
     volumes:
       - ./services/student-hub/public:/app/services/student-hub/public
 
-  # 10. ProjectHUB Placeholder (project-hub)
-  project-hub:
-    build:
-      context: .
-      dockerfile: services/project-hub/Dockerfile
-    container_name: pica-project-hub
-    restart: always
-    depends_on:
-      - student-hub
-
-  # 11. Proxy de Entrada (Nginx Reverse Proxy)
+  # 10. Proxy Nginx de Entrada Única (ÚNICO CONTENEDOR CON PUERTO EXPUESTO AL HOST)
   proxy:
     build:
       context: ./services/proxy
       dockerfile: Dockerfile
-    container_name: pica-proxy
+    container_name: student-hub-proxy
     restart: always
     ports:
-      - "80:80"
+      - "${HOST_PORT:-80}:80"
+    networks:
+      - student-hub-network
     volumes:
       - proxy_cache:/var/cache/nginx
     depends_on:
       - student-hub
-      - admin-hub-frontend
       - auth-service
       - professors-service
       - academic-service
       - reference-service
-      - cv-extractor-service
-      - project-hub
+      - landing
 
 volumes:
   postgres_data:
-    driver: local
-  temp_uploads:
     driver: local
   proxy_cache:
     driver: local

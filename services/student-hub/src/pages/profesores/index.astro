@@ -1,51 +1,98 @@
 ---
 import InstitutionalLayout from '../../layouts/InstitutionalLayout.astro';
 import TeacherGrid from '../../components/TeacherGrid.astro';
-import { cargarDelegaciones, cargarFacultades } from '../../lib/cargarDatos.js';
-import { fetchFromService } from '../../lib/api-client.js';
 import { cargarProfesores } from '../../lib/cargarProfesores.js';
+import { cargarGrupoConProfesores, cargarHorarioDeGrupo } from '../../lib/cargarDatos.js';
 
-const student = Astro.locals.student;
-const activeGroupSlug = student?.class_group_slug || Astro.url.searchParams.get("group") || "4-b-191";
+const fromParam = Astro.url.searchParams.get("from");
+const isFromLanding = fromParam === "landing";
 
 let profesores = [];
+let activeGroup = null;
+
 try {
-  const allProfs = await cargarProfesores();
-  const groups = await fetchFromService('academic', '/groups');
-  const group = groups.find(g => g.slug === activeGroupSlug);
-  if (group) {
-    const schedules = await fetchFromService('academic', '/schedules');
-    const groupSchedules = schedules.filter(s => s.class_group_id === group.id);
-    
-    profesores = allProfs.filter(p => 
-      p.id === group.tutor_id || groupSchedules.some(s => s.professor_id === p.id)
-    );
+  const allProfessors = await cargarProfesores();
+
+  if (isFromLanding) {
+    profesores = allProfessors;
+  } else {
+    const student = Astro.locals.student;
+    const cookieGroup = Astro.cookies.get("pica_selected_group")?.value;
+    const activeGroupSlug = Astro.url.searchParams.get("group") || cookieGroup || student?.class_group_slug;
+
+    if (activeGroupSlug) {
+      activeGroup = await cargarGrupoConProfesores(activeGroupSlug);
+      if (activeGroup) {
+        const schedules = await cargarHorarioDeGrupo(activeGroup.id);
+        const groupProfSlugs = new Set();
+        if (activeGroup.tutor_slug) groupProfSlugs.add(activeGroup.tutor_slug);
+        schedules.forEach(s => {
+          if (s.professor_slug) groupProfSlugs.add(s.professor_slug);
+        });
+
+        const groupProfNames = new Set();
+        if (activeGroup.tutor_name) groupProfNames.add(activeGroup.tutor_name.toLowerCase().trim());
+        schedules.forEach(s => {
+          if (s.professor_name) groupProfNames.add(s.professor_name.toLowerCase().trim());
+        });
+
+        profesores = allProfessors.filter(p => {
+          if (groupProfSlugs.has(p.slug)) return true;
+          if (groupProfNames.has(p.fullName?.toLowerCase().trim())) return true;
+          return false;
+        });
+      } else {
+        profesores = allProfessors;
+      }
+    } else {
+      profesores = allProfessors;
+    }
   }
 } catch(e) {
   console.error("Error loading teachers:", e);
 }
-const delegaciones = await cargarDelegaciones();
-const facultades = await cargarFacultades();
-
-const facultadesMap = facultades.map(f => ({
-  id: f.id,
-  delegation_id: f.delegation_id,
-  name: f.name,
-  career_ids: f.career_ids || []
-}));
 ---
 
 <InstitutionalLayout
   title="Profesores e Investigadores"
-  description="Directorio de docentes e investigadores del grupo académico en la Universidad de Colima."
+  description="Directorio de docentes e investigadores de la Facultad de Ingeniería Mecánica y Eléctrica (FIME) en la Universidad de Colima."
+  fromLanding={isFromLanding}
 >
 
   <!-- Encabezado estándar -->
   <div class="page-header">
     <div class="page-header__title">
-      <span class="overline overline--primary">Directorio Docente</span>
-      <h1 class="page-title">Profesores</h1>
-      <p class="page-subtitle">Docentes e investigadores asignados a tu grupo académico</p>
+      <span class="overline overline--primary">Claustro Académico FIME</span>
+      <h1 class="page-title">Directorio de Profesores</h1>
+      {isFromLanding ? (
+        <p class="page-subtitle">
+          Docentes, investigadores y catedráticos de la Universidad de Colima ({profesores.length} profesores)
+        </p>
+      ) : (
+        <p class="page-subtitle">
+          {activeGroup ? (
+            <>
+              Docentes asignados al grupo <strong>{activeGroup.name}</strong> ({profesores.length} profesores) &mdash; 
+              <a href="/profesores?from=landing" class="link" style="margin-left: 6px; font-weight: 700; color: var(--color-primary);">[Ver directorio completo FIME]</a>
+            </>
+          ) : (
+            <>
+              Docentes de la Universidad de Colima ({profesores.length} profesores)
+            </>
+          )}
+        </p>
+      )}
+    </div>
+
+    <!-- Buscador en vivo de profesores -->
+    <div style="margin-top: 16px; max-width: 480px;">
+      <input
+        type="search"
+        id="teacher-search-input"
+        class="input"
+        placeholder="Buscar por nombre o departamento..."
+        style="width: 100%; box-sizing: border-box;"
+      />
     </div>
   </div>
 
@@ -56,36 +103,25 @@ const facultadesMap = facultades.map(f => ({
     <TeacherGrid profesores={profesores} />
   </div>
 
+  <script>
+    function setupTeacherSearch() {
+      const searchInput = document.getElementById("teacher-search-input") as HTMLInputElement | null;
+      const cards = document.querySelectorAll(".teacher-card");
+
+      searchInput?.addEventListener("input", (e) => {
+        const term = (e.target as HTMLInputElement).value.toLowerCase().trim();
+        cards.forEach((card) => {
+          const text = card.textContent?.toLowerCase() || "";
+          if (text.includes(term)) {
+            (card as HTMLElement).style.display = "flex";
+          } else {
+            (card as HTMLElement).style.display = "none";
+          }
+        });
+      });
+    }
+
+    setupTeacherSearch();
+    document.addEventListener("astro:page-load", setupTeacherSearch);
+  </script>
 </InstitutionalLayout>
-
-<style>
-  .page-header {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 24px;
-    margin-bottom: 32px;
-    align-items: end;
-  }
-
-  .page-title {
-    font-size: 2.5rem;
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    line-height: 1.0;
-    color: var(--color-ink);
-    margin-top: 8px;
-  }
-
-  @media (min-width: 768px) {
-    .page-title { font-size: 3rem; }
-  }
-
-  .page-subtitle {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    color: var(--color-ink-3);
-    letter-spacing: 0.06em;
-    margin-top: 12px;
-    line-height: 1.4;
-  }
-</style>
