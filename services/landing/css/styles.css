@@ -328,6 +328,11 @@ button {
   font-size: 0.875rem;
 }
 
+.chat.incoming {
+  align-items: flex-start;
+}
+
+.chat.incoming .chat-bubble,
 .chat.incoming p {
   background: var(--color-surface);
   color: var(--color-ink);
@@ -337,12 +342,66 @@ button {
   border-radius: 0;
   max-width: 90%;
   line-height: 1.45;
+  word-break: break-word;
+}
+
+.chat.incoming .chat-bubble p {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0 0 8px 0;
+  max-width: 100%;
+}
+
+.chat.incoming .chat-bubble p:last-child {
+  margin-bottom: 0;
+}
+
+.chat.incoming .chat-bubble ul,
+.chat.incoming .chat-bubble ol {
+  margin: 6px 0 8px 18px;
+  padding: 0;
+}
+
+.chat.incoming .chat-bubble li {
+  margin-bottom: 4px;
+}
+
+.chat.incoming .chat-bubble strong {
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.chat.incoming .chat-bubble a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.chat.incoming .chat-bubble code {
+  background: #EBEBEB;
+  padding: 2px 4px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85em;
+}
+
+.chat.incoming .chat-bubble pre {
+  background: #EBEBEB;
+  padding: 8px 12px;
+  overflow-x: auto;
+  margin: 6px 0;
+}
+
+.chat.incoming .chat-bubble pre code {
+  background: none;
+  padding: 0;
 }
 
 .chat.outgoing {
   align-items: flex-end;
 }
 
+.chat.outgoing .chat-bubble,
 .chat.outgoing p {
   background: var(--color-muted);
   color: var(--color-ink);
@@ -351,6 +410,25 @@ button {
   border-radius: 0;
   max-width: 90%;
   line-height: 1.45;
+  word-break: break-word;
+}
+
+.chat.outgoing .chat-bubble p {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.thinking-animation {
+  font-style: italic;
+  color: var(--color-ink-subtle, #767676);
+  animation: pulse-thinking 1.2s infinite ease-in-out;
+}
+
+@keyframes pulse-thinking {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
 }
 
 .chat-input {

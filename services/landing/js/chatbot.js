@@ -58,8 +58,16 @@ closeChatBtn.addEventListener("click", () => {
 });
 
 /*****************************************************
-  4. FUNCIONES DE CREACIÓN DE MENSAJES
+  4. FUNCIONES DE RENDERIZADO Y CREACIÓN DE MENSAJES
 *****************************************************/
+function renderMarkdown(element, text) {
+  if (typeof marked !== "undefined" && typeof marked.parse === "function") {
+    element.innerHTML = marked.parse(text, { breaks: true, gfm: true });
+  } else {
+    element.textContent = text;
+  }
+}
+
 function createChatLi(message, className) {
   const li = document.createElement("li");
   li.classList.add("chat", className);
@@ -72,24 +80,29 @@ function createChatLi(message, className) {
     li.appendChild(icon);
   }
 
-  const text = document.createElement("p");
+  const bubble = document.createElement("div");
+  bubble.classList.add("chat-bubble");
   if (isThinking) {
-    text.classList.add("thinking-animation");
+    bubble.classList.add("thinking-animation");
+    bubble.textContent = message;
+  } else if (className === "incoming") {
+    renderMarkdown(bubble, message);
+  } else {
+    bubble.textContent = message;
   }
-  text.textContent = message;
-  li.appendChild(text);
+  li.appendChild(bubble);
 
   return li;
 }
+
 /*****************************************************
-  5. COMUNICACIÓN CON EL BACKEND
+  5. COMUNICACIÓN CON EL BACKEND (STREAMING SSE + MD)
 *****************************************************/
 async function generateResponse(incomingChatLi) {
-  const msgElem = incomingChatLi.querySelector("p");
+  const bubble = incomingChatLi.querySelector(".chat-bubble") || incomingChatLi.querySelector("p");
 
-  let res, data;
   try {
-    res = await fetch(FASTAPI_ENDPOINT, {
+    const res = await fetch(FASTAPI_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -97,7 +110,7 @@ async function generateResponse(incomingChatLi) {
       },
       body: JSON.stringify({
         messages: chatHistory,
-        stream: false,
+        stream: true,
         think: false
       }),
     });
@@ -105,34 +118,73 @@ async function generateResponse(incomingChatLi) {
     if (!res.ok) {
       const errorText = await res.text();
       console.error("Error del servidor:", errorText);
-      throw new Error(`Error del servidor: ${res.status} - ${errorText || "Sin detalles"}`);
+      throw new Error(`Error ${res.status}: ${errorText || "Error en el servidor"}`);
     }
 
-    data = await res.json();
+    bubble.classList.remove("thinking-animation");
+    bubble.textContent = "";
 
-    // Extraer la respuesta del modelo
-    const botMessage = data?.message?.content || "Sin respuesta del modelo.";
-    msgElem.textContent = botMessage;
+    const contentType = res.headers.get("content-type") || "";
+    if (contentType.includes("text/event-stream") && res.body) {
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+      let botMessage = "";
+      let buffer = "";
 
-    // Agregar la respuesta al historial de chat
-    chatHistory.push({ role: "assistant", content: botMessage });
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
 
-    // Hacer scroll para mostrar la respuesta
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop(); // Guardar fragmento incompleto
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || !trimmed.startsWith("data:")) continue;
+          const dataStr = trimmed.slice(5).trim();
+          if (dataStr === "[DONE]") continue;
+
+          try {
+            const parsed = JSON.parse(dataStr);
+            const delta = parsed.choices?.[0]?.delta?.content || "";
+            if (delta) {
+              botMessage += delta;
+              renderMarkdown(bubble, botMessage);
+              chatbox.scrollTop = chatbox.scrollHeight;
+            }
+          } catch {
+            // Ignorar chunks incompletos
+          }
+        }
+      }
+
+      if (!botMessage.trim()) {
+        botMessage = "No se recibió respuesta del modelo.";
+        renderMarkdown(bubble, botMessage);
+      }
+
+      chatHistory.push({ role: "assistant", content: botMessage });
+    } else {
+      // Fallback JSON no streaming
+      const data = await res.json();
+      const botMessage = data?.message?.content || "Sin respuesta del modelo.";
+      renderMarkdown(bubble, botMessage);
+      chatHistory.push({ role: "assistant", content: botMessage });
+    }
+
     incomingChatLi.scrollIntoView({ behavior: "smooth", block: "start" });
-
   } catch (err) {
     console.error("Error en la comunicación:", err);
-    msgElem.textContent = err.message || "Error obteniendo respuesta.";
-    msgElem.classList.add("error");
+    bubble.classList.remove("thinking-animation");
+    bubble.textContent = err.message || "Error obteniendo respuesta.";
+    bubble.classList.add("error");
   } finally {
     setSending(false);
     chatInput.focus();
+    chatbox.scrollTo(0, chatbox.scrollHeight);
   }
-
-  // Hacer scroll hasta el final del chatbox
-  chatbox.scrollTo(0, chatbox.scrollHeight);
 }
-
 
 /*****************************************************
   6. MANEJO DEL ENVÍO DE MENSAJES
@@ -156,13 +208,13 @@ function handleChat() {
   chatbox.appendChild(outgoingLi);
   chatbox.scrollTo(0, chatbox.scrollHeight);
 
-  // Mostrar el indicador "Pensando..." y generar respuesta
+  // Mostrar el indicador "Pensando..." y comenzar streaming inmediatamente
   setTimeout(() => {
     const incomingLi = createChatLi("Pensando...", "incoming");
     chatbox.appendChild(incomingLi);
     incomingLi.scrollIntoView({ behavior: "smooth", block: "start" });
     generateResponse(incomingLi);
-  }, 500);
+  }, 100);
 }
 /*****************************************************
   7. AJUSTE AUTOMÁTICO DE ALTURA DEL TEXTAREA
