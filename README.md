@@ -54,6 +54,7 @@ Por motivos de seguridad y cumplimiento del principio de menor privilegio:
 └── services/
     ├── student-hub/         # Frontend web en Astro (SSR)
     ├── landing/             # Portal web estático y chatbot FimeBot (Pedro)
+    ├── fimebot-backend/     # Backend API de FimeBot (conectado a AIlauncher)
     ├── auth-service/        # Microservicio de autenticación de estudiantes
     ├── professors-service/  # Microservicio de consulta de información docente
     ├── academic-service/    # Microservicio de materias, grupos y horarios

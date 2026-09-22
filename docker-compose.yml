@@ -1,10 +1,5 @@
 version: '3.8'
 
-networks:
-  student-hub-network:
-    driver: bridge
-    internal: false
-
 services:
   # 1. Base de Datos PostgreSQL (Privada / Sin puertos expuestos al host)
   postgres:
@@ -172,6 +167,30 @@ services:
       - academic-service
       - reference-service
       - landing
+      - fimebot-backend
+
+  # 11. FimeBot Backend (Asistente Virtual IA conectado a AIlauncher)
+  fimebot-backend:
+    build:
+      context: ./services/fimebot-backend
+      dockerfile: Dockerfile
+    container_name: student-hub-fimebot-backend
+    restart: always
+    environment:
+      OPENAI_BASE_URL: ${LLM_BASE_URL:-http://llm-gateway:8000/v1}
+      OPENAI_MODEL: ${LLM_MODEL:-qwen-local}
+      OPENAI_API_KEY: ${LLM_API_KEY:-}
+    networks:
+      - student-hub-network
+      - llm-apps
+
+  # 12. Cloudflare Tunnel (Ingress de Producción)
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: student-hub-tunnel
+    restart: always
+    network_mode: host
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
 
 volumes:
   postgres_data:
@@ -180,3 +199,10 @@ volumes:
     driver: local
   redis_data:
     driver: local
+
+networks:
+  student-hub-network:
+    driver: bridge
+    internal: false
+  llm-apps:
+    external: true
