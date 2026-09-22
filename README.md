@@ -4,7 +4,7 @@ Este repositorio contiene la versión migrada e independiente de **Student Hub**
 
 ---
 
-## 🔒 Arquitectura y Aislamiento de Red
+## [SEC] Arquitectura y Aislamiento de Red
 
 Por motivos de seguridad y cumplimiento del principio de menor privilegio:
 - **Red Privada Interna:** Todos los microservicios (`auth-service`, `professors-service`, `academic-service`, `reference-service`, `cv-extractor-service`), la base de datos (`postgres`) y la capa de caché (`redis`) se ejecutan dentro de la red privada Docker `student-hub-network`.
@@ -14,7 +14,7 @@ Por motivos de seguridad y cumplimiento del principio de menor privilegio:
 
 ---
 
-## 🚀 Despliegue en Producción
+## [DEPLOY] Despliegue en Producción
 
 ### Requisitos Previos
 - Docker Engine `>= 20.10`
@@ -42,7 +42,7 @@ Por motivos de seguridad y cumplimiento del principio de menor privilegio:
 
 ---
 
-## 🛠️ Estructura del Proyecto
+## [TREE] Estructura del Proyecto
 
 ```text
 .
@@ -64,7 +64,7 @@ Por motivos de seguridad y cumplimiento del principio de menor privilegio:
 
 ---
 
-## 🧪 Verificación de Aislamiento de Red
+## [TEST] Verificación de Aislamiento de Red
 
 Para verificar que la base de datos y microservicios no son alcanzables desde el host exterior:
 ```bash

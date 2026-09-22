@@ -63,5 +63,5 @@ app.get('/faculties', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Microservicio de Referencia corriendo en el puerto ${PORT}`);
+  console.log(`[START] Microservicio de Referencia corriendo en el puerto ${PORT}`);
 });

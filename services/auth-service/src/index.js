@@ -230,5 +230,5 @@ app.post('/bypass-login', async (req, res) => {
 
 
 app.listen(PORT, () => {
-  console.log(`🚀 Microservicio de Autenticación corriendo en el puerto ${PORT}`);
+  console.log(`[START] Microservicio de Autenticación corriendo en el puerto ${PORT}`);
 });

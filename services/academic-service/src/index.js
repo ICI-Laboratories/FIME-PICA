@@ -364,5 +364,5 @@ app.post('/syllabus', jwtAuth, async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Microservicio Académico corriendo en el puerto ${PORT}`);
+  console.log(`[START] Microservicio Académico corriendo en el puerto ${PORT}`);
 });

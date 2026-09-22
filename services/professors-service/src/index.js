@@ -54,7 +54,7 @@ app.get('/health', async (req, res) => {
 // Cache purge helper
 async function purgeCache(slug) {
   try {
-    console.log(`🧹 Purging cache for professor: ${slug}`);
+    console.log(`[CACHE] Purging cache for professor: ${slug}`);
     const urlsToPurge = new Set();
     urlsToPurge.add('/');
     urlsToPurge.add('/buscar-profesor');
@@ -84,14 +84,14 @@ async function purgeCache(slug) {
         const delRes = await fetch(`${REFERENCE_SERVICE_URL}/delegations`);
         if (delRes.ok) delegations = await delRes.json();
       } catch (e) {
-        console.warn('⚠️ Could not load delegations from reference-service:', e.message);
+        console.warn('[WARN] Could not load delegations from reference-service:', e.message);
       }
 
       try {
         const carRes = await fetch(`${REFERENCE_SERVICE_URL}/careers`);
         if (carRes.ok) careers = await carRes.json();
       } catch (e) {
-        console.warn('⚠️ Could not load careers from reference-service:', e.message);
+        console.warn('[WARN] Could not load careers from reference-service:', e.message);
       }
 
       const delegation = delegations.find(d => d.id === delegation_id);
@@ -120,7 +120,7 @@ async function purgeCache(slug) {
       });
     }
   } catch (err) {
-    console.warn('⚠️ Could not execute cache purge:', err.message);
+    console.warn('[WARN] Could not execute cache purge:', err.message);
   }
 }
 
@@ -339,5 +339,5 @@ app.post('/professors', jwtAuth, async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Microservicio de Profesores corriendo en el puerto ${PORT}`);
+  console.log(`[START] Microservicio de Profesores corriendo en el puerto ${PORT}`);
 });

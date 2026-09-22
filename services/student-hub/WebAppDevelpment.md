@@ -130,13 +130,13 @@ Basado en el JSON proporcionado, crear un único archivo por docente con esta es
 
 ## 4. Restricciones anti-patrón (lo que NO debe hacerse)
 
-- ❌ No usar fuentes comunes de IA (Poppins, Inter, Montserrat, Roboto, Nunito).
-- ❌ No usar gradientes, fondos borrosos, sombras grandes, glassmorphism.
-- ❌ No usar íconos de paquete estándar (FontAwesome, Heroicons) – usar caracteres tipográficos (■, †, ✦, →) o si realmente se necesita, iconos minimalistas de trazo simple.
-- ❌ No mostrar ningún dato administrativo o código de evaluación.
-- ❌ No mostrar barras de progreso, gráficas circulares, efectos “modernos”.
-- ❌ No generar estilos responsivos que rompan el grid asimétrico (en móvil simplemente apilar).
-- ❌ No implementar autenticación, base de datos externa, formularios o comentarios.
+- [X] No usar fuentes comunes de IA (Poppins, Inter, Montserrat, Roboto, Nunito).
+- [X] No usar gradientes, fondos borrosos, sombras grandes, glassmorphism.
+- [X] No usar íconos de paquete estándar (FontAwesome, Heroicons) – usar caracteres tipográficos (■, †, ✦, →) o si realmente se necesita, iconos minimalistas de trazo simple.
+- [X] No mostrar ningún dato administrativo o código de evaluación.
+- [X] No mostrar barras de progreso, gráficas circulares, efectos “modernos”.
+- [X] No generar estilos responsivos que rompan el grid asimétrico (en móvil simplemente apilar).
+- [X] No implementar autenticación, base de datos externa, formularios o comentarios.
 
 ## 5. Entregables esperados
 
