@@ -53,6 +53,7 @@ Por motivos de seguridad y cumplimiento del principio de menor privilegio:
 ├── packages/                # Definiciones y tipos compartidos
 └── services/
     ├── student-hub/         # Frontend web en Astro (SSR)
+    ├── landing/             # Portal web estático y chatbot FimeBot (Pedro)
     ├── auth-service/        # Microservicio de autenticación de estudiantes
     ├── professors-service/  # Microservicio de consulta de información docente
     ├── academic-service/    # Microservicio de materias, grupos y horarios
