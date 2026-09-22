@@ -1,6 +1,0 @@
-- En el primer menú (selección de grupo, no mostrar los botones inhabilitados de la barra superior)
-- Eliminar el botón de regresar en la parte superior derecha
-- En el texto de la semblanza poner el texto justificado
-- En las tarjetas de previa de la materia, poder presionar el botón de atras para volver a horario
-- En la lista de profesores no mostrar DOC/LIC/ING en el nombre
-- 

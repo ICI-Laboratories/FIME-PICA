@@ -1,1 +1,0 @@
-Es normal que haya HTI junto a horas normales, pero el front los une como normal, entonces es necesario que sean distintas, una coloreada 
