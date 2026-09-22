@@ -1,191 +1,164 @@
-"""
-FimeBot Backend Service
-Servicio API para el asistente virtual institucional FimeBot.
-Conecta con el gateway de inferencia LLM (AIlauncher / lmserver / OpenAI compatible).
+"""FIME's free, source-grounded institutional information service.
+
+Answers come exclusively from the reviewed local corpus. User input never becomes
+an instruction for a language model and no inference service or API key is used.
 """
 
-import os
 import json
 import logging
 from pathlib import Path
-from typing import List, Optional
+from typing import Literal
 
-import httpx
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, StreamingResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, field_validator, model_validator
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+from policy import KnowledgeBase, answer_question
+
 logger = logging.getLogger("fimebot-backend")
+MAX_BODY_BYTES = 65_536
+KNOWLEDGE_PATH = Path(__file__).resolve().parent / "context" / "knowledge.json"
+knowledge = KnowledgeBase.load(KNOWLEDGE_PATH)
 
-app = FastAPI(title="FimeBot Backend", version="1.1.0")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+class BodySizeLimit:
+    """Bound actual bytes before JSON parsing, even without Content-Length."""
 
-BASE_DIR = Path(__file__).resolve().parent
-CONTEXT_PATH = BASE_DIR / "context" / "base_context.txt"
+    def __init__(self, app):
+        self.app = app
 
-OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "http://llm-gateway:8000/v1").rstrip("/")
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "qwen-local")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-REQUEST_TIMEOUT = float(os.getenv("REQUEST_TIMEOUT", "60.0"))
-TEMPERATURE = float(os.getenv("TEMPERATURE", "0.3"))
-MAX_TOKENS = int(os.getenv("MAX_TOKENS", "350"))
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http" or scope["path"] != "/api/chat":
+            return await self.app(scope, receive, send)
+        body = bytearray()
+        while True:
+            message = await receive()
+            if message["type"] == "http.disconnect":
+                return
+            body.extend(message.get("body", b""))
+            if len(body) > MAX_BODY_BYTES:
+                response = JSONResponse(
+                    status_code=413,
+                    content={"detail": "El mensaje es demasiado grande. Envía una consulta más breve."},
+                )
+                return await response(scope, receive, send)
+            if not message.get("more_body", False):
+                break
 
-def load_system_context() -> str:
-    if CONTEXT_PATH.exists():
-        try:
-            return CONTEXT_PATH.read_text(encoding="utf-8").strip()
-        except Exception as e:
-            logger.error(f"Error reading base context: {e}")
-    return "Eres FimeBot, el asistente virtual oficial de la Facultad de Ingeniería Mecánica y Eléctrica (FIME) de la Universidad de Colima."
+        delivered = False
 
-SYSTEM_CONTEXT = load_system_context()
+        async def bounded_receive():
+            nonlocal delivered
+            if not delivered:
+                delivered = True
+                return {"type": "http.request", "body": bytes(body), "more_body": False}
+            return await receive()
+
+        await self.app(scope, bounded_receive, send)
+
+
+app = FastAPI(title="FimeBot · Información de la FIME", version="2.0.0")
+app.add_middleware(BodySizeLimit)
+
 
 class ChatMessage(BaseModel):
-    role: str
-    content: str
+    model_config = ConfigDict(extra="forbid", strict=True)
+    role: Literal["user", "assistant"]
+    content: str = Field(min_length=1, max_length=10_000)
+
+    @field_validator("content")
+    @classmethod
+    def nonempty_text(cls, value):
+        value = value.strip()
+        if not value or any(ord(char) < 32 and char not in "\n\r\t" for char in value):
+            raise ValueError("Invalid text")
+        return value
+
+    @model_validator(mode="after")
+    def user_length(self):
+        if self.role == "user" and len(self.content) > 1_200:
+            raise ValueError("User message too long")
+        return self
+
 
 class ChatRequest(BaseModel):
-    messages: List[ChatMessage]
-    stream: Optional[bool] = False
-    think: Optional[bool] = False
+    model_config = ConfigDict(extra="forbid", strict=True)
+    messages: list[ChatMessage] = Field(min_length=1, max_length=13)
+    stream: StrictBool = False
+    # Retained for compatibility with the existing client; never enables a model.
+    think: StrictBool = False
+
+    @model_validator(mode="after")
+    def safe_history(self):
+        roles = [message.role for message in self.messages]
+        if roles[0] != "user" or roles[-1] != "user":
+            raise ValueError("History must begin and end with user")
+        if any(role != ("user" if index % 2 == 0 else "assistant") for index, role in enumerate(roles)):
+            raise ValueError("History must alternate roles")
+        if sum(len(message.content) for message in self.messages) > 32_000:
+            raise ValueError("History too long")
+        return self
+
+
+@app.exception_handler(RequestValidationError)
+async def invalid_request(_request, _error):
+    # Pydantic's default response includes submitted text; do not reflect it.
+    return JSONResponse(status_code=422, content={
+        "detail": "Envía una pregunta de hasta 1200 caracteres y un historial válido de hasta 13 mensajes."
+    })
+
+
+@app.exception_handler(Exception)
+async def unexpected_error(_request, error):
+    logger.error("Institutional answer failed (%s)", type(error).__name__)
+    return JSONResponse(status_code=500, content={
+        "detail": "La información no está disponible en este momento. Inténtalo nuevamente."
+    })
+
 
 @app.get("/health")
 def health_check():
-    return {"status": "ok", "model": OPENAI_MODEL, "gateway": OPENAI_BASE_URL}
+    return {
+        "status": "ok",
+        "mode": "verified-knowledge",
+        "knowledge_entries": len(knowledge.entries),
+        "verified_on": knowledge.verified_on,
+    }
+
 
 @app.get("/")
 def root():
     return {
         "service": "fimebot-backend",
         "status": "running",
-        "description": "Asistente Virtual FIME - Universidad de Colima"
+        "description": "Guía informativa de la FIME · Universidad de Colima",
+        "mode": "verified-knowledge",
     }
+
 
 @app.post("/api/chat")
-async def chat_endpoint(chat_request: ChatRequest, request: Request):
-    # Truncar historial a los últimos 6 mensajes para ahorrar tokens
-    user_messages = [
-        {"role": msg.role, "content": msg.content}
-        for msg in chat_request.messages
-        if msg.role != "system" and msg.content.strip()
-    ][-6:]
-
-    # Inyectar el contexto institucional conciso como system prompt
-    payload_messages = [
-        {"role": "system", "content": SYSTEM_CONTEXT}
-    ]
-    payload_messages.extend(user_messages)
-
-    headers = {
-        "Content-Type": "application/json"
+async def chat_endpoint(chat_request: ChatRequest):
+    user_questions = [message.content for message in chat_request.messages if message.role == "user"]
+    result = answer_question(user_questions[-1], user_questions[:-1], knowledge)
+    response = {
+        "message": {"role": "assistant", "content": result.content},
+        "done": True,
+        "mode": "verified-knowledge",
+        "topics": result.topics,
+        "sources": result.sources,
     }
-    if OPENAI_API_KEY:
-        headers["Authorization"] = f"Bearer {OPENAI_API_KEY}"
+    if not chat_request.stream:
+        return response
 
-    payload = {
-        "model": OPENAI_MODEL,
-        "messages": payload_messages,
-        "temperature": TEMPERATURE,
-        "max_tokens": MAX_TOKENS,
-        "stream": bool(chat_request.stream),
-    }
+    async def events():
+        # Preserve the OpenAI-style delta envelope used by the public site.
+        event = {"choices": [{"delta": {"content": result.content}}],
+                 "sources": result.sources, "topics": result.topics}
+        yield "data: " + json.dumps(event, ensure_ascii=False) + "\n\n"
+        yield "data: [DONE]\n\n"
 
-    url = f"{OPENAI_BASE_URL}/chat/completions"
-    logger.info(f"Forwarding chat request to {url} (stream={chat_request.stream}, max_tokens={MAX_TOKENS})")
-
-    if chat_request.stream:
-        async def event_generator():
-            try:
-                async with httpx.AsyncClient(timeout=REQUEST_TIMEOUT) as client:
-                    async with client.stream("POST", url, json=payload, headers=headers) as resp:
-                        if resp.status_code != 200:
-                            err_bytes = await resp.aread()
-                            logger.error(f"LLM stream error {resp.status_code}: {err_bytes.decode('utf-8', errors='ignore')}")
-                            error_payload = json.dumps({
-                                "choices": [{"delta": {"content": "Error al comunicar con el asistente virtual."}}]
-                            })
-                            yield f"data: {error_payload}\n\n"
-                            yield "data: [DONE]\n\n"
-                            return
-
-                        async for line in resp.aiter_lines():
-                            if line:
-                                yield f"{line}\n\n"
-            except httpx.TimeoutException:
-                logger.error("Timeout streaming from LLM gateway")
-                error_payload = json.dumps({
-                    "choices": [{"delta": {"content": "Tiempo de respuesta agotado."}}]
-                })
-                yield f"data: {error_payload}\n\n"
-                yield "data: [DONE]\n\n"
-            except Exception as e:
-                logger.exception(f"Unexpected streaming error: {e}")
-                error_payload = json.dumps({
-                    "choices": [{"delta": {"content": f"Error temporal: {str(e)}"}}]
-                })
-                yield f"data: {error_payload}\n\n"
-                yield "data: [DONE]\n\n"
-
-        return StreamingResponse(
-            event_generator(),
-            media_type="text/event-stream",
-            headers={
-                "Cache-Control": "no-cache",
-                "Connection": "keep-alive",
-                "X-Accel-Buffering": "no",
-            },
-        )
-
-    try:
-        async with httpx.AsyncClient(timeout=REQUEST_TIMEOUT) as client:
-            resp = await client.post(url, json=payload, headers=headers)
-            if resp.status_code != 200:
-                error_body = resp.text
-                logger.error(f"LLM gateway returned status {resp.status_code}: {error_body}")
-                raise HTTPException(
-                    status_code=502,
-                    detail=f"Error en gateway de inferencia: {resp.status_code} - {error_body}"
-                )
-
-            data = resp.json()
-            choice = data.get("choices", [{}])[0]
-            message_obj = choice.get("message", {})
-            content = message_obj.get("content", "Sin respuesta disponible.")
-
-            return {
-                "message": {
-                    "role": "assistant",
-                    "content": content
-                },
-                "done": True
-            }
-
-    except httpx.ConnectError as e:
-        logger.error(f"Cannot connect to LLM gateway {url}: {e}")
-        raise HTTPException(
-            status_code=503,
-            detail="No se pudo conectar con el servicio de Inteligencia Artificial."
-        )
-    except httpx.TimeoutException:
-        logger.error(f"Timeout waiting for LLM response from {url}")
-        raise HTTPException(
-            status_code=504,
-            detail="Tiempo de espera agotado al consultar el modelo."
-        )
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.exception("Unexpected error in chat endpoint")
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error interno procesando la respuesta: {str(e)}"
-        )
+    return StreamingResponse(events(), media_type="text/event-stream", headers={
+        "Cache-Control": "no-cache, no-store",
+        "X-Accel-Buffering": "no",
+    })

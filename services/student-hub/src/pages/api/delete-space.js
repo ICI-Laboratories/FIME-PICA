@@ -1,70 +1,8 @@
-import fs from 'fs';
-import path from 'path';
-
-export const POST = async ({ request }) => {
-  try {
-    const body = await request.json();
-    const { id } = body;
-
-    if (!id) {
-      return new Response(JSON.stringify({ error: 'ID is required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    const paths = [
-      path.join(process.cwd(), 'services/student-hub/public/campus.geojson'),
-      path.join(process.cwd(), 'services/student-hub/dist/client/campus.geojson'),
-      path.join(process.cwd(), 'public/campus.geojson'),
-      path.join(process.cwd(), 'dist/client/campus.geojson')
-    ];
-
-    let geojsonPathToRead = null;
-    for (const p of paths) {
-      if (fs.existsSync(p)) {
-        geojsonPathToRead = p;
-        break;
-      }
-    }
-
-    if (!geojsonPathToRead) {
-      return new Response(JSON.stringify({ error: 'campus.geojson not found in search paths' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    const geojsonData = JSON.parse(fs.readFileSync(geojsonPathToRead, 'utf-8'));
-
-    const initialLength = geojsonData.features.length;
-    geojsonData.features = geojsonData.features.filter(f => f.id !== id && (!f.properties || f.properties.id !== id));
-
-    if (geojsonData.features.length === initialLength) {
-      return new Response(JSON.stringify({ error: 'Feature not found in GeoJSON' }), {
-        status: 404,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    const updatedContent = JSON.stringify(geojsonData, null, 2);
-    let writtenTo = [];
-    for (const p of paths) {
-      if (fs.existsSync(p)) {
-        fs.writeFileSync(p, updatedContent);
-        writtenTo.push(p);
-      }
-    }
-
-    return new Response(JSON.stringify({ success: true, writtenTo }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    });
-  } catch (error) {
-    console.error('Error deleting GeoJSON feature:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
-};
+// Public map data is maintained in campus.geojson through the deployment process.
+// A selected group cookie is not an authenticated administrator session.
+export const POST = async () => new Response(JSON.stringify({
+  error: 'La edición pública del mapa está deshabilitada.'
+}), {
+  status: 403,
+  headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
+});

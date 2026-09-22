@@ -1,0 +1,15 @@
+{
+  "name": "@pica/landing-tests",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "linkedom": "0.18.13"
+  }
+}

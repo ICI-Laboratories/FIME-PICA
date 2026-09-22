@@ -2,9 +2,6 @@
 import InstitutionalLayout from "../layouts/InstitutionalLayout.astro";
 import { fetchFromService } from "../lib/api-client.js";
 
-const student = Astro.locals.student;
-const activeGroupSlug = student?.class_group_slug || Astro.url.searchParams.get("group") || "4-b-191";
-
 let schedules = [];
 try {
   schedules = await fetchFromService('academic', '/schedules');
@@ -25,7 +22,7 @@ const schedulesJson = JSON.stringify(schedules);
       <span class="overline overline--primary">Instalaciones Físicas</span>
       <h1 class="page-title">Mapa del Campus</h1>
       <p class="page-subtitle">
-        Navegación espacial de aulas y laboratorios universitarios.
+        Encuentra edificios, aulas y laboratorios de FIME en el campus Coquimatlán.
       </p>
     </div>
   </div>
@@ -46,17 +43,39 @@ const schedulesJson = JSON.stringify(schedules);
             type="search" 
             id="map-search-input" 
             class="input" 
-            placeholder="Ej. Telemática, Aula 1..." 
+            placeholder="Ej. Mecatrónica, Dirección, Aula 1..."
+            autocomplete="off"
+            aria-controls="search-suggestions"
             style="flex: 1;"
           />
           <button id="btn-clear-search" class="btn btn--ghost" style="height: 44px; display: none;">Limpiar</button>
         </div>
         <div id="search-suggestions" class="search-suggestions" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--color-surface); border: 1px solid var(--color-rule-strong); z-index: 100; max-height: 200px; overflow-y: auto;"></div>
       </div>
-      <div id="map" class="interactive-map"></div>
-      <p style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--color-ink-3); margin-top: 12px; text-align: right;">
-        * Cartografía base monocromática. Haz clic en los polígonos resaltados. Los mapas geográficos requieren conexión a la red.
+      <div class="map-toolbar">
+        <label for="map-base-layer">Vista
+          <select id="map-base-layer" class="input">
+            <option value="streets">Calles · OpenStreetMap</option>
+            <option value="campus">Plano del campus</option>
+          </select>
+        </label>
+        <button type="button" id="btn-reset-map" class="btn btn--ghost">Ver todo el campus</button>
+      </div>
+      <p id="map-status" class="map-status" role="status" aria-live="polite">Cargando espacios del campus…</p>
+      <div id="map" class="interactive-map" role="region" aria-label="Mapa interactivo del campus Coquimatlán"></div>
+      <div class="map-legend" aria-label="Colores de las facultades">
+        <span><i style="background: #4caf50"></i>FIME</span>
+        <span><i style="background: #2196f3"></i>FIC</span>
+        <span><i style="background: #ff9800"></i>FCQ</span>
+        <span><i style="background: #e91e63"></i>FAYD</span>
+        <span><i style="background: #64748b"></i>Otros espacios</span>
+      </div>
+      <p class="map-note">
+        Selecciona un edificio para consultar sus aulas. El plano del campus no necesita cargar imágenes externas.
+        Cartografía © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors (ODbL)</a>.
+        <a href="https://www.openstreetmap.org/fixthemap" target="_blank" rel="noopener noreferrer">Reportar un error cartográfico</a>.
       </p>
+      <noscript><p>Activa JavaScript para consultar el mapa y buscar aulas. También puedes <a href="https://www.openstreetmap.org/#map=18/19.2135/-103.804">ver el campus en OpenStreetMap</a>.</p></noscript>
     </div>
 
     <!-- COLUMNA 2: Panel de Información Dinámica -->
@@ -95,32 +114,6 @@ const schedulesJson = JSON.stringify(schedules);
               <!-- Se insertan por JS -->
             </div>
           </div>
-
-          <div id="panel-editor-helper" style="display: none; margin-top: 24px; padding: 16px; background: var(--color-muted); border: 1px solid var(--color-rule-strong); font-size: 0.8125rem; font-family: var(--font-sans);">
-            <strong style="color: var(--color-ink); display: block; margin-bottom: 12px; font-size: 0.875rem; font-family: var(--font-mono);">[EDIT] Editor de Edificio</strong>
-            
-            <div style="margin-bottom: 16px;">
-              <label for="panel-space-name-input" class="overline" style="display: block; margin-bottom: 4px;">Nombre del Edificio</label>
-              <input type="text" id="panel-space-name-input" class="input" style="width: 100%; box-sizing: border-box;" placeholder="Ej. Edificio B..." />
-            </div>
-
-            <!-- Listado de Aulas / Laboratorios -->
-            <div style="margin-bottom: 16px;">
-              <label class="overline" style="display: block; margin-bottom: 8px;">Aulas y Laboratorios Internos</label>
-              <div id="panel-editor-rooms-list" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px;">
-                <!-- Dinámicamente insertado por JS -->
-              </div>
-              <button type="button" id="btn-add-room-editor" class="btn btn--ghost" style="width: 100%; font-size: 0.75rem; padding: 8px; border: 1px dashed var(--color-rule-strong);">+ Agregar Aula/Lab</button>
-            </div>
-
-            <div style="margin-bottom: 16px;">
-              <label class="overline" style="display: block; margin-bottom: 4px;">ID Único (GeoJSON)</label>
-              <input type="text" id="panel-space-id-input" readonly style="width: 100%; font-family: var(--font-mono); font-size: 0.6875rem; padding: 6px; border: 1px solid var(--color-rule-strong); background: var(--color-surface); color: var(--color-ink); box-sizing: border-box;" onclick="this.select();" />
-            </div>
-
-            <button id="btn-save-space" class="btn btn--primary" style="width: 100%; padding: 10px;">Guardar en GeoJSON</button>
-            <button id="btn-delete-space" class="btn btn--danger" style="width: 100%; padding: 10px; margin-top: 8px; background-color: #ff3b30; color: white; border: none; cursor: pointer; font-family: var(--font-sans); font-weight: 700; transition: all 120ms;">Borrar Edificio Completo</button>
-            <div id="save-status-msg" style="display: none; font-size: 0.75rem; font-weight: 700; margin-top: 8px; text-align: center; text-transform: uppercase;"></div>          </div>
         </div>
       </div>
     </div>
@@ -140,19 +133,78 @@ const schedulesJson = JSON.stringify(schedules);
     import 'leaflet/dist/leaflet.css';
 
     (function initLeaflet() {
-      // 1. Inicializar Mapa (Centrado aproximado en la UCOL Telemática)
+      // Los edificios se sirven desde el proyecto; Leaflet también se empaqueta localmente.
       const map = L.map('map', {
-        zoomControl: false // Lo reposicionaremos
+        zoomControl: false,
+        minZoom: 15,
+        maxZoom: 21,
+        maxBoundsViscosity: 0.8
       }).setView([19.2135, -103.804], 18);
 
       L.control.zoom({ position: 'bottomright' }).addTo(map);
+      L.control.scale({ imperial: false, position: 'bottomleft' }).addTo(map);
 
-      // 2. Capa Base Monocromática (CartoDB Positron) para adherirse al Swiss Design
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 20
-      }).addTo(map);
+      // Carga interactiva únicamente, con caché HTTP del navegador y Referer válido.
+      // Política: https://operations.osmfoundation.org/policies/tiles/
+      // maxNativeZoom evita pedir teselas inexistentes al acercarse a un aula.
+      const streetLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+        maxNativeZoom: 19,
+        maxZoom: 21,
+        referrerPolicy: 'strict-origin-when-cross-origin',
+        updateWhenIdle: true,
+        keepBuffer: 1
+      });
+      const baseLayerSelect = document.getElementById('map-base-layer');
+      const mapStatus = document.getElementById('map-status');
+      let campusBounds;
+      let campusLoaded = false;
+      let streetFailures = 0;
+
+      function updateMapStatus(message) {
+        if (mapStatus) mapStatus.textContent = message;
+      }
+
+      function setBaseLayer(value, failed = false) {
+        if (baseLayerSelect) baseLayerSelect.value = value;
+        if (value === 'streets') {
+          streetFailures = 0;
+          streetLayer.addTo(map);
+          updateMapStatus(campusLoaded ? 'Busca un aula o selecciona un edificio en el mapa.' : 'Cargando espacios del campus…');
+        } else {
+          map.removeLayer(streetLayer);
+          updateMapStatus(failed
+            ? (campusLoaded
+              ? 'No se pudo cargar el mapa de calles. Puedes seguir consultando los edificios en el plano del campus.'
+              : 'No se pudieron cargar el mapa de calles ni el directorio. Recarga la página para volver a intentarlo.')
+            : 'Plano del campus: edificios y aulas sin imágenes externas.');
+        }
+      }
+
+      baseLayerSelect?.addEventListener('change', () => setBaseLayer(baseLayerSelect.value));
+      streetLayer.on('tileerror', () => {
+        streetFailures += 1;
+        if (streetFailures >= 3 && map.hasLayer(streetLayer)) setBaseLayer('campus', true);
+      });
+      document.getElementById('btn-reset-map')?.addEventListener('click', () => {
+        if (campusBounds?.isValid()) map.fitBounds(campusBounds, { padding: [20, 20], maxZoom: 18 });
+      });
+
+      function textContent(value) {
+        const element = document.createElement('span');
+        element.textContent = String(value ?? '');
+        return element;
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>"']/g, character => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        })[character]);
+      }
+
+      function normalizeSearch(value) {
+        return String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+      }
 
       // Elementos del DOM para el panel
       const emptyState = document.getElementById("panel-empty-state");
@@ -160,203 +212,14 @@ const schedulesJson = JSON.stringify(schedules);
       const pName = document.getElementById("panel-space-name");
       const pType = document.getElementById("panel-space-type");
       const pClassesList = document.getElementById("panel-classes-list");
-      const pSpaceIdInput = document.getElementById("panel-space-id-input");
-      const pSpaceNameInput = document.getElementById("panel-space-name-input");
-      const pRoomsListContainer = document.getElementById("panel-editor-rooms-list");
       const pRoomsReadOnly = document.getElementById("panel-rooms-read-only");
       const pRoomsReadOnlyList = document.getElementById("panel-rooms-read-only-list");
-      const btnSaveSpace = document.getElementById("btn-save-space");
-      const btnDeleteSpace = document.getElementById("btn-delete-space");
-      const saveStatusMsg = document.getElementById("save-status-msg");
-
-      const faculties = ["FIME", "FIC", "FCQ", "FAYD"];
-      let clickedLayer = null;
       let localSpaces = [];
-
-      // Renderizar listado de aulas internas en el editor
-      function renderEditorRooms() {
-        if (!pRoomsListContainer) return;
-        pRoomsListContainer.innerHTML = "";
-        
-        if (localSpaces.length === 0) {
-          pRoomsListContainer.innerHTML = '<span style="font-style: italic; color: var(--color-ink-3); font-size: 0.75rem; display: block; text-align: center; padding: 8px 0;">Sin aulas o laboratorios internos registrados</span>';
-        }
-
-        localSpaces.forEach((room, idx) => {
-          const row = document.createElement("div");
-          row.style.cssText = "display: flex; flex-direction: column; gap: 6px; padding: 10px; border: 1px solid var(--color-rule-strong); background: var(--color-surface); margin-bottom: 8px;";
-          
-          const facultyIdx = faculties.indexOf(room.faculty);
-          const currentFacultyVal = facultyIdx >= 0 ? facultyIdx : 0;
-          
-          row.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span class="overline" style="font-size: 0.6rem; color: var(--color-ink-3);">Aula / Lab #${idx + 1}</span>
-              <button type="button" class="btn-remove-room" data-idx="${idx}" style="background: none; border: none; color: #ff3b30; font-size: 0.65rem; cursor: pointer; text-transform: uppercase; font-family: var(--font-mono); font-weight: 700; padding: 2px 4px;">Eliminar</button>
-            </div>
-            <input type="text" class="room-name-input input" style="padding: 6px; font-size: 0.75rem; width: 100%; box-sizing: border-box;" value="${room.name || ''}" placeholder="Nombre del Aula / Laboratorio" />
-            <div style="margin-top: 4px;">
-              <label class="overline" style="font-size: 0.55rem; display: block; margin-bottom: 2px;">Facultad</label>
-              <input type="range" class="room-faculty-slider" min="0" max="3" step="1" value="${currentFacultyVal}" style="width: 100%; cursor: pointer;" />
-              <div style="display: flex; justify-content: space-between; font-size: 0.5rem; color: var(--color-ink-3); margin-top: 2px;">
-                <span>FIME</span>
-                <span>FIC</span>
-                <span>FCQ</span>
-                <span>FAYD</span>
-              </div>
-              <div class="room-faculty-display" style="font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 700; color: var(--color-primary); margin-top: 4px; text-align: center; background: var(--color-muted); padding: 2px; border: 1px solid var(--color-rule-strong);">${room.faculty || 'FIME'}</div>
-            </div>
-          `;
-          
-          const slider = row.querySelector(".room-faculty-slider");
-          const display = row.querySelector(".room-faculty-display");
-          const nameInput = row.querySelector(".room-name-input");
-          
-          slider.addEventListener('input', () => {
-            const fac = faculties[slider.value];
-            display.textContent = fac;
-            localSpaces[idx].faculty = fac;
-          });
-          
-          nameInput.addEventListener('input', () => {
-            localSpaces[idx].name = nameInput.value;
-          });
-          
-          row.querySelector(".btn-remove-room").addEventListener('click', () => {
-            localSpaces.splice(idx, 1);
-            renderEditorRooms();
-          });
-
-          pRoomsListContainer.appendChild(row);
-        });
-      }
-
-      // Botón agregar aula en el editor
-      document.getElementById("btn-add-room-editor")?.addEventListener('click', () => {
-        localSpaces.push({ name: "", faculty: "FIME" });
-        renderEditorRooms();
-      });
-
-      // Guardar cambios a través de la API
-      btnSaveSpace?.addEventListener('click', async () => {
-        if (!clickedLayer) return;
-        const id = pSpaceIdInput.value;
-        const name = pSpaceNameInput.value.trim();
-
-        if (saveStatusMsg) {
-          saveStatusMsg.style.display = "block";
-          saveStatusMsg.style.color = "var(--color-ink-2)";
-          saveStatusMsg.textContent = "Guardando...";
-        }
-
-        try {
-          const res = await fetch('/api/save-space', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id, name, spaces: localSpaces })
-          });
-
-          if (res.ok) {
-            if (saveStatusMsg) {
-              saveStatusMsg.style.color = "var(--color-primary)";
-              saveStatusMsg.textContent = "¡Guardado con éxito!";
-            }
-
-            // Actualizar propiedades locales en la capa de Leaflet
-            clickedLayer.feature.properties.name = name;
-            clickedLayer.feature.properties.spaces = JSON.parse(JSON.stringify(localSpaces));
-
-            // Refrescar el estilo y el tooltip de la capa
-            geojsonLayer.resetStyle(clickedLayer);
-            clickedLayer.unbindTooltip();
-            if (name) {
-              clickedLayer.bindTooltip(name, {
-                className: 'swiss-tooltip',
-                direction: 'top'
-              });
-            }
-
-            if (pName) pName.textContent = name || "Edificio sin nombre";
-
-            setTimeout(() => {
-              if (saveStatusMsg) saveStatusMsg.style.display = "none";
-            }, 2500);
-          } else {
-            const err = await res.json();
-            if (saveStatusMsg) {
-              saveStatusMsg.style.color = "red";
-              saveStatusMsg.textContent = "Error: " + err.error;
-            }
-          }
-        } catch (e) {
-          if (saveStatusMsg) {
-            saveStatusMsg.style.color = "red";
-            saveStatusMsg.textContent = "Error de conexión";
-          }
-        }
-      });
-
-      // Borrar edificio completo
-      btnDeleteSpace?.addEventListener('click', async () => {
-        if (!clickedLayer) return;
-        const id = pSpaceIdInput.value;
-
-        if (!confirm("¿Estás seguro de que deseas eliminar este edificio por completo del GeoJSON?")) {
-          return;
-        }
-
-        if (saveStatusMsg) {
-          saveStatusMsg.style.display = "block";
-          saveStatusMsg.style.color = "var(--color-ink-2)";
-          saveStatusMsg.textContent = "Eliminando...";
-        }
-
-        try {
-          const res = await fetch('/api/delete-space', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id })
-          });
-
-          if (res.ok) {
-            if (saveStatusMsg) {
-              saveStatusMsg.style.color = "var(--color-primary)";
-              saveStatusMsg.textContent = "¡Edificio eliminado con éxito!";
-            }
-
-            // Remover la capa del mapa
-            if (geojsonLayer && clickedLayer) {
-              geojsonLayer.removeLayer(clickedLayer);
-            }
-
-            clickedLayer = null;
-
-            // Limpiar panel lateral
-            setTimeout(() => {
-              if (saveStatusMsg) saveStatusMsg.style.display = "none";
-              if (emptyState) emptyState.style.display = "block";
-              if (contentState) contentState.style.display = "none";
-            }, 1500);
-          } else {
-            const err = await res.json();
-            if (saveStatusMsg) {
-              saveStatusMsg.style.color = "red";
-              saveStatusMsg.textContent = "Error: " + err.error;
-            }
-          }
-        } catch (e) {
-          if (saveStatusMsg) {
-            saveStatusMsg.style.color = "red";
-            saveStatusMsg.textContent = "Error de conexión";
-          }
-        }
-      });
 
       function isRoomMatch(targetStr, spaceStr) {
         if (!targetStr || !spaceStr) return false;
         
-        const clean = (str) => str.toString()
-          .toLowerCase()
+        const clean = (str) => normalizeSearch(str)
           .replace(/^(aula|laboratorio|taller|edificio)\s+/, '')
           .replace(/\(.*\)/, '')
           .replace(/[°ª]/g, '')
@@ -388,16 +251,11 @@ const schedulesJson = JSON.stringify(schedules);
         if (contentState) contentState.style.display = "block";
 
         const props = feature.properties || {};
-        const spaceId = props.id || feature.id || "N/A";
         const spaceName = props.name || "Edificio sin nombre";
         
         localSpaces = props.spaces ? JSON.parse(JSON.stringify(props.spaces)) : [];
         
         if (pName) pName.textContent = spaceName;
-        if (pSpaceIdInput) pSpaceIdInput.value = spaceId;
-        if (pSpaceNameInput) pSpaceNameInput.value = props.name || "";
-        
-        renderEditorRooms();
 
         // Renderizar vista de solo lectura de aulas internas
         if (pRoomsReadOnly && pRoomsReadOnlyList) {
@@ -426,8 +284,9 @@ const schedulesJson = JSON.stringify(schedules);
         }
 
         if (pType) {
+          const types = { university: 'Edificio universitario', theatre: 'Auditorio', yes: 'Edificio', laboratory: 'Laboratorio' };
           const typeStr = props.amenity || props.building || 'general';
-          pType.textContent = typeStr.charAt(0).toUpperCase() + typeStr.slice(1);
+          pType.textContent = types[typeStr] || 'Espacio del campus';
           pType.className = 'tag tag--primary';
         }
 
@@ -435,7 +294,7 @@ const schedulesJson = JSON.stringify(schedules);
         if (pClassesList) {
           pClassesList.innerHTML = "";
           
-          const classes = window.__SCHEDULES__.filter(s => {
+          const classes = (Array.isArray(window.__SCHEDULES__) ? window.__SCHEDULES__ : []).filter(s => {
             if (!s.classroom_name) return false;
             if (isRoomMatch(s.classroom_name, spaceName)) return true;
             return localSpaces.some(r => r.name && isRoomMatch(s.classroom_name, r.name));
@@ -446,17 +305,17 @@ const schedulesJson = JSON.stringify(schedules);
               const row = document.createElement("div");
               row.style.cssText = "padding-bottom: 12px; border-bottom: 1px solid var(--color-rule);";
               row.innerHTML = 
-                '<strong style="display: block; font-size: 1rem; color: var(--color-ink); margin-bottom: 4px;">' + c.subject_name + '</strong>' +
+                '<strong style="display: block; font-size: 1rem; color: var(--color-ink); margin-bottom: 4px;">' + escapeHtml(c.subject_name) + '</strong>' +
                 '<div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8125rem; color: var(--color-ink-2);">' +
-                '<span>Grupo: <strong style="color: var(--color-ink);">' + (c.group_name || c.class_group_name || "") + '</strong></span>' +
-                '<span style="font-family: var(--font-mono);">' + c.day_of_week + ' ' + c.start_time.substring(0,5) + '-' + c.end_time.substring(0,5) + '</span>' +
+                '<span>Grupo: <strong style="color: var(--color-ink);">' + escapeHtml(c.group_name || c.class_group_name || "") + '</strong></span>' +
+                '<span style="font-family: var(--font-mono);">' + escapeHtml(c.day_of_week) + ' ' + escapeHtml(String(c.start_time || '').slice(0,5)) + '-' + escapeHtml(String(c.end_time || '').slice(0,5)) + '</span>' +
                 '</div>' +
-                '<span style="display: block; font-size: 0.75rem; color: var(--color-ink-3); margin-top: 4px;">Espacio: <strong>' + (c.classroom_name || "N/A") + '</strong> | Docente: ' + (c.professor_name || "Sin asignar") + '</span>';
+                '<span style="display: block; font-size: 0.75rem; color: var(--color-ink-3); margin-top: 4px;">Espacio: <strong>' + escapeHtml(c.classroom_name || "N/A") + '</strong> | Docente: ' + escapeHtml(c.professor_name || "Sin asignar") + '</span>';
               pClassesList.appendChild(row);
             });
           } else {
             pClassesList.innerHTML = 
-              '<p style="font-size: 0.875rem; color: var(--color-ink-3); font-style: italic;">No hay clases programadas académicamente en este momento.</p>';
+              '<p style="font-size: 0.875rem; color: var(--color-ink-3); font-style: italic;">No hay horarios registrados para este espacio. Esto no confirma que esté disponible.</p>';
           }
         }
       }
@@ -468,7 +327,7 @@ const schedulesJson = JSON.stringify(schedules);
           case 'FIC': return '#2196f3';  // Azul
           case 'FCQ': return '#ff9800';  // Naranja
           case 'FAYD': return '#e91e63'; // Rosa/Magente
-          default: return 'var(--color-ink)'; // Gris oscuro
+          default: return '#64748b'; // Gris oscuro
         }
       }
 
@@ -482,22 +341,27 @@ const schedulesJson = JSON.stringify(schedules);
           color: "var(--color-ink)",
           weight: 1,
           fillColor: color,
-          fillOpacity: faculty ? 0.35 : 0.05
+          fillOpacity: faculty ? 0.4 : 0.18
         };
       }
 
       let geojsonLayer;
 
       // 4. Cargar GeoJSON
-      fetch('/campus.geojson')
-        .then(res => res.json())
+      fetch('/campus.geojson', { signal: AbortSignal.timeout(15000) })
+        .then(res => {
+          if (!res.ok) throw new Error(`GeoJSON HTTP ${res.status}`);
+          return res.json();
+        })
         .then(data => {
+          if (data.type !== 'FeatureCollection' || !Array.isArray(data.features)) throw new Error('Formato de campus inválido');
           geojsonLayer = L.geoJSON(data, {
+            attribution: 'Edificios: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> · Directorio PICA',
             style: baseStyle,
             onEachFeature: (feature, layer) => {
               // Tooltip básico al hover
               if (feature.properties && feature.properties.name) {
-                layer.bindTooltip(feature.properties.name, {
+                layer.bindTooltip(textContent(feature.properties.name), {
                   className: 'swiss-tooltip',
                   direction: 'top'
                 });
@@ -520,8 +384,7 @@ const schedulesJson = JSON.stringify(schedules);
                   geojsonLayer.resetStyle(e.target);
                 },
                 click: (e) => {
-                  clickedLayer = e.target;
-                  map.fitBounds(e.target.getBounds(), { padding: [50, 50] });
+                  map.fitBounds(e.target.getBounds(), { padding: [50, 50], maxZoom: 20 });
                   displaySpaceDetails(feature);
                 }
               });
@@ -529,26 +392,18 @@ const schedulesJson = JSON.stringify(schedules);
           }).addTo(map);
 
           // Ajustar mapa a los datos iniciales
-          const bounds = geojsonLayer.getBounds();
-          if (bounds.isValid()) {
-            map.fitBounds(bounds);
-            
-            // Limitar el mapa estríctamente a esta zona (impedir drag fuera del campus)
-            map.setMaxBounds(bounds.pad(0.05));
-            // Prevenir zoom-out excesivo
-            map.setMinZoom(map.getBoundsZoom(bounds));
+          campusBounds = geojsonLayer.getBounds();
+          if (campusBounds.isValid()) {
+            map.fitBounds(campusBounds, { padding: [20, 20], maxZoom: 18 });
+            // Permitir ver calles de acceso y volver al campus con el botón.
+            map.setMaxBounds(campusBounds.pad(1));
           }
+          campusLoaded = true;
+          setBaseLayer(baseLayerSelect?.value || 'streets');
 
-           // Checar URL Params para auto-selección e indicación de edición
+           // La URL puede seleccionar un espacio; la vista pública es de solo lectura.
            const urlParams = new URLSearchParams(window.location.search);
            const highlightName = urlParams.get('highlight');
-           const isEditMode = urlParams.get('edit') === 'true';
-
-           const editorHelper = document.getElementById("panel-editor-helper");
-           if (editorHelper && isEditMode) {
-             editorHelper.style.display = "block";
-           }
-           
            if (highlightName) {
              let foundLayer = null;
              geojsonLayer.eachLayer(layer => {
@@ -579,21 +434,24 @@ const schedulesJson = JSON.stringify(schedules);
           const suggestionsContainer = document.getElementById("search-suggestions");
 
           function performSearch(query) {
-            if (!query) {
+            const normalizedQuery = normalizeSearch(query);
+            if (!normalizedQuery) {
               suggestionsContainer.style.display = "none";
               clearBtn.style.display = "none";
               return;
             }
             
             clearBtn.style.display = "block";
-            const normalizedQuery = query.toLowerCase().trim();
             const matches = [];
 
             geojsonLayer.eachLayer(layer => {
               const buildingName = layer.feature.properties?.name || "Edificio";
               const spaces = layer.feature.properties?.spaces || [];
+              if (layer.feature.properties?.name && normalizeSearch(buildingName).includes(normalizedQuery)) {
+                matches.push({ displayName: buildingName, searchName: buildingName, layer });
+              }
               spaces.forEach(space => {
-                if (space.name && space.name.toLowerCase().includes(normalizedQuery)) {
+                if (space.name && normalizeSearch(space.name).includes(normalizedQuery) && normalizeSearch(space.name) !== normalizeSearch(buildingName)) {
                   matches.push({ 
                     displayName: `${space.name} (${buildingName})`, 
                     searchName: space.name,
@@ -604,8 +462,8 @@ const schedulesJson = JSON.stringify(schedules);
             });
 
             if (matches.length > 0) {
-              suggestionsContainer.innerHTML = matches.map((m, idx) => 
-                `<button class="suggestion-item" style="display: block; width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; border-bottom: 1px solid var(--color-rule); cursor: pointer; font-size: 0.875rem; font-family: var(--font-sans); color: var(--color-ink);" data-idx="${idx}">${m.displayName}</button>`
+              suggestionsContainer.innerHTML = matches.slice(0, 30).map((m, idx) =>
+                `<button type="button" class="suggestion-item" style="display: block; width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; border-bottom: 1px solid var(--color-rule); cursor: pointer; font-size: 0.875rem; font-family: var(--font-sans); color: var(--color-ink);" data-idx="${idx}">${escapeHtml(m.displayName)}</button>`
               ).join('');
               suggestionsContainer.style.display = "block";
 
@@ -615,7 +473,6 @@ const schedulesJson = JSON.stringify(schedules);
                   const idx = parseInt(item.getAttribute("data-idx"), 10);
                   const match = matches[idx];
                   if (match) {
-                    map.fitBounds(match.layer.getBounds(), { padding: [50, 50] });
                     match.layer.fire("click");
                     searchInput.value = match.searchName;
                     suggestionsContainer.style.display = "none";
@@ -632,6 +489,18 @@ const schedulesJson = JSON.stringify(schedules);
             performSearch(e.target.value);
           });
 
+          searchInput?.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') suggestionsContainer.style.display = 'none';
+            if (event.key === 'ArrowDown' && suggestionsContainer.style.display !== 'none') {
+              event.preventDefault();
+              suggestionsContainer.querySelector('button')?.focus();
+            }
+            if (event.key === 'Enter' && suggestionsContainer.style.display !== 'none') {
+              event.preventDefault();
+              suggestionsContainer.querySelector('button')?.click();
+            }
+          });
+
           clearBtn?.addEventListener("click", () => {
             if (searchInput) searchInput.value = "";
             suggestionsContainer.style.display = "none";
@@ -645,7 +514,12 @@ const schedulesJson = JSON.stringify(schedules);
             }
           });
         })
-        .catch(err => console.error("Error cargando GeoJSON:", err));
+        .catch(err => {
+          console.error('Error cargando GeoJSON:', err);
+          if (baseLayerSelect?.value === 'streets') streetLayer.addTo(map);
+          updateMapStatus('No se pudo cargar el directorio de edificios. Recarga la página para volver a intentarlo.');
+          if (emptyState) emptyState.textContent = 'El directorio de aulas no está disponible por el momento.';
+        });
     })();
   </script>
 
@@ -690,6 +564,35 @@ const schedulesJson = JSON.stringify(schedules);
   }
 
   /* Contenedor del Mapa */
+  .map-toolbar {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .map-toolbar label {
+    display: grid;
+    gap: 6px;
+    font-size: 0.8125rem;
+  }
+  .map-toolbar select { min-width: 230px; }
+  .map-status, .map-note {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--color-ink-2);
+    margin: 12px 0;
+  }
+  .map-note a { text-decoration: underline; }
+  .map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    margin-top: 12px;
+    font-size: 0.75rem;
+  }
+  .map-legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .map-legend i { width: 10px; height: 10px; border-radius: 2px; }
+
   .interactive-map {
     width: 100%;
     height: 60vh;
@@ -698,6 +601,7 @@ const schedulesJson = JSON.stringify(schedules);
     border: 1px solid var(--color-rule-strong);
     z-index: 10; /* Evitar solapamientos con menús */
   }
+  :global(.leaflet-control-attribution) { max-width: 100%; font-size: 10px; }
 
   /* Panel de Información */
   .info-panel {

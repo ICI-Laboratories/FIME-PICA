@@ -54,7 +54,7 @@ Por motivos de seguridad y cumplimiento del principio de menor privilegio:
 └── services/
     ├── student-hub/         # Frontend web en Astro (SSR)
     ├── landing/             # Portal web estático y chatbot FimeBot (Pedro)
-    ├── fimebot-backend/     # Backend API de FimeBot (conectado a AIlauncher)
+    ├── fimebot-backend/     # Backend de FimeBot con conocimiento verificado
     ├── auth-service/        # Microservicio de autenticación de estudiantes
     ├── professors-service/  # Microservicio de consulta de información docente
     ├── academic-service/    # Microservicio de materias, grupos y horarios
@@ -76,3 +76,44 @@ nc -zv 127.0.0.1 5432
 curl http://localhost:6771/professors
 ```
 Ambas pruebas confirmarán que únicamente el puerto 80 del proxy responde peticiones legítimas para Student Hub.
+
+
+## FimeBot y mapa sin claves
+
+FimeBot usa respuestas revisadas de la FIME **Universidad de Colima**, incluyendo
+las cinco licenciaturas publicadas por la facultad. La base editable es
+`services/fimebot-backend/context/knowledge.json`; cada entrada conserva fuentes
+y fecha de verificación. Las fechas, costos y convocatorias deben consultarse en
+los enlaces oficiales. Para ampliar la base: verificar el contenido oficial,
+actualizar entradas y palabras clave, ejecutar las pruebas del backend y recrear
+el servicio. Consulta también `services/fimebot-backend/README.md`.
+
+El bot responde exclusivamente con contenido de esta base, sin inferencia externa,
+API keys ni consumo de modelos. Las consultas fuera de alcance reciben una
+redirección; no ejecuta instrucciones del usuario ni confía en respuestas previas
+enviadas por el navegador. Esto prioriza información verificable: una pregunta no
+cubierta puede requerir reformulación o consulta directa con la facultad.
+
+El mapa utiliza Leaflet (BSD-2-Clause), cartografía OpenStreetMap con atribución,
+y los polígonos del campus existentes. El selector **Plano del campus** usa el
+GeoJSON local y funciona sin imágenes externas. El servicio público de teselas de
+OSM no requiere clave, tiene una política de uso y no garantiza disponibilidad:
+https://operations.osmfoundation.org/policies/tiles/. No se descargan teselas en
+masa ni para uso sin conexión. Si aumenta mucho el tráfico, usar un proveedor
+compatible o alojar teselas propias. El plano no es una imagen satelital.
+
+La edición pública mediante `?edit=true` está deshabilitada y las rutas de escritura
+responden 403: la selección de grupo no autentica a un administrador. Para mantener
+edificios/aulas, editar `services/student-hub/public/campus.geojson` por el proceso
+de despliegue. No sobrescribir ese archivo al desplegar cambios solo de interfaz.
+
+Despliegue de estos componentes, conservando base de datos y servicios restantes:
+
+```bash
+docker compose --env-file .env.production build landing fimebot-backend student-hub proxy
+docker compose --env-file .env.production up -d --no-deps landing fimebot-backend student-hub proxy
+```
+
+El límite del proxy es 10 solicitudes/segundo con ráfaga de 30 y cuerpo de 64 KiB
+para `/api/chat`. Detrás del túnel puede ser compartido entre visitantes; no se
+confía en una cabecera de IP enviada por el cliente para eludirlo.

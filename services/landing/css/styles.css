@@ -274,6 +274,8 @@ button {
   background: var(--color-surface);
   border-left: 1px solid var(--color-rule-strong);
   height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .transform-container.show-chat .chat-section {
@@ -310,6 +312,7 @@ button {
 
 .chat-content {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding: 16px;
   background: var(--color-ground);
@@ -442,6 +445,8 @@ button {
 
 .chat-input textarea {
   flex: 1;
+  min-width: 0;
+  max-height: 120px;
   border: 1px solid var(--color-rule-strong);
   border-radius: 0;
   padding: 10px 12px;
@@ -478,6 +483,28 @@ button {
 .btn-send:hover {
   background-color: #3d5923;
 }
+
+.chat-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--color-rule);
+}
+.chat-suggestions button {
+  font: inherit;
+  font-size: 0.75rem;
+  padding: 8px 10px;
+  border: 1px solid var(--color-rule-strong);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  cursor: pointer;
+}
+.chat-suggestions button:hover { background: var(--color-muted); }
+.chat-suggestions button:focus-visible { outline: 2px solid var(--color-primary); }
+.chat-scope { padding: 0 16px 10px; margin: 0; font-size: 0.7rem; color: var(--color-ink-3); }
+.btn-send:disabled, .chat-suggestions button:disabled { opacity: 0.55; cursor: wait; }
+.transform-container.show-chat { min-height: 560px; }
 
 /* ════════════════════════════════════════════════════
    SECCIÓN DE ACCESOS RÁPIDOS A STUDENTHUB (SWISS CARDS)
@@ -580,9 +607,15 @@ button {
   }
   .transform-container.show-chat {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr;
+    height: min(720px, 80svh);
+    min-height: 500px;
+    aspect-ratio: auto;
   }
+  .transform-container.show-chat .carousel-section { display: none; }
   .chat-section {
+    grid-column: 1;
+    grid-row: 1;
     border-left: none;
     border-top: 1px solid var(--color-rule-strong);
   }

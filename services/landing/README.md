@@ -1,20 +1,47 @@
-# Landing Service (FimeBot Landing)
+# Landing FIME
 
-Sitio estático HTML/CSS/JavaScript importado y adaptado para FimeBot en el monorepo `FIME-PICA`.
-Contiene la interfaz de presentación institucional de la facultad, el carrusel de actividades y el componente visual interactivo del bot.
+Portal estático de FIME, Universidad de Colima, con FimeBot y enlaces a StudentHUB.
 
-## Contexto Institucional del Bot
-- `context/base_context.txt`: Base de conocimiento integral de toda la facultad (FIME - Universidad de Colima en Campus Coquimatlán), incluyendo historia, oferta educativa (ICI, Mecatrónica, IME, Sistemas Electrónicos, posgrados), autoridades, laboratorios (Isaac, Brenda, Meca), servicios estudiantiles (SICEUC, becas SIBEUCOL) y transporte.
+## FimeBot
 
-## Estructura de Archivos
-- `index.html`: Estructura principal con carrusel institucional, menú de navegación y widget flotante de chat.
-- `css/`: Hojas de estilo para la interfaz, encabezados y chatbox.
-- `js/`: Lógica para el carrusel y comunicación con la API del bot (`chatbot.js`).
-- `img/`: Activos visuales y fotografías de la institución.
-- `context/`: Base de conocimiento institucional para el modelo de lenguaje.
-- `nginx.conf` y `Dockerfile`: Configuración para servir como contenedor independiente o mapear a través del proxy de FIME-PICA.
+La fuente de respuestas está en `../fimebot-backend/context/knowledge.json`.
+El backend responde con información revisada y enlaces oficiales; no requiere un
+modelo, servicios de IA externos ni API keys. No usar el antiguo contexto de texto
+como fuente: fue sustituido por la base con referencias y fecha de revisión.
 
-## Previsualización local rápida
+El chat ofrece consultas rápidas, conserva hasta seis intercambios en memoria
+mientras la página está abierta y recibe respuestas mediante SSE. El texto se
+renderiza con nodos DOM (sin ejecutar HTML); los enlaces se limitan a UCOL y rutas
+locales. Los errores del servidor no se muestran al visitante.
+
+## Archivos
+
+- `index.html`: portal, carrusel y chat.
+- `css/`: estilos adaptables a escritorio y móvil.
+- `js/chatbot.js`: conversación, SSE y formato seguro de respuestas.
+- `img/`: fotografías existentes.
+- `nginx.conf` y `Dockerfile`: publicación estática.
+
+Vista local de la interfaz (sin API):
+
 ```bash
-python3 -m http.server 1356 --directory services/landing
+python3 -m http.server 1356 --bind 127.0.0.1 --directory services/landing
 ```
+
+Para probar respuestas usar el despliegue Docker con el proxy `/api/chat`.
+
+## Pruebas del chat
+
+Con Node.js 22.12 o posterior, desde la raíz del repositorio:
+
+```bash
+npm ci --prefix services/landing
+npm test --prefix services/landing
+```
+
+Las siete pruebas de `tests/chat-client.test.mjs` usan un DOM aislado y respuestas
+simuladas: no contactan al sitio publicado ni a servicios externos. Verifican HTML
+y enlaces seguros, el historial de conversaciones largas, el bloqueo de envíos
+simultáneos, la recuperación tras fallos de red, límites 429, timeout, SSE con UTF-8
+fragmentado y el rechazo de las APIs de escritura del mapa. Las dependencias son
+solo de desarrollo; la imagen Docker sigue sirviendo archivos estáticos.

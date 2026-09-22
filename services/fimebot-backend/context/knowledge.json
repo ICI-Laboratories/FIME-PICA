@@ -1,0 +1,233 @@
+{
+  "institution": "Facultad de Ingeniería Mecánica y Eléctrica, Universidad de Colima, Campus Coquimatlán",
+  "verified_on": "2026-09-21",
+  "entries": [
+    {
+      "id": "institution",
+      "title": "Sobre la FIME",
+      "text": "La FIME es la Facultad de Ingeniería Mecánica y Eléctrica de la Universidad de Colima, ubicada en el Campus Coquimatlán, Colima, México. Se fundó en 1981. Ofrece formación de licenciatura y posgrado en ingeniería.\n\nPuedo orientarte sobre carreras, planes de estudio, admisión, becas, servicios escolares, servicio social, prácticas, titulación y ubicación. Para resolver un trámite personal, comunícate con el plantel en fime@ucol.mx.",
+      "aliases": ["qué es fime", "acerca de fime", "sobre la facultad", "historia de fime", "universidad de colima", "qué puedes hacer"],
+      "keywords": ["facultad", "fime", "historia", "fundación", "ucol", "udec"],
+      "sources": [
+        {"title": "Historia de FIME", "url": "https://portal.ucol.mx/fime/historia.htm"},
+        {"title": "Ubicación y contacto de FIME", "url": "https://portal.ucol.mx/fime/ubicacion.htm"}
+      ],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "careers",
+      "title": "Carreras de la FIME",
+      "text": "El catálogo oficial de FIME incluye estas licenciaturas vigentes:\n\n- Ingeniería en Computación Inteligente (ICI): sistemas inteligentes, programación, redes y datos.\n- Ingeniería en Mecatrónica (IM): automatización, control y diseño de sistemas mecatrónicos.\n- Ingeniería en Sistemas Electrónicos y Telecomunicaciones (ISET): electrónica y comunicaciones.\n- Ingeniero Mecánico Electricista (IME): sistemas mecánicos, redes eléctricas y energía.\n- Ingeniería de Datos e Inteligencia Artificial: modalidad en línea, centrada en datos y sistemas de IA.\n\nConsulta la ficha de la carrera que te interese y la convocatoria de admisión para confirmar la apertura de ingreso y los requisitos de cada ciclo.",
+      "aliases": ["qué carreras hay", "oferta educativa", "oferta académica", "licenciaturas", "qué puedo estudiar", "comparar carreras", "cuál carrera elegir", "carreras disponibles"],
+      "keywords": ["carreras", "licenciaturas", "oferta", "estudiar", "comparar", "elegir", "ingenierías"],
+      "sources": [{"title": "Oferta educativa oficial de FIME", "url": "https://portal.ucol.mx/fime/oferta.htm"}],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "ici",
+      "title": "Ingeniería en Computación Inteligente (ICI)",
+      "text": "ICI dura 9 semestres, en modalidad escolarizada y turno matutino, según la ficha oficial.\n\n- Formación: modelado computacional, sistemas inteligentes, redes y análisis de grandes conjuntos de datos.\n- Materias del plan: fundamentos de programación, matemáticas discretas, probabilidad, estructuras de datos, redes y sistemas digitales.\n- Campo laboral: desarrollo de software, sistemas informáticos, telecomunicaciones, automatización e investigación.\n- Perfil de ingreso deseable: bases de física y matemáticas, creatividad, organización y gusto por resolver problemas en equipo.\n\nLa ficha oficial permite consultar las asignaturas de cada semestre y el documento curricular.",
+      "aliases": ["ici", "computación inteligente", "ingeniería en computación inteligente", "sistemas computacionales"],
+      "keywords": ["ici", "computación", "computacion", "software", "programación", "programacion", "sistemas computacionales"],
+      "sources": [{"title": "Ficha y plan de ICI", "url": "https://portal.ucol.mx/fime/c-349.htm"}],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "mechatronics",
+      "title": "Ingeniería en Mecatrónica (IM)",
+      "text": "Ingeniería en Mecatrónica tiene una duración de 9 semestres y modalidad escolarizada.\n\n- Formación: mantenimiento, sensores y actuadores, control de procesos, automatización y construcción de prototipos mecatrónicos y robóticos.\n- Materias del plan: programación, estática y dinámica, taller de mecatrónica, electricidad y magnetismo, dibujo en ingeniería y física.\n- Campo laboral: industria de manufactura, automotriz, eléctrica, desarrollo de tecnología e investigación.\n- Perfil de ingreso deseable: bases de matemáticas, física, inglés y cómputo; interés por innovar y trabajar en equipo.\n\nConsulta el documento curricular vigente para identificar las materias de tu generación.",
+      "aliases": ["im", "imeca", "ingeniería en mecatrónica", "mecatrónica", "mecatronica"],
+      "keywords": ["mecatrónica", "mecatronica", "robótica", "robotica", "robots", "automatización", "sensores", "actuadores"],
+      "sources": [{"title": "Ficha y plan de Mecatrónica", "url": "https://portal.ucol.mx/fime/c-418.htm"}],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "mechanical_electrical",
+      "title": "Ingeniero Mecánico Electricista (IME)",
+      "text": "El programa de Ingeniero Mecánico Electricista dura 10 semestres. En FIME se imparte en modalidad escolarizada y turno matutino.\n\n- Formación: diseño de sistemas mecánicos, redes eléctricas, proyectos de energía, automatización y administración de proyectos electromecánicos.\n- Materias del plan: física experimental, instalaciones eléctricas, máquinas y herramientas, circuitos, termodinámica y mecánica de fluidos.\n- Campo laboral: industrias eléctrica, metalmecánica, automotriz, minera y de transformación, entre otras.\n\nLa ficha oficial contiene el plan por semestre y el documento curricular.",
+      "aliases": ["ime", "ingeniero mecánico electricista", "mecánico electricista", "mecanico electricista", "ingeniería mecánica eléctrica"],
+      "keywords": ["ime", "electricista", "mecánica", "mecanica", "energía", "energia", "eléctrica", "electrica", "electromecánicos"],
+      "sources": [{"title": "Ficha y plan de IME", "url": "https://portal.ucol.mx/fime/c-371.htm"}],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "electronics_telecommunications",
+      "title": "Ingeniería en Sistemas Electrónicos y Telecomunicaciones (ISET)",
+      "text": "ISET dura 9 semestres y se imparte en modalidad escolarizada y turno matutino.\n\n- Formación: diseño, instalación, operación y mantenimiento de sistemas electrónicos para telecomunicaciones y automatización.\n- Materias del plan: proyectos de ingeniería, electrónica, microcontroladores, redes, circuitos, instrumentación y comunicaciones móviles.\n- Campo laboral: telefonía, radiodifusión, televisión, industria electrónica y empresas de innovación tecnológica.\n- Perfil de ingreso deseable: razonamiento analítico, curiosidad científica, trabajo en equipo e interés en aplicar tecnología a necesidades sociales.\n\nPuedes consultar todas las asignaturas y el documento curricular en la ficha oficial.",
+      "aliases": ["iset", "ingeniería en sistemas electrónicos y telecomunicaciones", "sistemas electrónicos", "telecomunicaciones"],
+      "keywords": ["iset", "telecomunicaciones", "electrónica", "electronica", "circuitos", "telefonía", "telefonia", "microcontroladores"],
+      "sources": [{"title": "Ficha y plan de ISET", "url": "https://portal.ucol.mx/fime/c-99.htm"}],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "data_ai",
+      "title": "Ingeniería de Datos e Inteligencia Artificial",
+      "text": "FIME también ofrece Ingeniería de Datos e Inteligencia Artificial en modalidad no escolarizada, en línea, con duración de 6 semestres.\n\n- Formación: infraestructura de datos, integración de fuentes, procesamiento y análisis de información, gobernanza y desarrollo de modelos de inteligencia artificial.\n- El plan incluye programación, estadística, aprendizaje de máquina, redes neuronales, procesamiento de lenguaje natural y MLOps.\n- Para esta modalidad se recomienda computadora con cámara y micrófono, internet estable y organización para el estudio autónomo.\n\nTiene convocatoria específica de admisión: revisa sus requisitos y la apertura del ciclo antes de iniciar el registro.",
+      "aliases": ["ingeniería de datos e inteligencia artificial", "datos e inteligencia artificial", "ingeniería de datos", "carrera en línea", "estudiar en línea", "idia"],
+      "keywords": ["datos", "inteligencia artificial", "en línea", "en linea", "virtual", "distancia", "idia", "mlops"],
+      "sources": [
+        {"title": "Ficha y plan de Datos e IA", "url": "https://portal.ucol.mx/fime/c-465.htm"},
+        {"title": "DGES: convocatorias específicas de admisión", "url": "https://portal.ucol.mx/dges/admision2026docs.htm"}
+      ],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "admissions",
+      "title": "Admisión, requisitos y costos de ingreso",
+      "text": "Para ingresar a una licenciatura de FIME, consulta la convocatoria general de la Universidad de Colima correspondiente al ciclo al que aspiras.\n\n1. Revisa la oferta y los requisitos específicos de la carrera.\n2. Sigue las etapas oficiales de registro, documentos, pago y evaluación EXANI-II.\n3. Consulta las indicaciones de selección de carrera y resultados.\n\nLas fechas, aranceles, documentos, cupos y criterios de selección cambian por convocatoria. Los documentos de apoyo de DGES incluyen guías y convocatorias específicas, como la de Datos e Inteligencia Artificial. Para confirmar tu caso contacta fime@ucol.mx o 312 316 1165.",
+      "aliases": ["admisión", "admision", "ingresar", "inscribirme", "nuevo ingreso", "exani", "ceneval", "convocatoria", "requisitos de ingreso", "cuánto cuesta", "cuanto cuesta", "colegiatura", "puntaje mínimo"],
+      "keywords": ["admisión", "admision", "aspirante", "ingreso", "exani", "ceneval", "convocatoria", "costo", "costos", "precio", "colegiatura", "arancel", "cupo", "puntaje"],
+      "sources": [
+        {"title": "Convocatorias de la Universidad de Colima", "url": "https://www.ucol.mx/convocatorias/"},
+        {"title": "DGES: documentos del proceso de admisión 2026", "url": "https://portal.ucol.mx/dges/admision2026docs.htm"},
+        {"title": "Contacto de FIME", "url": "https://portal.ucol.mx/fime/contacto.htm"}
+      ],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "postgraduate",
+      "title": "Posgrados en FIME",
+      "text": "La oferta oficial de posgrado de FIME incluye:\n\n- Maestría en Ingeniería Aplicada: 4 semestres, modalidad escolarizada. Orientada a proyectos tecnológicos en mecatrónica, telecomunicaciones y energía eléctrica.\n- Maestría en Ingeniería de Procesos: 4 semestres, modalidad escolarizada. Se enfoca en investigación y desarrollo de procesos, dispositivos y materiales, con aplicaciones en procesos mecánicos y bioprocesos.\n\nCada programa tiene requisitos y convocatoria de admisión propios. Consulta sus fichas para revisar perfil de ingreso, plan y documentación; la apertura y los apoyos deben confirmarse para el ciclo de interés.",
+      "aliases": ["posgrado", "posgrados", "maestría", "maestrias", "ingeniería aplicada", "ingeniería de procesos", "mip", "mia"],
+      "keywords": ["posgrado", "maestría", "maestria", "maestrías", "maestrias", "aplicada", "procesos", "mip", "mia"],
+      "sources": [
+        {"title": "Maestría en Ingeniería Aplicada", "url": "https://portal.ucol.mx/fime/c-352.htm"},
+        {"title": "Maestría en Ingeniería de Procesos", "url": "https://portal.ucol.mx/fime/c-408.htm"},
+        {"title": "Convocatorias de UdeC", "url": "https://www.ucol.mx/convocatorias/"}
+      ],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "scholarships",
+      "title": "Becas y apoyos",
+      "text": "La Universidad de Colima publica convocatorias de becas y apoyos para estudiantes. El catálogo de nivel superior incluye apoyos alimenticios, reconocimientos por desempeño académico y programas de instituciones colaboradoras.\n\n- Revisa la convocatoria para confirmar que aplica a tu nivel, carrera y situación.\n- Comprueba fechas, promedio, documentos, compatibilidad con otras becas y procedimiento de entrega.\n- Solicita orientación al responsable de becas de tu plantel; FIME puede canalizarte en fime@ucol.mx.\n\nQue un apoyo aparezca en el catálogo no significa que su convocatoria esté abierta ni que la asignación sea automática.",
+      "aliases": ["becas", "beca", "apoyo económico", "apoyo alimenticio", "manutención", "beca alimenticia"],
+      "keywords": ["beca", "becas", "apoyo", "manutención", "manutencion", "alimenticia", "sibeucol"],
+      "sources": [
+        {"title": "Becas de UdeC", "url": "https://www.ucol.mx/comunidad-udec/becas.htm"},
+        {"title": "Convocatorias y apoyos publicados", "url": "https://www.ucol.mx/convocatorias/"},
+        {"title": "Contacto de FIME", "url": "https://portal.ucol.mx/fime/contacto.htm"}
+      ],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "school_services",
+      "title": "SICEUC y servicios escolares",
+      "text": "SICEUC es el Sistema de Control Escolar de la Universidad de Colima. Es el acceso institucional para servicios escolares e inscripciones.\n\n- Entra desde el enlace oficial de SICEUC para consultar las opciones disponibles en tu cuenta.\n- Para constancias, aclaraciones de calificaciones, pagos, bajas, reinscripción o documentos, solicita orientación al área administrativa del plantel.\n- Si no puedes acceder o necesitas corregir un dato, comunícate con FIME en fime@ucol.mx o 312 316 1165.\n\nEste bot ofrece orientación general; no consulta expedientes ni recibe pagos o contraseñas.",
+      "aliases": ["siceuc", "servicios escolares", "calificaciones", "constancia", "reinscripción", "reinscripcion", "baja", "kardex", "certificado", "contraseña", "password"],
+      "keywords": ["siceuc", "calificaciones", "kardex", "constancia", "constancias", "certificado", "reinscripción", "reinscripcion", "baja", "pagos", "escolares", "contraseña"],
+      "sources": [
+        {"title": "SICEUC", "url": "https://siceuc.ucol.mx/"},
+        {"title": "Administración Escolar de UdeC", "url": "https://portal.ucol.mx/dgae/inicio.htm"},
+        {"title": "Contacto de FIME", "url": "https://portal.ucol.mx/fime/contacto.htm"}
+      ],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "social_service",
+      "title": "Servicio social universitario y constitucional",
+      "text": "Son dos actividades diferentes:\n\n- Servicio Social Universitario (SSU): la guía institucional indica registro al inicio del semestre y 50 horas de actividades autorizadas, antes de terminar la evaluación ordinaria. El registro se gestiona en SICEUC.\n- Servicio Social Constitucional (SSC): contempla 480 horas en un periodo de 6 meses a 2 años, en una unidad receptora autorizada. Requiere autorización del plantel, inducción, registro y entrega de documentación e informes.\n\nAntes de comenzar, confirma con la coordinación de servicio social de FIME qué requisitos y semestre corresponden a tu plan. La DGSSyPP publica los pasos, la plataforma y el catálogo de unidades receptoras.",
+      "aliases": ["servicio social", "servicio social universitario", "servicio social constitucional", "ssu", "ssc", "horas de servicio", "liberar servicio"],
+      "keywords": ["servicio social", "ssu", "ssc", "dgssypp", "liberación", "liberacion", "horas"],
+      "sources": [
+        {"title": "Guía de Servicio Social Universitario", "url": "https://www.ucol.mx/comunidad-udec/ss-universitario.htm"},
+        {"title": "Guía de Servicio Social Constitucional", "url": "https://www.ucol.mx/comunidad-udec/ss-constitucional.htm"},
+        {"title": "DGSSyPP: pasos y plataforma de SSC", "url": "https://portal.ucol.mx/dgssypp/serviciosocialconsti.htm"}
+      ],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "professional_practice",
+      "title": "Prácticas profesionales",
+      "text": "La práctica profesional permite aplicar las competencias de tu carrera en una unidad receptora y actividades acordes con tu perfil.\n\n- La guía general señala 400 horas, de 2 a 12 meses en modalidad ordinaria; aclara que las horas pueden variar según la carrera.\n- Se requiere concluir el SSC, incluido el trámite administrativo, ser estudiante regular, contar con autorización del plantel, recibir inducción y registrarse.\n- La unidad receptora debe contar con convenio y aprobación institucional.\n- Se entregan solicitud, cartas, plan de trabajo, memoria, evaluación y carta de término.\n\nConfirma con FIME los requisitos de tu plan antes de iniciar y consulta el catálogo oficial de unidades receptoras.",
+      "aliases": ["prácticas profesionales", "practicas profesionales", "práctica profesional", "practica profesional", "estancia profesional", "unidad receptora", "residencias"],
+      "keywords": ["prácticas", "practicas", "práctica", "practica", "estancia", "receptora", "residencias", "convenio"],
+      "sources": [
+        {"title": "Guía de Práctica Profesional", "url": "https://www.ucol.mx/comunidad-udec/practica-profesional.htm"},
+        {"title": "Unidades receptoras y catálogo", "url": "https://portal.ucol.mx/dgssypp/unidadesreceptoras.htm"}
+      ],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "graduation",
+      "title": "Titulación y egreso",
+      "text": "Los lineamientos de licenciatura de UdeC contemplan opciones como tesis, tesina, artículo de investigación, examen general de egreso, experiencia profesional, certificación, actualización de conocimientos y desempeño académico sobresaliente. Su aplicación depende de los requisitos de cada modalidad y del programa.\n\nPara comenzar, solicita a FIME la revisión de tu expediente, la modalidad aplicable y la lista vigente de documentos. Debes revisar créditos, servicio social, práctica profesional, idioma, no adeudos y aranceles que correspondan. Administración Escolar publica el acceso al proceso de titulación.\n\nNo tomes un promedio o resultado de examen como garantía automática de titulación: el plantel debe validar tu caso.",
+      "aliases": ["titulación", "titulacion", "titularme", "título", "titulo", "egreso", "tesis", "tesina", "egel", "titulación por promedio"],
+      "keywords": ["titulación", "titulacion", "titularme", "título", "titulo", "egreso", "egresados", "tesis", "tesina", "egel", "cédula", "cedula"],
+      "sources": [
+        {"title": "Lineamientos de titulación en licenciatura", "url": "https://portal.ucol.mx/content/micrositios/152/file/Lineamientos%20de%20titulaci%C3%B3n.pdf"},
+        {"title": "Administración Escolar: proceso de titulación", "url": "https://portal.ucol.mx/dgae/inicio.htm"},
+        {"title": "Contacto de FIME", "url": "https://portal.ucol.mx/fime/contacto.htm"}
+      ],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "mobility",
+      "title": "Movilidad e intercambio estudiantil",
+      "text": "El programa de movilidad de UdeC permite cursar uno o dos semestres en otra institución de México o del extranjero, dentro de convenios y con reconocimiento de créditos cuando la estancia se completa satisfactoriamente.\n\nConsulta la convocatoria del periodo deseado y revisa destinos, requisitos académicos, idioma, documentos y apoyos. Comienza con el comité de movilidad de FIME para preparar la postulación y la propuesta de asignaturas. La Oficina de Internacionalización y Cooperación Académica publica guías, formatos y contactos.\n\nLas fechas y requisitos se confirman en cada convocatoria; una solicitud no garantiza aceptación ni financiamiento.",
+      "aliases": ["movilidad", "intercambio", "intercambio estudiantil", "estudiar en el extranjero", "movilidad internacional", "movilidad nacional"],
+      "keywords": ["movilidad", "intercambio", "extranjero", "internacional", "odica"],
+      "sources": [
+        {"title": "Programa de movilidad UdeC", "url": "https://www.ucol.mx/internacionalizacion/est-udc-general.htm"},
+        {"title": "Movilidad de licenciatura: requisitos y ayuda", "url": "https://www.ucol.mx/internacionalizacion/mov-lic-ucol.htm"},
+        {"title": "Preguntas frecuentes de movilidad", "url": "https://www.ucol.mx/internacionalizacion/faq-ucol-lic.htm"}
+      ],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "contact",
+      "title": "Contacto y directorio de FIME",
+      "text": "Puedes contactar a FIME por estos medios oficiales:\n\n- Correo: fime@ucol.mx\n- Teléfono: 312 316 1165\n- Dirección: Campus Coquimatlán, carretera Colima–Coquimatlán km 9, Colima, C.P. 28400.\n\nEl directorio del plantel identifica a Dirección, Coordinación Académica, Secretaría Administrativa, asesoría pedagógica y coordinaciones de carrera y posgrado. Consulta ese directorio para elegir el contacto correspondiente y confirmar la atención antes de acudir.",
+      "aliases": ["contacto", "teléfono", "telefono", "correo", "directorio", "director", "coordinador", "coordinación", "secretaría", "secretaria"],
+      "keywords": ["contacto", "teléfono", "telefono", "correo", "directorio", "director", "coordinador", "coordinación", "coordinacion", "secretaría", "secretaria", "administración"],
+      "sources": [
+        {"title": "Contacto oficial de FIME", "url": "https://portal.ucol.mx/fime/contacto.htm"},
+        {"title": "Directorio de FIME", "url": "https://portal.ucol.mx/fime/directorio.htm"}
+      ],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "location",
+      "title": "Ubicación y cómo llegar",
+      "text": "FIME está en el Campus Coquimatlán de la Universidad de Colima: carretera Colima–Coquimatlán km 9, Valle de las Huertas, Coquimatlán, Colima, C.P. 28400.\n\nPuedes consultar el mapa oficial de ubicación o abrir el mapa del campus en esta página. Para encontrar un aula o laboratorio específico, confirma el edificio con tu grupo o con FIME: 312 316 1165.\n\nLas rutas y horarios de transporte y de atención pueden cambiar; confirma tu traslado y la atención del área antes de acudir.",
+      "aliases": ["dónde está", "donde esta", "ubicación", "ubicacion", "cómo llegar", "como llegar", "mapa", "campus coquimatlán", "dirección postal"],
+      "keywords": ["ubicación", "ubicacion", "llegar", "mapa", "coquimatlán", "coquimatlan", "carretera", "transporte", "camión", "camion", "autobús", "autobus"],
+      "sources": [{"title": "Ubicación oficial de FIME", "url": "https://portal.ucol.mx/fime/ubicacion.htm"}],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "facilities",
+      "title": "Instalaciones y laboratorios",
+      "text": "La página oficial de infraestructura de FIME describe aulas, cubículos docentes, edificio de posgrado, auditorio, centros de cómputo y taller de máquinas y herramientas.\n\nTambién enumera laboratorios de electrónica, física, electromagnetismo, mecánica, instrumentación y robótica, telefonía, microelectrónica, matemáticas aplicadas y ciencia de datos.\n\nPara prácticas, acceso a equipos, reservas y horarios, solicita indicaciones al docente o a la coordinación de tu carrera. Este directorio no confirma disponibilidad ni permisos de uso en tiempo real.",
+      "aliases": ["instalaciones", "infraestructura", "laboratorios", "laboratorio", "centro de cómputo", "auditorio", "taller", "aulas", "salones"],
+      "keywords": ["instalaciones", "infraestructura", "laboratorio", "laboratorios", "auditorio", "taller", "aulas", "salones", "edificio", "cómputo", "computo"],
+      "sources": [{"title": "Infraestructura de FIME", "url": "https://portal.ucol.mx/fime/infraestructura.htm"}],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "calendar",
+      "title": "Calendario escolar y horarios",
+      "text": "La Universidad de Colima publica su calendario escolar oficial con los periodos del ciclo. Revisa que el documento corresponda a tu modalidad y al ciclo que cursas.\n\nPara horario de clases, grupo, evaluaciones de una materia o atención de un área, confirma directamente con FIME o tu docente. El calendario institucional y el horario particular de tu grupo son documentos distintos.\n\nPuedes consultar el portal de calendario y la publicación del calendario semestral 2026–2027 en la Gaceta Rectoría. Para fechas de ingreso, utiliza la convocatoria de admisión correspondiente.",
+      "aliases": ["calendario", "horario", "horarios", "vacaciones", "inicio de clases", "regreso a clases", "cuándo empiezan", "exámenes", "extraordinarios"],
+      "keywords": ["calendario", "horario", "horarios", "vacaciones", "clases", "evaluaciones", "exámenes", "examenes", "extraordinarios", "asueto"],
+      "sources": [
+        {"title": "Calendario escolar UdeC", "url": "https://www.ucol.mx/comunidad-udec/calendario-escolar.htm"},
+        {"title": "Gaceta: calendario semestral 2026–2027", "url": "https://portal.ucol.mx/gaceta-rectoria/gaceta-2026-3.htm"},
+        {"title": "Contacto de FIME", "url": "https://portal.ucol.mx/fime/contacto.htm"}
+      ],
+      "verified_on": "2026-09-21"
+    },
+    {
+      "id": "student_resources",
+      "title": "Recursos y apoyo para estudiantes",
+      "text": "El portal Comunidad UdeC reúne accesos útiles para estudiantes de FIME:\n\n- EDUC, correo universitario, evaluación docente y recursos educativos digitales.\n- Red de bibliotecas, biblioteca virtual y catálogo de libros.\n- Tutorías, orientación educativa y atención psicológica universitaria.\n- Información sobre actividades culturales y acreditación deportiva.\n\nPara apoyo académico puedes comenzar con tu tutor o con la asesoría pedagógica del plantel. Consulta las actividades, requisitos de acreditación y servicios vigentes en los enlaces institucionales del portal.",
+      "aliases": ["recursos para estudiantes", "educ", "biblioteca", "biblioteca virtual", "tutorías", "tutorias", "asesorías", "orientación", "psicología", "actividades culturales", "deportes", "acreditaciones"],
+      "keywords": ["educ", "biblioteca", "libros", "tutoría", "tutoria", "tutorías", "tutorias", "asesoría", "asesoria", "orientación", "orientacion", "psicología", "psicologia", "cultura", "deportes", "acreditación", "acreditacion"],
+      "sources": [
+        {"title": "Comunidad UdeC: recursos para estudiantes", "url": "https://www.ucol.mx/comunidad-udec/"},
+        {"title": "Directorio de asesoría pedagógica de FIME", "url": "https://portal.ucol.mx/fime/directorio.htm"}
+      ],
+      "verified_on": "2026-09-21"
+    }
+  ]
+}
