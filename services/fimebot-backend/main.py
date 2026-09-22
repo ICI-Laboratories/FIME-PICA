@@ -1,7 +1,7 @@
 """FIME's free, source-grounded institutional information service.
 
-Answers come exclusively from the reviewed local corpus. User input never becomes
-an instruction for a language model and no inference service or API key is used.
+Facts come from the reviewed local corpus. Optional local inference selects
+evidence for career guidance; its output is validated before publication.
 """
 
 import json
@@ -15,11 +15,15 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, field_validator, model_validator
 
 from policy import KnowledgeBase, answer_question
+from hybrid import HybridResponder
 
 logger = logging.getLogger("fimebot-backend")
 MAX_BODY_BYTES = 65_536
 KNOWLEDGE_PATH = Path(__file__).resolve().parent / "context" / "knowledge.json"
 knowledge = KnowledgeBase.load(KNOWLEDGE_PATH)
+hybrid = HybridResponder.from_env()
+if knowledge.people is None:
+    raise RuntimeError("The verified faculty directory is missing")
 
 
 class BodySizeLimit:
@@ -58,7 +62,7 @@ class BodySizeLimit:
         await self.app(scope, bounded_receive, send)
 
 
-app = FastAPI(title="FimeBot · Información de la FIME", version="2.0.0")
+app = FastAPI(title="FimeBot · Información de la FIME", version="2.2.0")
 app.add_middleware(BodySizeLimit)
 
 
@@ -86,7 +90,7 @@ class ChatRequest(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
     messages: list[ChatMessage] = Field(min_length=1, max_length=13)
     stream: StrictBool = False
-    # Retained for compatibility with the existing client; never enables a model.
+    # Retained for client compatibility; routing is always controlled by the server.
     think: StrictBool = False
 
     @model_validator(mode="after")
@@ -122,8 +126,11 @@ def health_check():
     return {
         "status": "ok",
         "mode": "verified-knowledge",
+        "hybrid_enabled": hybrid.enabled,
         "knowledge_entries": len(knowledge.entries),
         "verified_on": knowledge.verified_on,
+        "people_entries": len(knowledge.people.people) if knowledge.people else 0,
+        "people_verified_on": knowledge.people.verified_on if knowledge.people else None,
     }
 
 
@@ -141,10 +148,14 @@ def root():
 async def chat_endpoint(chat_request: ChatRequest):
     user_questions = [message.content for message in chat_request.messages if message.role == "user"]
     result = answer_question(user_questions[-1], user_questions[:-1], knowledge)
+    guidance = await hybrid.answer(user_questions[-1], user_questions[:-1], knowledge, result)
+    mode = "hybrid-grounded" if guidance is not None else "verified-knowledge"
+    if guidance is not None:
+        result = guidance
     response = {
         "message": {"role": "assistant", "content": result.content},
         "done": True,
-        "mode": "verified-knowledge",
+        "mode": mode,
         "topics": result.topics,
         "sources": result.sources,
     }
@@ -154,7 +165,7 @@ async def chat_endpoint(chat_request: ChatRequest):
     async def events():
         # Preserve the OpenAI-style delta envelope used by the public site.
         event = {"choices": [{"delta": {"content": result.content}}],
-                 "sources": result.sources, "topics": result.topics}
+                 "sources": result.sources, "topics": result.topics, "mode": mode}
         yield "data: " + json.dumps(event, ensure_ascii=False) + "\n\n"
         yield "data: [DONE]\n\n"
 

@@ -1,0 +1,2096 @@
+{
+  "verified_on": "2026-09-22",
+  "sources": [
+    {
+      "title": "Docentes de FIME: grados y correos publicados",
+      "url": "https://portal.ucol.mx/fime/docentes.htm",
+      "verified_on": "2026-09-22"
+    },
+    {
+      "title": "Directorio de autoridades y coordinaciones de FIME",
+      "url": "https://portal.ucol.mx/fime/directorio.htm",
+      "verified_on": "2026-09-22"
+    }
+  ],
+  "people": [
+    {
+      "id": "evangelista_salazar_martha_elizabeth",
+      "name": "Martha Elizabeth Evangelista Salazar",
+      "published_name": "Evangelista Salazar Martha Elizabeth",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo",
+        "Coord. Ingeniero en Computación Inteligente"
+      ],
+      "email": "mevangel@ucol.mx",
+      "emails": [
+        "mevangel@ucol.mx"
+      ],
+      "phone": "312 316 1165",
+      "extension": null,
+      "aliases": [
+        "Evangelista Salazar Martha Elizabeth",
+        "Martha Elizabeth Evangelista Salazar",
+        "Martha Evangelista Salazar"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        },
+        {
+          "title": "Directorio de autoridades y coordinaciones de FIME",
+          "url": "https://portal.ucol.mx/fime/directorio.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "gaytan_lugo_laura_sanely",
+      "name": "Gaytán Lugo Laura Sanely",
+      "published_name": "Gaytán Lugo Laura Sanely",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo"
+      ],
+      "email": "laura@ucol.mx",
+      "emails": [
+        "laura@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Gaytán Lugo Laura Sanely",
+        "Laura Sanely Gaytán Lugo"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "alvarez_flores_jose_luis",
+      "name": "Álvarez Flores José Luis",
+      "published_name": "Álvarez Flores José Luis",
+      "degree": "Doctorado",
+      "degree_published": "Dcotorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo"
+      ],
+      "email": "alvarez_jose@ucol.mx",
+      "emails": [
+        "alvarez_jose@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Álvarez Flores José Luis",
+        "José Luis Álvarez Flores"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": [
+        "La tabla oficial escribe «Dcotorado»; se normaliza la errata a «Doctorado» y se conserva el valor literal en degree_published."
+      ]
+    },
+    {
+      "id": "arroyo_ledesma_jaime",
+      "name": "Arroyo Ledesma Jaime",
+      "published_name": "Arroyo Ledesma Jaime",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo"
+      ],
+      "email": "jaime_arroyo@ucol.mx",
+      "emails": [
+        "jaime_arroyo@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Arroyo Ledesma Jaime",
+        "Jaime Arroyo Ledesma"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "castillo_topete_victor_hugo",
+      "name": "Castillo Topete Víctor Hugo",
+      "published_name": "Castillo Topete Víctor Hugo",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo"
+      ],
+      "email": "victorc@ucol.mx",
+      "emails": [
+        "victorc@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Castillo Topete Víctor Hugo",
+        "Víctor Hugo Castillo Topete"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "concha_sanchez_antonio",
+      "name": "Concha Sánchez Antonio",
+      "published_name": "Concha Sánchez Antonio",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo"
+      ],
+      "email": "aconcha@ucol.mx",
+      "emails": [
+        "aconcha@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Concha Sánchez Antonio",
+        "Antonio Concha Sánchez"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "contreras_aguilar_luis_alberto",
+      "name": "Contreras Aguilar Luis Alberto",
+      "published_name": "Contreras Aguilar Luis Alberto",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo"
+      ],
+      "email": "luisc@ucol.mx",
+      "emails": [
+        "luisc@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Contreras Aguilar Luis Alberto",
+        "Luis Alberto Contreras Aguilar"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "escobar_del_pozo_carlos",
+      "name": "Carlos Escobar del Pozo",
+      "published_name": "Escobar del Pozo Carlos",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo",
+        "Coord. Maestría en Ingeniería de Procesos"
+      ],
+      "email": "cescobar@ucol.mx",
+      "emails": [
+        "cescobar@ucol.mx"
+      ],
+      "phone": "312 316 1165",
+      "extension": null,
+      "aliases": [
+        "Escobar del Pozo Carlos",
+        "Carlos Escobar del Pozo"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        },
+        {
+          "title": "Directorio de autoridades y coordinaciones de FIME",
+          "url": "https://portal.ucol.mx/fime/directorio.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "felix_cuadras_ramon_antonio",
+      "name": "Félix Cuadras Ramón Antonio",
+      "published_name": "Félix Cuadras Ramón Antonio",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo"
+      ],
+      "email": "rfelix@ucol.mx",
+      "emails": [
+        "rfelix@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Félix Cuadras Ramón Antonio",
+        "Ramón Antonio Félix Cuadras"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "gonzalez_avila_efrain",
+      "name": "González Ávila Efraín",
+      "published_name": "González Ávila Efraín",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo"
+      ],
+      "email": "efrain_gonzalez@ucol.mx",
+      "emails": [
+        "efrain_gonzalez@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "González Ávila Efraín",
+        "Efraín González Ávila"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "gonzalez_potes_apolinar",
+      "name": "González Potes Apolinar",
+      "published_name": "González Potes Apolinar",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo"
+      ],
+      "email": "apogon@ucol.mx",
+      "emails": [
+        "apogon@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "González Potes Apolinar",
+        "Apolinar González Potes"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "llamas_zamorano_sergio",
+      "name": "Llamas Zamorano Sergio",
+      "published_name": "Llamas Zamorano Sergio",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo"
+      ],
+      "email": "serllaza@ucol.mx",
+      "emails": [
+        "serllaza@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Llamas Zamorano Sergio",
+        "Sergio Llamas Zamorano"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "maciel_barboza_fermin_marcelo_ruben",
+      "name": "Fermín Marcelo Rubén Maciel Barboza",
+      "published_name": "Maciel Barboza Fermín Marcelo Rubén",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo",
+        "Coord. Ingeniería en Sistemas Electrónicos y Telecomunicaciones"
+      ],
+      "email": "fermin_marcelo@ucol.mx",
+      "emails": [
+        "fermin_maciel@ucol.mx",
+        "fermin_marcelo@ucol.mx"
+      ],
+      "phone": "312 316 1165",
+      "extension": null,
+      "aliases": [
+        "Maciel Barboza Fermín Marcelo Rubén",
+        "Fermín Marcelo Rubén Maciel Barboza",
+        "Fermín Marcelo Maciel Barboza"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        },
+        {
+          "title": "Directorio de autoridades y coordinaciones de FIME",
+          "url": "https://portal.ucol.mx/fime/directorio.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": [
+        "El directorio usa Fermín Marcelo Maciel Barboza y fermin_marcelo@ucol.mx; la tabla docente publica Maciel Barboza Fermín Marcelo Rubén y fermin_maciel@ucol.mx. Se conservan ambas variantes y correos."
+      ]
+    },
+    {
+      "id": "mata_lopez_walter_alexander",
+      "name": "Walter Alexander Mata López",
+      "published_name": "Mata López Walter Alexander",
+      "degree": "Doctorado",
+      "degree_published": "Maestría",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo",
+        "Director"
+      ],
+      "email": "wmata@ucol.mx",
+      "emails": [
+        "wmata@ucol.mx"
+      ],
+      "phone": "312 316 1165",
+      "extension": "51450",
+      "aliases": [
+        "Mata López Walter Alexander",
+        "Walter Alexander Mata López"
+      ],
+      "sources": [
+        {
+          "title": "UdeC, 23 de febrero de 2026: SARA Quiz, Dr. Walter Alexander Mata López",
+          "url": "https://www.ucol.mx/noticias/nota_15082.htm",
+          "published_on": "2026-02-23",
+          "verified_on": "2026-09-22"
+        },
+        {
+          "title": "PIFOD UdeC 2025: grado y semblanza de Walter Alexander Mata López (página 4)",
+          "url": "https://datacenter.ucol.mx/pifod/public_content/13012025_173679573219988580.pdf",
+          "document_period": "enero de 2025",
+          "verified_on": "2026-09-22"
+        },
+        {
+          "title": "Convocatoria IDIA 2026: responsable Dr. Walter Alexander Mata López (página 4)",
+          "url": "https://portal.ucol.mx/content/micrositios/227/file/Ingenieria_de_Datos_e_Inteligencia_Artificial_2026.pdf",
+          "published_period": "febrero de 2026",
+          "verified_on": "2026-09-22"
+        },
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        },
+        {
+          "title": "Directorio de autoridades y coordinaciones de FIME",
+          "url": "https://portal.ucol.mx/fime/directorio.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": [
+        "Corrección verificada el 22 de septiembre de 2026: el grado que debe comunicarse es Doctorado. degree_published conserva únicamente el dato Maestría de la tabla docente sin fecha de actualización.",
+        "La noticia oficial de UdeC publicada el 23 de febrero de 2026 lo identifica como Dr. Walter Alexander Mata López; la convocatoria IDIA de febrero de 2026 coincide. La semblanza institucional PIFOD de enero de 2025 explicita Doctor en Socioformación y Sociedad del Conocimiento por el Centro Universitario CIFE.",
+        "El documento PIFOD de 2025 también menciona una tesis de otro doctorado en desarrollo. No se presenta ese segundo programa como grado obtenido.",
+        "El cargo actual de Director procede del directorio de FIME consultado el 22 de septiembre de 2026. La convocatoria de febrero de 2026 firma a Víctor Hugo Castillo Topete como Director: esa referencia de un documento anterior no sustituye el cargo publicado en el directorio consultado."
+      ],
+      "degree_detail": "Doctor en Socioformación y Sociedad del Conocimiento",
+      "degree_correction": {
+        "corrected_on": "2026-09-22",
+        "previous_value": "Maestría",
+        "current_value": "Doctorado",
+        "reason": "La tabla docente sin fecha de actualización conserva Maestría. La noticia institucional del 23 de febrero de 2026 y la convocatoria IDIA de febrero de 2026 lo identifican como Dr.; la semblanza PIFOD de enero de 2025 publica explícitamente su doctorado. Se prioriza esa evidencia oficial fechada para el grado actual.",
+        "sources": [
+          {
+            "title": "UdeC, 23 de febrero de 2026: SARA Quiz, Dr. Walter Alexander Mata López",
+            "url": "https://www.ucol.mx/noticias/nota_15082.htm",
+            "published_on": "2026-02-23",
+            "verified_on": "2026-09-22"
+          },
+          {
+            "title": "PIFOD UdeC 2025: grado y semblanza de Walter Alexander Mata López (página 4)",
+            "url": "https://datacenter.ucol.mx/pifod/public_content/13012025_173679573219988580.pdf",
+            "document_period": "enero de 2025",
+            "verified_on": "2026-09-22"
+          },
+          {
+            "title": "Convocatoria IDIA 2026: responsable Dr. Walter Alexander Mata López (página 4)",
+            "url": "https://portal.ucol.mx/content/micrositios/227/file/Ingenieria_de_Datos_e_Inteligencia_Artificial_2026.pdf",
+            "published_period": "febrero de 2026",
+            "verified_on": "2026-09-22"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ochoa_brust_alberto_manuel",
+      "name": "Ochoa Brust Alberto Manuel",
+      "published_name": "Ochoa Brust Alberto Manuel",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo"
+      ],
+      "email": "aochoa@ucol.mx",
+      "emails": [
+        "aochoa@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Ochoa Brust Alberto Manuel",
+        "Alberto Manuel Ochoa Brust"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "soriano_equigua_leonel",
+      "name": "Soriano Equigua Leonel",
+      "published_name": "Soriano Equigua Leonel",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo"
+      ],
+      "email": "lsoriano@ucol.mx",
+      "emails": [
+        "lsoriano@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Soriano Equigua Leonel",
+        "Leonel Soriano Equigua"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "vazquez_fernandez_erick_eduardo",
+      "name": "Erick Eduardo Vázquez Fernández",
+      "published_name": "Vázquez Fernández Erick Eduardo",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo",
+        "Coord. Maestría en Ingeniería Aplicada"
+      ],
+      "email": "erick_vazquez@ucol.mx",
+      "emails": [
+        "erick_vazquez@ucol.mx"
+      ],
+      "phone": "312 316 1165",
+      "extension": null,
+      "aliases": [
+        "Vázquez Fernández Erick Eduardo",
+        "Erick Eduardo Vázquez Fernández",
+        "Erick Vázquez"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        },
+        {
+          "title": "Directorio de autoridades y coordinaciones de FIME",
+          "url": "https://portal.ucol.mx/fime/directorio.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "venegas_trujillo_tiberio",
+      "name": "Venegas Trujillo Tiberio",
+      "published_name": "Venegas Trujillo Tiberio",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo"
+      ],
+      "email": "tvenegas@ucol.mx",
+      "emails": [
+        "tvenegas@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Venegas Trujillo Tiberio",
+        "Tiberio Venegas Trujillo"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "villalobos_llamas_gilberto",
+      "name": "Gilberto Villalobos Llamas",
+      "published_name": "Villalobos Llamas Gilberto",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo",
+        "Coord. Ingeniero Mecánico Electricista"
+      ],
+      "email": "givilla@ucol.mx",
+      "emails": [
+        "givilla@ucol.mx"
+      ],
+      "phone": "312 316 1165",
+      "extension": "51456",
+      "aliases": [
+        "Villalobos Llamas Gilberto",
+        "Gilberto Villalobos Llamas"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        },
+        {
+          "title": "Directorio de autoridades y coordinaciones de FIME",
+          "url": "https://portal.ucol.mx/fime/directorio.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "pablo_armando_alcaraz_valencia",
+      "name": "Pablo Armando Alcaraz Valencia",
+      "published_name": "Pablo Armando Alcaraz Valencia",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo"
+      ],
+      "email": "pablo_alcaraz@ucol.mx",
+      "emails": [
+        "pablo_alcaraz@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Pablo Armando Alcaraz Valencia"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "torres_cantero_carlos_alberto",
+      "name": "Torres Cantero Carlos Alberto",
+      "published_name": "Torres Cantero Carlos Alberto",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "full_time",
+      "roles": [
+        "Docente de tiempo completo"
+      ],
+      "email": "cantero@ucol.mx",
+      "emails": [
+        "cantero@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Torres Cantero Carlos Alberto",
+        "Carlos Alberto Torres Cantero"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "cardenas_rodriguez_selene",
+      "name": "Cárdenas Rodríguez Selene",
+      "published_name": "Cárdenas Rodríguez Selene",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "scardenas@ucol.mx",
+      "emails": [
+        "scardenas@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Cárdenas Rodríguez Selene",
+        "Selene Cárdenas Rodríguez"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "carrillo_avila_blanca_lorena",
+      "name": "Carrillo Ávila Blanca Lorena",
+      "published_name": "Carrillo Ávila Blanca Lorena",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "blanca_lorena@ucol.mx",
+      "emails": [
+        "blanca_lorena@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Carrillo Ávila Blanca Lorena",
+        "Blanca Lorena Carrillo Ávila"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "galvez_martell_alicia_armantina",
+      "name": "Galvez Martell Alicia Armantina",
+      "published_name": "Galvez Martell Alicia Armantina",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "aligama@ucol.mx",
+      "emails": [
+        "aligama@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Galvez Martell Alicia Armantina",
+        "Alicia Armantina Galvez Martell"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "machuca_ramos_betzabeth_marlene",
+      "name": "Machuca Ramos Betzabeth Marlene",
+      "published_name": "Machuca Ramos Betzabeth Marlene",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "bmachuca3@ucol.mx",
+      "emails": [
+        "bmachuca3@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Machuca Ramos Betzabeth Marlene",
+        "Betzabeth Marlene Machuca Ramos"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "martinez_camarena_sonia",
+      "name": "Martínez Camarena Sonia",
+      "published_name": "Martínez Camarena Sonia",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "sonia_martinez@ucol.mx",
+      "emails": [
+        "sonia_martinez@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Martínez Camarena Sonia",
+        "Sonia Martínez Camarena"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "nava_bautista_martha_xochitl",
+      "name": "Nava Bautista Martha Xóchitl",
+      "published_name": "Nava Bautista Martha Xóchitl",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "xnava@ucol.mx",
+      "emails": [
+        "xnava@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Nava Bautista Martha Xóchitl",
+        "Martha Xóchitl Nava Bautista"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "santiago_hernandez_elizabeth",
+      "name": "Santiago Hernández Elizabeth",
+      "published_name": "Santiago Hernández Elizabeth",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "zabeth16@ucol.mx",
+      "emails": [
+        "zabeth16@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Santiago Hernández Elizabeth",
+        "Elizabeth Santiago Hernández"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "toscano_cardenas_leticia_lizeth",
+      "name": "Toscano Cárdenas Leticia Lizeth",
+      "published_name": "Toscano Cárdenas Leticia Lizeth",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "lizeth_toscano@ucol.mx",
+      "emails": [
+        "lizeth_toscano@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Toscano Cárdenas Leticia Lizeth",
+        "Leticia Lizeth Toscano Cárdenas"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "bautista_quintero_victor_hugo",
+      "name": "Bautista Quintero Víctor Hugo",
+      "published_name": "Bautista Quintero Víctor Hugo",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "vbautista1@ucol.mx",
+      "emails": [
+        "vbautista1@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Bautista Quintero Víctor Hugo",
+        "Víctor Hugo Bautista Quintero"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "benavides_sanchez_luis_daniel",
+      "name": "Benavides Sánchez Luis Daniel",
+      "published_name": "Benavides Sánchez Luis Daniel",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "lusdan@ucol.mx",
+      "emails": [
+        "lusdan@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Benavides Sánchez Luis Daniel",
+        "Luis Daniel Benavides Sánchez"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "bricio_chapula_carlos_adrian",
+      "name": "Bricio Chapula Carlos Adrián",
+      "published_name": "Bricio Chapula Carlos Adrián",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "cbricio@ucol.mx",
+      "emails": [
+        "cbricio@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Bricio Chapula Carlos Adrián",
+        "Carlos Adrián Bricio Chapula"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "carrillo_zepeda_oswaldo",
+      "name": "Carrillo Zepeda Oswaldo",
+      "published_name": "Carrillo Zepeda Oswaldo",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "oswaldo_carrillo@ucol.mx",
+      "emails": [
+        "oswaldo_carrillo@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Carrillo Zepeda Oswaldo",
+        "Oswaldo Carrillo Zepeda"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "cerrato_abdala_brenda",
+      "name": "Cerrato Abdalá Brenda",
+      "published_name": "Cerrato Abdalá Brenda",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "bcerrato@ucol.mx",
+      "emails": [
+        "bcerrato@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Cerrato Abdalá Brenda",
+        "Brenda Cerrato Abdalá"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "cortes_lugo_hugo",
+      "name": "Cortés Lugo Hugo",
+      "published_name": "Cortés Lugo Hugo",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "hugolugo@ucol.mx",
+      "emails": [
+        "hugolugo@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Cortés Lugo Hugo",
+        "Hugo Cortés Lugo"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "diaz_alvarez_juan_pablo",
+      "name": "Díaz Álvarez Juan Pablo",
+      "published_name": "Díaz Álvarez Juan Pablo",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "jpdiaza@ucol.mx",
+      "emails": [
+        "jpdiaza@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Díaz Álvarez Juan Pablo",
+        "Juan Pablo Díaz Álvarez"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "diaz_hernandez_juan_antonio",
+      "name": "Díaz Hernández Juan Antonio",
+      "published_name": "Díaz Hernández Juan Antonio",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "juan_diaz@ucol.mx",
+      "emails": [
+        "juan_diaz@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Díaz Hernández Juan Antonio",
+        "Juan Antonio Díaz Hernández"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "garcia_diaz_noel",
+      "name": "García Díaz Noel",
+      "published_name": "García Díaz Noel",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "ngdiaz@ucol.mx",
+      "emails": [
+        "ngdiaz@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "García Díaz Noel",
+        "Noel García Díaz"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "garcia_jimenez_jose_alberto",
+      "name": "García Jiménez José Alberto",
+      "published_name": "García Jiménez José Alberto",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "jgarcia194@ucol.mx",
+      "emails": [
+        "jgarcia194@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "García Jiménez José Alberto",
+        "José Alberto García Jiménez"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "garcia_rebolledo_azael",
+      "name": "García Rebolledo Azael",
+      "published_name": "García Rebolledo Azael",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "azael_garcia@ucol.mx",
+      "emails": [
+        "azael_garcia@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "García Rebolledo Azael",
+        "Azael García Rebolledo"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "garcia_virgen_juan",
+      "name": "García Virgen Juan",
+      "published_name": "García Virgen Juan",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "juan_garcia@ucol.mx",
+      "emails": [
+        "juan_garcia@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "García Virgen Juan",
+        "Juan García Virgen"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "guzman_vega_hector_gustavo",
+      "name": "Guzmán Vega Héctor Gustavo",
+      "published_name": "Guzmán Vega Héctor Gustavo",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "hvega@ucol.mx",
+      "emails": [
+        "hvega@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Guzmán Vega Héctor Gustavo",
+        "Héctor Gustavo Guzmán Vega"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "huizar_padilla_emilio",
+      "name": "Huizar Padilla Emilio",
+      "published_name": "Huizar Padilla Emilio",
+      "degree": "Doctorado",
+      "degree_published": "Doctorado",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "ehuizar@ucol.mx",
+      "emails": [
+        "ehuizar@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Huizar Padilla Emilio",
+        "Emilio Huizar Padilla"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "jaramillo_cajica_isaac",
+      "name": "Jaramillo Cajica Isaac",
+      "published_name": "Jaramillo Cajica Isaac",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "isaak@ucol.mx",
+      "emails": [
+        "isaak@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Jaramillo Cajica Isaac",
+        "Isaac Jaramillo Cajica"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "jardines_gonzalez_arturo_ivan",
+      "name": "Jardines González Arturo Iván",
+      "published_name": "Jardines González Arturo Iván",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "jardines@ucol.mx",
+      "emails": [
+        "jardines@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Jardines González Arturo Iván",
+        "Arturo Iván Jardines González"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "lopez_barajas_gabriel",
+      "name": "López Barajas Gabriel",
+      "published_name": "López Barajas Gabriel",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "gabriel_lopez@ucol.mx",
+      "emails": [
+        "gabriel_lopez@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "López Barajas Gabriel",
+        "Gabriel López Barajas"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "lopez_molina_luis_martin",
+      "name": "López Molina Luis Martín",
+      "published_name": "López Molina Luis Martín",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "luismartinlopez@ucol.mx",
+      "emails": [
+        "luismartinlopez@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "López Molina Luis Martín",
+        "Luis Martín López Molina"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "martinez_camarena_edgar",
+      "name": "Martínez Camarena Edgar",
+      "published_name": "Martínez Camarena Edgar",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "edgar_camarena@ucol.mx",
+      "emails": [
+        "edgar_camarena@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Martínez Camarena Edgar",
+        "Edgar Martínez Camarena"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "mora_quinones_jesus_uriel",
+      "name": "Mora Quiñones Jesús Uriel",
+      "published_name": "Mora Quiñones Jesús Uriel",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "urielmora55@ucol.mx",
+      "emails": [
+        "urielmora55@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Mora Quiñones Jesús Uriel",
+        "Jesús Uriel Mora Quiñones"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "moran_lopez_luis_eduardo",
+      "name": "Morán López Luis Eduardo",
+      "published_name": "Morán López Luis Eduardo",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "lmoran72@ucol.mx",
+      "emails": [
+        "lmoran72@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Morán López Luis Eduardo",
+        "Luis Eduardo Morán López"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "navarro_marquez_gabriel",
+      "name": "Navarro Márquez Gabriel",
+      "published_name": "Navarro Márquez Gabriel",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "gabriel_navarro@ucol.mx",
+      "emails": [
+        "gabriel_navarro@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Navarro Márquez Gabriel",
+        "Gabriel Navarro Márquez"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "ochoa_zuniga_oscar_octavio",
+      "name": "Ochoa Zúñiga Oscar Octavio",
+      "published_name": "Ochoa Zúñiga Oscar Octavio",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "oscarochoa@ucol.mx",
+      "emails": [
+        "oscarochoa@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Ochoa Zúñiga Oscar Octavio",
+        "Oscar Octavio Ochoa Zúñiga"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "pineda_urbina_pauries",
+      "name": "Pineda Urbina Pauries",
+      "published_name": "Pineda Urbina Pauries",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "pineda_urbina@ucol.mx",
+      "emails": [
+        "pineda_urbina@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Pineda Urbina Pauries",
+        "Pauries Pineda Urbina"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "ramirez_zuniga_diego_armando",
+      "name": "Ramírez Zúñiga Diego Armando",
+      "published_name": "Ramírez Zúñiga Diego Armando",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "dramirez_1@ucol.mx",
+      "emails": [
+        "dramirez_1@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Ramírez Zúñiga Diego Armando",
+        "Diego Armando Ramírez Zúñiga"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "regalado_escobedo_alejandro",
+      "name": "Regalado Escobedo Alejandro",
+      "published_name": "Regalado Escobedo Alejandro",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "alex_regalado@ucol.mx",
+      "emails": [
+        "alex_regalado@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Regalado Escobedo Alejandro",
+        "Alejandro Regalado Escobedo"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "rodriguez_barragan_irving_naim",
+      "name": "Rodríguez Barragán Irving Naim",
+      "published_name": "Rodríguez Barragán Irving Naim",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "irodriguez8@ucol.mx",
+      "emails": [
+        "irodriguez8@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Rodríguez Barragán Irving Naim",
+        "Irving Naim Rodríguez Barragán"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "rubio_lino_jose_irving_alberto",
+      "name": "Rubio Lino José Irving Alberto",
+      "published_name": "Rubio Lino José Irving Alberto",
+      "degree": "Licenciatura",
+      "degree_published": "Licenciatura",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "alberto_rubio1@ucol.mx",
+      "emails": [
+        "alberto_rubio1@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Rubio Lino José Irving Alberto",
+        "José Irving Alberto Rubio Lino"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "santillan_mendez_tomas",
+      "name": "Santillán Méndez Tomás",
+      "published_name": "Santillán Méndez Tomás",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "tomas_santillanm@ucol.mx",
+      "emails": [
+        "tomas_santillanm@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Santillán Méndez Tomás",
+        "Tomás Santillán Méndez"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "soto_ochoa_francisco_manuel",
+      "name": "Soto Ochoa Francisco Manuel",
+      "published_name": "Soto Ochoa Francisco Manuel",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "sotoochoa@ucol.mx",
+      "emails": [
+        "sotoochoa@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Soto Ochoa Francisco Manuel",
+        "Francisco Manuel Soto Ochoa"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "valencia_valencia_elias_humberto",
+      "name": "Elías Humberto Valencia Valencia",
+      "published_name": "Valencia Valencia Elías Humberto",
+      "degree": "Especialidad",
+      "degree_published": "Especialidad",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas",
+        "Coord. Ingeniero en Mecatrónica"
+      ],
+      "email": "eliasval@ucol.mx",
+      "emails": [
+        "eliasval@ucol.mx"
+      ],
+      "phone": "312 316 1165",
+      "extension": "51466",
+      "aliases": [
+        "Valencia Valencia Elías Humberto",
+        "Elías Humberto Valencia Valencia"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        },
+        {
+          "title": "Directorio de autoridades y coordinaciones de FIME",
+          "url": "https://portal.ucol.mx/fime/directorio.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "verduzco_ramirez_jesus_alberto",
+      "name": "Verduzco Ramírez Jesús Alberto",
+      "published_name": "Verduzco Ramírez Jesús Alberto",
+      "degree": "Maestría",
+      "degree_published": "Maestría",
+      "category": "hourly",
+      "roles": [
+        "Docente por horas"
+      ],
+      "email": "jesus_verduzco@ucol.mx",
+      "emails": [
+        "jesus_verduzco@ucol.mx"
+      ],
+      "phone": null,
+      "extension": null,
+      "aliases": [
+        "Verduzco Ramírez Jesús Alberto",
+        "Jesús Alberto Verduzco Ramírez"
+      ],
+      "sources": [
+        {
+          "title": "Docentes de FIME: grados y correos publicados",
+          "url": "https://portal.ucol.mx/fime/docentes.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": []
+    },
+    {
+      "id": "juan_carlos_gomez_ramirez",
+      "name": "Juan Carlos Gómez Ramírez",
+      "published_name": "Juan Carlos Gómez Ramírez",
+      "degree": null,
+      "degree_published": null,
+      "category": null,
+      "roles": [
+        "Coordinador Académico"
+      ],
+      "email": "jgomez77@ucol.mx",
+      "emails": [
+        "jgomez77@ucol.mx"
+      ],
+      "phone": "312 316 1165",
+      "extension": "51464",
+      "aliases": [
+        "Juan Carlos Gómez Ramírez"
+      ],
+      "sources": [
+        {
+          "title": "Directorio de autoridades y coordinaciones de FIME",
+          "url": "https://portal.ucol.mx/fime/directorio.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": [
+        "El directorio publica el cargo, pero no el grado académico; esta persona no figura en la tabla de docentes consultada."
+      ]
+    },
+    {
+      "id": "karen_rubi_chavira_moctezuma",
+      "name": "Karen Rubí Chavira Moctezuma",
+      "published_name": "Karen Rubí Chavira Moctezuma",
+      "degree": null,
+      "degree_published": null,
+      "category": null,
+      "roles": [
+        "Secretaria Administrativa"
+      ],
+      "email": "karen_chavira@ucol.mx",
+      "emails": [
+        "karen_chavira@ucol.mx"
+      ],
+      "phone": "312 316 1165",
+      "extension": "51452",
+      "aliases": [
+        "Karen Rubí Chavira Moctezuma"
+      ],
+      "sources": [
+        {
+          "title": "Directorio de autoridades y coordinaciones de FIME",
+          "url": "https://portal.ucol.mx/fime/directorio.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": [
+        "El directorio publica el cargo, pero no el grado académico; esta persona no figura en la tabla de docentes consultada."
+      ]
+    },
+    {
+      "id": "celina_llerenas_escobar",
+      "name": "Celina Llerenas Escobar",
+      "published_name": "Celina Llerenas Escobar",
+      "degree": null,
+      "degree_published": null,
+      "category": null,
+      "roles": [
+        "Asesora Pedagógica"
+      ],
+      "email": "escobar@ucol.mx",
+      "emails": [
+        "escobar@ucol.mx"
+      ],
+      "phone": "312 316 1165",
+      "extension": "51457",
+      "aliases": [
+        "Celina Llerenas Escobar"
+      ],
+      "sources": [
+        {
+          "title": "Directorio de autoridades y coordinaciones de FIME",
+          "url": "https://portal.ucol.mx/fime/directorio.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": [
+        "El directorio publica el cargo, pero no el grado académico; esta persona no figura en la tabla de docentes consultada."
+      ]
+    },
+    {
+      "id": "hugo_giovanny_batista_castro",
+      "name": "Hugo Giovanny Batista Castro",
+      "published_name": "Hugo Giovanny Batista Castro",
+      "degree": null,
+      "degree_published": null,
+      "category": null,
+      "roles": [
+        "Asesor Pedagógico"
+      ],
+      "email": "hbatista0@ucol.mx",
+      "emails": [
+        "hbatista0@ucol.mx"
+      ],
+      "phone": "312 316 1165",
+      "extension": "51463",
+      "aliases": [
+        "Hugo Giovanny Batista Castro"
+      ],
+      "sources": [
+        {
+          "title": "Directorio de autoridades y coordinaciones de FIME",
+          "url": "https://portal.ucol.mx/fime/directorio.htm",
+          "verified_on": "2026-09-22"
+        }
+      ],
+      "verified_on": "2026-09-22",
+      "notes": [
+        "El directorio publica el cargo, pero no el grado académico; esta persona no figura en la tabla de docentes consultada."
+      ]
+    }
+  ],
+  "coverage": {
+    "roster_url": "https://portal.ucol.mx/fime/docentes.htm",
+    "directory_url": "https://portal.ucol.mx/fime/directorio.htm",
+    "published_rows": 61,
+    "published_roster_rows": 61,
+    "published_directory_rows": 11,
+    "full_time": 21,
+    "hourly": 40,
+    "directory_only": 4,
+    "unique_people": 65,
+    "degree_known": 61,
+    "degree_missing": 4,
+    "complete_for_published_roster": true,
+    "notes": [
+      "Incluye la totalidad de filas publicadas en las dos tablas de docentes: 21 de tiempo completo y 40 por horas. No se afirma que represente la nómina interna ni asignaciones vigentes por semestre.",
+      "El directorio contiene 11 cargos/personas; siete coinciden con docentes y cuatro sólo aparecen en el directorio.",
+      "Los grados proceden de fuentes institucionales. La tabla docente publica únicamente niveles académicos; no se infieren especializaciones. Para Walter Alexander Mata López se corrigió el nivel a Doctorado con publicaciones oficiales fechadas y se conserva el grado específico de su semblanza PIFOD de 2025.",
+      "No se encontró fecha de actualización del contenido en las tablas. verified_on indica la fecha de consulta, no una certificación de vigencia laboral o del grado más reciente.",
+      "Los nombres docentes se conservan en el orden publicado salvo las coincidencias corroboradas con el directorio, que se presentan en orden natural. Se guardan variantes como aliases para la búsqueda.",
+      "José Luis Álvarez Flores tiene una errata publicada «Dcotorado», preservada en degree_published y normalizada en degree.",
+      "Martha Evangelista Salazar, Erick Vázquez y Fermín Marcelo Maciel Barboza aparecen abreviados en el directorio; se mantienen los nombres completos de la tabla docente y las variantes publicadas.",
+      "Los cuatro grados ausentes se representan como null: Juan Carlos Gómez Ramírez, Karen Rubí Chavira Moctezuma, Celina Llerenas Escobar y Hugo Giovanny Batista Castro.",
+      "Corrección fechada el 22 de septiembre de 2026: Walter Alexander Mata López tiene Doctorado según la semblanza PIFOD 2025 y publicaciones de febrero de 2026; Maestría se preserva como valor literal de la tabla docente anterior, sin tratarlo como el grado actual."
+    ],
+    "degree_corrections": 1
+  }
+}

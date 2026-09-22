@@ -7,6 +7,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import urlsplit
 
+from people import PeopleDirectory, answer_people
+
 
 def normalize(value: str) -> str:
     value = unicodedata.normalize("NFKD", value.casefold())
@@ -33,6 +35,7 @@ class KnowledgeBase:
     institution: str
     verified_on: str
     entries: dict[str, Entry]
+    people: PeopleDirectory | None = None
 
     @classmethod
     def load(cls, path: Path):
@@ -60,7 +63,9 @@ class KnowledgeBase:
             )
         if not entries:
             raise ValueError("Empty knowledge base")
-        return cls(data["institution"], data["verified_on"], entries)
+        people_path = path.parent / "people.json"
+        people = PeopleDirectory.load(people_path) if people_path.exists() else None
+        return cls(data["institution"], data["verified_on"], entries, people)
 
 
 @dataclass(frozen=True)
@@ -82,8 +87,8 @@ UNKNOWN_MESSAGE = (
     "También puedo ayudarte con carreras, admisión, becas, trámites y ubicación."
 )
 
-# These patterns improve rejection UX; the actual security boundary is rendering
-# reviewed entries only. Even an obfuscated/unknown attack cannot generate text.
+# These patterns improve rejection UX. Factual answers render reviewed entries;
+# hybrid guidance separately validates evidence and never receives raw user text.
 REJECT_PATTERNS = (
     r"\b(ignora|ignorar|olvida|olvidar|omite|desobedece|ignore|forget|override)\b.{0,90}\b(todo|anterior|instrucciones|reglas|prompt|contexto|previous|instructions|rules|system)\b",
     r"\b(prompt|system prompt|developer message|jailbreak|dan mode|modo desarrollador|instrucciones internas|mensaje del sistema)\b",
@@ -209,6 +214,10 @@ def answer_question(question: str, history: list[str], knowledge: KnowledgeBase)
     query = normalize(question)
     if rejected(query):
         return Answer(SCOPE_MESSAGE, [], [])
+    safe_history = history if not history or not rejected(normalize(history[-1])) else []
+    staff_answer = answer_people(question, safe_history, knowledge.people)
+    if staff_answer is not None:
+        return Answer(staff_answer.content, staff_answer.topics, staff_answer.sources)
     # Only standalone social exchanges bypass topical routing.
     social = query.strip(" ?!¿¡.,")
     if social in {"hola", "buenas", "buenos dias", "buenas tardes", "buenas noches", "hey", "hello", "ayuda", "que puedes hacer"}:

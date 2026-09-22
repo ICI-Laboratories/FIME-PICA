@@ -78,7 +78,7 @@ curl http://localhost:6771/professors
 Ambas pruebas confirmarán que únicamente el puerto 80 del proxy responde peticiones legítimas para Student Hub.
 
 
-## FimeBot y mapa sin claves
+## FimeBot local y mapa sin claves
 
 FimeBot usa respuestas revisadas de la FIME **Universidad de Colima**, incluyendo
 las cinco licenciaturas publicadas por la facultad. La base editable es
@@ -88,11 +88,20 @@ los enlaces oficiales. Para ampliar la base: verificar el contenido oficial,
 actualizar entradas y palabras clave, ejecutar las pruebas del backend y recrear
 el servicio. Consulta también `services/fimebot-backend/README.md`.
 
-El bot responde exclusivamente con contenido de esta base, sin inferencia externa,
-API keys ni consumo de modelos. Las consultas fuera de alcance reciben una
-redirección; no ejecuta instrucciones del usuario ni confía en respuestas previas
-enviadas por el navegador. Esto prioriza información verificable: una pregunta no
-cubierta puede requerir reformulación o consulta directa con la facultad.
+El bot combina respuestas factuales deterministas con orientación de carreras
+mediante `qwen-local`, alojado en el servidor, sin API de pago. El directorio
+`context/people.json` conserva nombres, grados y fuentes de docentes y autoridades.
+Las consultas abiertas de orientación recuperan fichas de carreras y el modelo
+selecciona evidencia y afinidades; la salida se valida y se presenta con redacción
+controlada. Las consultas ajenas se redirigen, no se envían instrucciones del
+visitante al modelo y se ignoran respuestas previas enviadas por el navegador.
+Si la inferencia falla, se devuelve el contenido verificado de las fichas.
+
+El backend se conecta al gateway local por la red Docker externa `llm-apps`.
+En `.env.production`, `LLM_BASE_URL`, `LLM_MODEL` y `LLM_API_KEY` configuran esa
+conexión privada; no se exponen al navegador. `FIMEBOT_HYBRID_ENABLED=false`
+desactiva la inferencia. Para otra instalación, crear la red `llm-apps` y conectar
+un gateway compatible, o mantener el modo determinista sin gateway.
 
 El mapa utiliza Leaflet (BSD-2-Clause), cartografía OpenStreetMap con atribución,
 y los polígonos del campus existentes. El selector **Plano del campus** usa el
