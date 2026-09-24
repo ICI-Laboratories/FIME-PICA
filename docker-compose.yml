@@ -178,9 +178,9 @@ services:
     restart: always
     environment:
       FIMEBOT_HYBRID_ENABLED: ${FIMEBOT_HYBRID_ENABLED:-true}
-      OPENAI_BASE_URL: ${LLM_BASE_URL:-http://llm-gateway:8000/v1}
+      LLM_GATEWAY_BASE_URL: ${LLM_GATEWAY_BASE_URL:-http://llm-gateway:8000/v1}
       OPENAI_MODEL: ${LLM_MODEL:-qwen-local}
-      OPENAI_API_KEY: ${LLM_API_KEY:-}
+      LLM_GATEWAY_API_KEY: ${LLM_GATEWAY_API_KEY:-}
     networks:
       - student-hub-network
       - llm-apps

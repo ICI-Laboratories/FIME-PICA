@@ -12,7 +12,7 @@ El servidor extrae intereses de un vocabulario permitido y recupera hasta tres p
 
 Hay un límite de dos inferencias simultáneas sin cola por proceso y un tiempo máximo total de 12 segundos. Un fallo de conexión, saturación, tiempo agotado o salida no válida devuelve las fichas verificadas; el chat sigue funcionando. La salida se valida completa antes de enviarla, también con SSE. Se solicita JSON Schema estricto al gateway y además se comprueban en el servidor las relaciones entre carrera, interés y evidencia.
 
-Configuración: `FIMEBOT_HYBRID_ENABLED=true`, `OPENAI_BASE_URL`, `OPENAI_MODEL=qwen-local` y `OPENAI_API_KEY` (credencial del gateway privado). Docker Compose toma los últimos tres valores de `LLM_BASE_URL`, `LLM_MODEL` y `LLM_API_KEY` de `.env.production`, y conecta con la red externa `llm-apps`. El módulo está deshabilitado por defecto fuera de Compose. No se envían credenciales al cliente ni se registran preguntas o secretos. Una instalación sin gateway puede usar `FIMEBOT_HYBRID_ENABLED=false`.
+Configuración: `FIMEBOT_HYBRID_ENABLED=true`, `LLM_GATEWAY_BASE_URL=http://llm-gateway:8000/v1`, `OPENAI_MODEL=qwen-local` y `LLM_GATEWAY_API_KEY` (credencial de esta aplicación en el gateway privado). Docker Compose toma el modelo de `LLM_MODEL` y conecta con la red externa `llm-apps`. Antes de desplegar, trasladar URL y credencial de `.env.production` a las variables `LLM_GATEWAY_*`; las antiguas `LLM_BASE_URL`, `LLM_API_KEY` y `OPENAI_BASE_URL` no seleccionan el destino. El módulo está deshabilitado por defecto fuera de Compose. No se envían credenciales al cliente ni se registran preguntas o secretos. Una instalación sin gateway puede usar `FIMEBOT_HYBRID_ENABLED=false`.
 
 ## Actualizar la información
 

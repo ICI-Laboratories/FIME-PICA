@@ -185,8 +185,8 @@ class HybridResponder:
     def from_env(cls):
         return cls(
             enabled=os.getenv("FIMEBOT_HYBRID_ENABLED", "false").strip().lower() in {"1", "true", "yes", "on"},
-            base_url=os.getenv("OPENAI_BASE_URL", "http://llm-gateway:8000/v1"),
-            api_key=os.getenv("OPENAI_API_KEY", ""),
+            base_url=os.getenv("LLM_GATEWAY_BASE_URL", "http://llm-gateway:8000/v1"),
+            api_key=os.getenv("LLM_GATEWAY_API_KEY", ""),
             model=os.getenv("OPENAI_MODEL", "qwen-local"),
         )
 

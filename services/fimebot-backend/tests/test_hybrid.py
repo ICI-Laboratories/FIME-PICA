@@ -206,6 +206,29 @@ class HybridTests(unittest.IsolatedAsyncioTestCase):
             self.assertFalse(HybridResponder.from_env().enabled)
         with patch.dict(os.environ, {'FIMEBOT_HYBRID_ENABLED': 'true'}, clear=True):
             self.assertTrue(HybridResponder.from_env().enabled)
+
+    async def test_only_canonical_gateway_configuration_is_used(self):
+        with patch.dict(os.environ, {
+            'FIMEBOT_HYBRID_ENABLED': 'true',
+            'LLM_GATEWAY_BASE_URL': 'http://gateway.test:8000/v1',
+            'LLM_GATEWAY_API_KEY': 'app-key',
+            'OPENAI_BASE_URL': 'http://old-engine:11434/v1',
+            'OPENAI_API_KEY': 'old-key',
+        }, clear=True):
+            responder = HybridResponder.from_env()
+        requests = []
+        async def handle(request):
+            requests.append(request)
+            return httpx.Response(200, json=envelope())
+        responder.transport = httpx.MockTransport(handle)
+        self.assertIsNotNone(await self.call(responder))
+        self.assertEqual(len(requests), 1)
+        self.assertEqual(str(requests[0].url), 'http://gateway.test:8000/v1/chat/completions')
+        self.assertEqual(requests[0].headers['authorization'], 'Bearer app-key')
+
+    async def test_old_provider_url_cannot_override_gateway_default(self):
+        with patch.dict(os.environ, {'OPENAI_BASE_URL': 'http://old-engine:11434/v1'}, clear=True):
+            self.assertEqual(HybridResponder.from_env().base_url, 'http://llm-gateway:8000/v1')
         self.assertFalse(HybridResponder(enabled=True, base_url='https://user:secret@example.com/v1').enabled)
         self.assertEqual(HybridResponder(timeout=99).timeout, 12.0)
 
