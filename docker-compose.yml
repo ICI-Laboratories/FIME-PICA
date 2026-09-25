@@ -1,7 +1,4 @@
-version: '3.8'
-
 services:
-  # 1. Base de Datos PostgreSQL (Privada / Sin puertos expuestos al host)
   postgres:
     image: postgres:15-alpine
     container_name: student-hub-postgres
@@ -11,44 +8,26 @@ services:
       POSTGRES_USER: ${DB_USER:-admin}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-admin_pass}
     networks:
-      - student-hub-network
+    - student-hub-network
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./scripts/init.sql:/docker-entrypoint-initdb.d/01-init.sql
-      - ./scripts/import_horarios.sql:/docker-entrypoint-initdb.d/02-import.sql
+    - postgres_data:/var/lib/postgresql/data
+    - ./scripts/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+    - ./scripts/import_horarios.sql:/docker-entrypoint-initdb.d/02-import.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      test:
+      - CMD-SHELL
+      - pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB
       interval: 5s
       timeout: 5s
       retries: 5
-
-  # 2. Redis Cache & Sessions (Privado / Sin puertos expuestos al host)
   redis:
     image: redis:7-alpine
     container_name: student-hub-redis
     restart: always
     networks:
-      - student-hub-network
+    - student-hub-network
     volumes:
-      - redis_data:/data
-
-  # 3. Auth Service (Privado / Sin puertos expuestos al host)
-  auth-service:
-    build:
-      context: ./services/auth-service
-      dockerfile: Dockerfile
-    container_name: student-hub-auth-service
-    restart: always
-    environment:
-      DATABASE_URL: postgres://${DB_USER:-admin}:${DB_PASSWORD:-admin_pass}@postgres:5432/${DB_NAME:-pica_db}
-      JWT_SECRET: ${JWT_SECRET:-pica-student-hub-jwt-prod-2026}
-    networks:
-      - student-hub-network
-    depends_on:
-      postgres:
-        condition: service_healthy
-
-  # 4. Professors Service (Privado / Sin puertos expuestos al host)
+    - redis_data:/data
   professors-service:
     build:
       context: ./services/professors-service
@@ -61,12 +40,10 @@ services:
       CV_EXTRACTOR_URL: http://cv-extractor-service:6774
       REFERENCE_SERVICE_URL: http://reference-service:6773
     networks:
-      - student-hub-network
+    - student-hub-network
     depends_on:
       postgres:
         condition: service_healthy
-
-  # 5. Academic Service (Privado / Sin puertos expuestos al host)
   academic-service:
     build:
       context: ./services/academic-service
@@ -77,12 +54,10 @@ services:
       DATABASE_URL: postgres://${DB_USER:-admin}:${DB_PASSWORD:-admin_pass}@postgres:5432/${DB_NAME:-pica_db}
       JWT_SECRET: ${JWT_SECRET:-pica-student-hub-jwt-prod-2026}
     networks:
-      - student-hub-network
+    - student-hub-network
     depends_on:
       postgres:
         condition: service_healthy
-
-  # 6. Reference Service (Privado / Sin puertos expuestos al host)
   reference-service:
     build:
       context: ./services/reference-service
@@ -90,12 +65,10 @@ services:
     container_name: student-hub-reference-service
     restart: always
     networks:
-      - student-hub-network
+    - student-hub-network
     depends_on:
       postgres:
         condition: service_healthy
-
-  # 7. CV Extractor Service (Privado / Sin puertos expuestos al host)
   cv-extractor-service:
     build:
       context: ./services/cv-extractor-service
@@ -103,9 +76,7 @@ services:
     container_name: student-hub-cv-extractor-service
     restart: always
     networks:
-      - student-hub-network
-
-  # 8. Landing Page & FimeBot Chatbot (Privado / Sin puertos expuestos al host)
+    - student-hub-network
   landing:
     build:
       context: ./services/landing
@@ -113,9 +84,7 @@ services:
     container_name: student-hub-landing
     restart: always
     networks:
-      - student-hub-network
-
-  # 9. StudentHUB Frontend SSR (Privado / Comunicado sólo con Nginx)
+    - student-hub-network
   student-hub:
     build:
       context: .
@@ -126,18 +95,16 @@ services:
     restart: always
     environment:
       DATABASE_URL: postgres://${DB_USER:-admin}:${DB_PASSWORD:-admin_pass}@postgres:5432/${DB_NAME:-pica_db}
-      AUTH_SERVICE_URL: http://auth-service:6770
+      AUTH_SERVICE_URL: http://portal:8080
       PROFESSORS_SERVICE_URL: http://professors-service:6771
       ACADEMIC_SERVICE_URL: http://academic-service:6772
       REFERENCE_SERVICE_URL: http://reference-service:6773
       COOKIE_SECRET: ${COOKIE_SECRET:-pica_student_hub_production_cookie_secret_2026}
     networks:
-      - student-hub-network
+    - student-hub-network
     depends_on:
       postgres:
         condition: service_healthy
-      auth-service:
-        condition: service_started
       professors-service:
         condition: service_started
       academic-service:
@@ -145,9 +112,7 @@ services:
       reference-service:
         condition: service_started
     volumes:
-      - ./services/student-hub/public:/app/services/student-hub/public
-
-  # 10. Proxy Nginx de Entrada Única (ÚNICO CONTENEDOR CON PUERTO EXPUESTO AL HOST)
+    - ./services/student-hub/public:/app/services/student-hub/public
   proxy:
     build:
       context: ./services/proxy
@@ -155,21 +120,19 @@ services:
     container_name: student-hub-proxy
     restart: always
     ports:
-      - "${HOST_PORT:-80}:80"
+    - ${HOST_PORT:-80}:80
     networks:
-      - student-hub-network
+    - student-hub-network
     volumes:
-      - proxy_cache:/var/cache/nginx
+    - proxy_cache:/var/cache/nginx
     depends_on:
-      - student-hub
-      - auth-service
-      - professors-service
-      - academic-service
-      - reference-service
-      - landing
-      - fimebot-backend
-
-  # 11. FimeBot: orientación institucional con fuentes verificadas, sin API de pago.
+    - student-hub
+    - professors-service
+    - academic-service
+    - reference-service
+    - landing
+    - fimebot-backend
+    - portal
   fimebot-backend:
     build:
       context: ./services/fimebot-backend
@@ -182,23 +145,82 @@ services:
       OPENAI_MODEL: ${LLM_MODEL:-qwen-local}
       LLM_GATEWAY_API_KEY: ${LLM_GATEWAY_API_KEY:-}
     networks:
-      - student-hub-network
-      - llm-apps
+    - student-hub-network
+    - llm-apps
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8043/health', timeout=3)"]
+      test:
+      - CMD
+      - python
+      - -c
+      - import urllib.request; urllib.request.urlopen('http://127.0.0.1:8043/health',
+        timeout=3)
       interval: 30s
       timeout: 5s
       start_period: 10s
       retries: 3
-
-  # 12. Cloudflare Tunnel (Ingress de Producción)
   tunnel:
     image: cloudflare/cloudflared:latest
     container_name: student-hub-tunnel
     restart: always
     network_mode: host
     command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
-
+  portal:
+    build: ./services/portal
+    image: student-hub-portal:local
+    container_name: student-hub-portal
+    restart: unless-stopped
+    environment:
+      PORTAL_ORIGIN: https://fime.ici-labs.com
+      IDENTITY_URL: http://sara-identity:8001
+      AUTH_PORTAL_URL: https://auth.ici-labs.com
+      REDIS_URL: redis://portal-redis:6379/0
+    networks:
+    - student-hub-network
+    - sara-identity-clients
+    - portal-network
+    depends_on:
+      portal-redis:
+        condition: service_healthy
+      fimebot-backend:
+        condition: service_healthy
+    healthcheck:
+      test:
+      - CMD
+      - python
+      - -c
+      - import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz',
+        timeout=3)
+      interval: 20s
+      timeout: 5s
+      retries: 3
+    mem_limit: 256m
+    pids_limit: 128
+    read_only: true
+    tmpfs:
+    - /tmp
+    security_opt:
+    - no-new-privileges:true
+    cap_drop:
+    - ALL
+  portal-redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command:
+    - redis-server
+    - --appendonly
+    - 'yes'
+    volumes:
+    - portal_sessions:/data
+    networks:
+    - portal-network
+    healthcheck:
+      test:
+      - CMD
+      - redis-cli
+      - ping
+      interval: 10s
+      timeout: 3s
+      retries: 3
 volumes:
   postgres_data:
     driver: local
@@ -206,10 +228,14 @@ volumes:
     driver: local
   redis_data:
     driver: local
-
+  portal_sessions: {}
 networks:
   llm-apps:
     external: true
   student-hub-network:
     driver: bridge
     internal: false
+  portal-network:
+    internal: true
+  sara-identity-clients:
+    external: true

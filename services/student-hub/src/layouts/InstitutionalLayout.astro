@@ -13,20 +13,37 @@ const {
   fromLanding: fromLandingProp,
 } = Astro.props;
 
-const urlFrom = Astro.url.searchParams.get("from");
-const isFromLanding = fromLandingProp ?? (urlFrom === "landing");
-
-const pathname = Astro.url.pathname;
+const isFromLanding = fromLandingProp ?? (Astro.url.searchParams.get("from") === "landing");
+const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
 
 function isActive(path: string): boolean {
-  if (path === "/" && pathname === "/") return true;
-  if (path !== "/" && pathname.startsWith(path)) return true;
-  return false;
+  // El proxy sirve /studenthub mediante la página raíz de este servicio.
+  if (path === "/studenthub") return pathname === "/" || pathname === "/studenthub";
+  if (path === "/") return false;
+  return pathname === path || pathname.startsWith(`${path}/`);
 }
 
 const student = Astro.locals.student;
 const cookieGroup = Astro.cookies.get("pica_selected_group")?.value;
 const activeGroupSlug = Astro.url.searchParams.get("group") || cookieGroup || student?.class_group_slug;
+const groupQuery = activeGroupSlug ? `?${new URLSearchParams({ group: activeGroupSlug })}` : "";
+const source = isFromLanding ? "landing" : "studenthub";
+const academicLinks = [
+  { path: "/studenthub", href: "/studenthub", label: "Horario" },
+  { path: "/materias", href: `/materias${groupQuery}`, label: "Materias" },
+  { path: "/profesores", href: `/profesores?from=${source}`, label: "Profesores" },
+  { path: "/mapa", href: `/mapa?from=${source}`, label: "Mapa" },
+  { path: "/fechas", href: `/fechas${groupQuery}`, label: "Fechas de evaluación" },
+  { path: "/aplicaciones", href: "/aplicaciones", label: "Aplicaciones" },
+];
+const homeLink = { path: "/", href: "/", label: "Inicio" };
+const desktopLinks = isFromLanding
+  ? [
+      { ...academicLinks[0], label: "StudentHUB" },
+      ...academicLinks.filter(({ path }) => ["/profesores", "/mapa", "/aplicaciones"].includes(path)),
+    ]
+  : [homeLink, ...academicLinks];
+const moreIsActive = academicLinks.slice(4).some(({ path }) => isActive(path));
 ---
 
 <!doctype html>
@@ -45,495 +62,249 @@ const activeGroupSlug = Astro.url.searchParams.get("group") || cookieGroup || st
   </head>
 
   <body>
-    <!-- Banda primaria institucional UCOL -->
-    <div
-      style="height: 4px; background-color: var(--color-primary); width: 100%;"
-    >
-    </div>
+    <a class="skip-link" href="#main-content">Saltar al contenido</a>
+    <div class="institutional-stripe" aria-hidden="true"></div>
 
-    <!-- ═══════════════════════════════════════
-         HEADER ESCRITORIO
-         ═══════════════════════════════════════ -->
     <header class="site-header" id="site-header">
       <div class="header-inner">
-        {isFromLanding ? (
-          <!-- Header modo Landing: Wordmark FIMEBot -->
-          <a href="/" class="wordmark" aria-label="FIMEBot — Inicio">
-            <span class="wordmark__overline">Universidad de Colima</span>
-            <span class="wordmark__title">
-              FIME<em>Bot</em>
-            </span>
-          </a>
-
-          <!-- Navegación modo Landing -->
-          <nav
-            aria-label="Navegación principal"
-            style="flex: 1; margin-left: 24px;"
-          >
-            <ul class="nav-list" role="list">
-              <li>
-                <a href="/studenthub" class={`nav-link ${isActive("/studenthub") ? "active" : ""}`}>
-                  StudentHUB
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/profesores?from=landing"
-                  class={`nav-link ${isActive("/profesores") ? "active" : ""}`}
-                >
-                  Profesores
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/mapa?from=landing"
-                  class={`nav-link ${isActive("/mapa") ? "active" : ""}`}
-                >
-                  Mapa
-                </a>
-              </li>
-            </ul>
-          </nav>
-
-          <a href="/#chat" class="btn-header-chat" style="padding: 8px 16px; background: var(--color-primary); color: white; border-radius: 4px; text-decoration: none; font-size: 0.8125rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono);">
-            [o_o] FimeBot
-          </a>
-        ) : (
-          <!-- Header modo StudentHUB: Wordmark StudentHUB -->
-          <a href="/studenthub" class="wordmark" aria-label="StudentHUB — Inicio">
-            <span class="wordmark__overline">Universidad de Colima</span>
-            <span class="wordmark__title">
-              Student<em>HUB</em>
-            </span>
-          </a>
-
-          <!-- Navegación modo StudentHUB -->
-          <nav
-            aria-label="Navegación principal"
-            style="flex: 1; margin-left: 24px;"
-          >
-            <ul class="nav-list" role="list">
-              <li>
-                <a href="/" class="nav-link">
-                  Inicio
-                </a>
-              </li>
-              <li>
-                <a href="/studenthub" class={`nav-link ${isActive("/studenthub") ? "active" : ""}`}>
-                  Horario
-                </a>
-              </li>
-              <li>
-                <a
-                  href={activeGroupSlug ? `/materias?group=${activeGroupSlug}` : "/materias"}
-                  class={`nav-link ${isActive("/materias") ? "active" : ""}`}
-                >
-                  Materias
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/profesores?from=studenthub"
-                  class={`nav-link ${isActive("/profesores") ? "active" : ""}`}
-                >
-                  Profesores
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/mapa?from=studenthub"
-                  class={`nav-link ${isActive("/mapa") ? "active" : ""}`}
-                >
-                  Mapa
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href={activeGroupSlug ? `/fechas?group=${activeGroupSlug}` : "/fechas"}
-                  class={`nav-link ${isActive("/fechas") ? "active" : ""}`}
-                >
-                  Fechas de evaluación
-                </a>
-              </li>
-            </ul>
-          </nav>
-
-          <!-- Botón de Cambiar Grupo en la parte superior derecha -->
-          <a
-            href="/studenthub?select_group=true"
-            class="btn-change-group-header"
-            style="
-              padding: 8px 16px;
-              background: transparent;
-              color: var(--color-primary);
-              border: 1px solid var(--color-primary);
-              border-radius: 4px;
-              text-decoration: none;
-              font-size: 0.75rem;
-              font-weight: 700;
-              font-family: var(--font-mono);
-              text-transform: uppercase;
-              letter-spacing: 0.05em;
-              display: inline-flex;
-              align-items: center;
-              gap: 6px;
-              transition: all 120ms ease;
-              white-space: nowrap;
-            "
-          >
-            [⇄] Cambiar Grupo
-          </a>
-        )}
-      </div>
-      <hr class="rule" style="margin: 0;" />
-    </header>
-
-      <!-- MAIN -->
-      <main
-        id="main-content"
-        style="
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 40px 24px 80px;
-        min-height: calc(100vh - 120px);
-      "
-      >
-        <slot />
-      </main>
-
-      <!-- FOOTER -->
-      <footer
-        style="
-      border-top: 1px solid var(--color-rule);
-      background-color: var(--color-surface);
-      padding: 20px 24px;
-    "
-      >
-        <div
-          style="max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;"
+        <a
+          href={isFromLanding ? "/" : "/studenthub"}
+          class="wordmark"
+          aria-label={isFromLanding ? "FIMEBot — Inicio" : "StudentHUB — Inicio"}
         >
-          <span
-            style="font-size: 0.625rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-3);"
-          >
-            StudentHUB · Universidad de Colima
+          <span class="wordmark__overline">Universidad de Colima</span>
+          <span class="wordmark__title">
+            {isFromLanding ? <>FIME<em>Bot</em></> : <>Student<em>HUB</em></>}
           </span>
-          <span style="font-size: 0.625rem; color: var(--color-rule-strong);">
-            Sistema de información académica
-          </span>
-        </div>
-      </footer>
+        </a>
 
-      <!-- NAV MÓVIL -->
-      <nav
-        class="mobile-nav"
-        aria-label="Navegación móvil"
-        style="display: none;"
-      >
-        <a
-          href="/"
-          class={`mobile-nav__item ${isActive("/") ? "mobile-nav__item--active" : ""}`}
-        >
-          <span class="mobile-nav__dot" aria-hidden="true"></span>
-          <span class="mobile-nav__label">Horario</span>
-        </a>
-        <a
-          href="/materias"
-          class={`mobile-nav__item ${isActive("/materias") ? "mobile-nav__item--active" : ""}`}
-        >
-          <span class="mobile-nav__dot" aria-hidden="true"></span>
-          <span class="mobile-nav__label">Materias</span>
-        </a>
-        <a
-          href="/profesores"
-          class={`mobile-nav__item ${isActive("/profesores") ? "active" : ""}`}
-        >
-          <span class="mobile-nav__dot" aria-hidden="true"></span>
-          <span class="mobile-nav__label">Profesores</span>
-        </a>
-        <a
-          href="/mapa"
-          class={`mobile-nav__item ${isActive("/mapa") ? "active" : ""}`}
-        >
-          <span class="mobile-nav__dot" aria-hidden="true"></span>
-          <span class="mobile-nav__label">Mapa</span>
-        </a>
-        <button
-          id="btn-more"
-          class="mobile-nav__item"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          <span class="mobile-nav__dot" aria-hidden="true"></span>
-          <span class="mobile-nav__label">Más</span>
-        </button>
-      </nav>
-
-      <!-- Drawer móvil -->
-      <div
-        id="mobile-drawer"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Menú"
-        style="display: none;"
-      >
-        <div
-          id="drawer-backdrop"
-          style="position: fixed; inset: 0; background: rgba(26,26,26,0.5); z-index: 40;"
-        >
-        </div>
-        <div
-          id="drawer-panel"
-          style="
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: var(--color-surface);
-        border-top: 1px solid var(--color-rule);
-        z-index: 50;
-        padding: 24px;
-      "
-        >
-          <div
-            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;"
-          >
-            <span
-              style="font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-ink-3);"
-            >
-              Menú académico
-            </span>
-            <button
-              id="btn-close-drawer"
-              style="
-            background: none;
-            border: none;
-            font-size: 1.25rem;
-            color: var(--color-ink-3);
-            cursor: pointer;
-            padding: 4px;
-            line-height: 1;
-          "
-              aria-label="Cerrar menú">×</button
-            >
-          </div>
-          <hr class="rule" style="margin-bottom: 20px;" />
-          <nav style="display: flex; flex-direction: column; gap: 0;">
-            {
-              [
-                { href: "/", label: "Horario", active: isActive("/") },
-                {
-                  href: "/materias",
-                  label: "Materias",
-                  active: isActive("/materias"),
-                },
-                {
-                  href: "/profesores",
-                  label: "Profesores",
-                  active: isActive("/profesores"),
-                },
-                { href: "/mapa", label: "Mapa", active: isActive("/mapa") },
-                {
-                  href: "/fechas",
-                  label: "Fechas de evaluación",
-                  active: isActive("/fechas"),
-                },
-              ].map((item) => (
+        <nav class="desktop-navigation" aria-label="Navegación principal">
+          <ul class="nav-list" role="list">
+            {desktopLinks.map((item) => (
+              <li>
                 <a
                   href={item.href}
-                  style={`
-                display: block;
-                padding: 14px 0;
-                font-size: 1rem;
-                font-weight: ${item.active ? "800" : "600"};
-                color: ${item.active ? "var(--color-primary)" : "var(--color-ink)"};
-                text-decoration: none;
-                border-bottom: 1px solid var(--color-rule);
-              `}
+                  class:list={["nav-link", { active: isActive(item.path) }]}
+                  aria-current={isActive(item.path) ? "page" : undefined}
                 >
                   {item.label}
                 </a>
-              ))
-            }
-          </nav>
-        </div>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {isFromLanding ? (
+          <a href="/#fimebot-chat" class="btn-header-chat"><span aria-hidden="true">[o_o]</span> FimeBot</a>
+        ) : (
+          <a href="/studenthub?select_group=true" class="btn-change-group-header">
+            <span aria-hidden="true">[⇄]</span> Cambiar Grupo
+          </a>
+        )}
       </div>
+      <hr class="rule" />
+    </header>
 
-      <script>
-        function setupMobileNav() {
-          const btnMore = document.getElementById("btn-more");
-          const drawer = document.getElementById("mobile-drawer");
-          const backdrop = document.getElementById("drawer-backdrop");
-          const btnClose = document.getElementById("btn-close-drawer");
+    <main id="main-content" tabindex="-1">
+      <slot />
+    </main>
 
-          function openDrawer() {
-            if (drawer) {
-              drawer.style.display = "block";
-              btnMore?.setAttribute("aria-expanded", "true");
-              document.body.style.overflow = "hidden";
-            }
-          }
-          function closeDrawer() {
-            if (drawer) {
-              drawer.style.display = "none";
-              btnMore?.setAttribute("aria-expanded", "false");
-              document.body.style.overflow = "";
-            }
-          }
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span>StudentHUB · Universidad de Colima</span>
+        <span>Sistema de información académica</span>
+      </div>
+    </footer>
 
-          btnMore?.addEventListener("click", openDrawer);
-          backdrop?.addEventListener("click", closeDrawer);
-          btnClose?.addEventListener("click", closeDrawer);
-          document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape") closeDrawer();
-          });
+    <nav class="mobile-nav" aria-label="Navegación móvil">
+      {academicLinks.slice(0, 4).map((item) => (
+        <a
+          href={item.href}
+          class:list={["mobile-nav__item", { "mobile-nav__item--active": isActive(item.path) }]}
+          aria-current={isActive(item.path) ? "page" : undefined}
+        >
+          <span class="mobile-nav__dot" aria-hidden="true"></span>
+          <span class="mobile-nav__label">{item.label}</span>
+        </a>
+      ))}
+      <button
+        type="button"
+        id="btn-more"
+        class:list={["mobile-nav__item", { "mobile-nav__item--active": moreIsActive }]}
+        aria-label="Más opciones de navegación"
+        aria-haspopup="dialog"
+        aria-controls="mobile-drawer"
+        aria-expanded="false"
+      >
+        <span class="mobile-nav__dot" aria-hidden="true"></span>
+        <span class="mobile-nav__label">Más</span>
+      </button>
+    </nav>
+
+    <dialog id="mobile-drawer" aria-labelledby="drawer-title">
+      <div class="drawer-heading">
+        <h2 id="drawer-title">Menú académico</h2>
+        <button type="button" id="btn-close-drawer" aria-label="Cerrar menú">×</button>
+      </div>
+      <nav class="drawer-navigation" aria-label="Todas las secciones">
+        {[homeLink, ...academicLinks].map((item) => (
+          <a href={item.href} aria-current={isActive(item.path) ? "page" : undefined}>
+            {item.label}
+          </a>
+        ))}
+        <a href="/studenthub?select_group=true">Cambiar grupo</a>
+      </nav>
+    </dialog>
+    <noscript>
+      <nav class="no-script-navigation" aria-label="Más secciones">
+        <a href="/">Inicio</a>
+        <a href={`/fechas${groupQuery}`}>Fechas de evaluación</a>
+        <a href="/aplicaciones">Aplicaciones</a>
+        <a href="/studenthub?select_group=true">Cambiar grupo</a>
+      </nav>
+      <style>#btn-more { display: none; }</style>
+    </noscript>
+
+    <script>
+      function setupMobileNav() {
+        const btnMore = document.querySelector<HTMLButtonElement>("#btn-more");
+        const drawer = document.querySelector<HTMLDialogElement>("#mobile-drawer");
+        const btnClose = document.querySelector<HTMLButtonElement>("#btn-close-drawer");
+        if (!btnMore || !drawer || !btnClose || drawer.dataset.initialized) return;
+        drawer.dataset.initialized = "true";
+
+        const controller = new AbortController();
+        const options = { signal: controller.signal };
+        const desktopViewport = window.matchMedia("(min-width: 1200px)");
+        let previousOverflow = "";
+        let returnFocus: HTMLElement | null = null;
+
+        function closeDrawer() {
+          if (drawer?.open) drawer.close();
         }
 
-        setupMobileNav();
-        document.addEventListener("astro:page-load", setupMobileNav);
-      </script>
-    </header>
+        btnMore.addEventListener("click", () => {
+          if (drawer.open) return;
+          returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : btnMore;
+          previousOverflow = document.body.style.overflow;
+          drawer.showModal();
+          document.body.style.overflow = "hidden";
+          btnMore.setAttribute("aria-expanded", "true");
+          btnClose.focus();
+        }, options);
+
+        btnClose.addEventListener("click", closeDrawer, options);
+        // <dialog> mantiene el foco dentro y permite cerrar con Escape de forma nativa.
+        drawer.addEventListener("close", () => {
+          btnMore.setAttribute("aria-expanded", "false");
+          document.body.style.overflow = previousOverflow;
+          if (returnFocus?.isConnected && !desktopViewport.matches) returnFocus.focus();
+        }, options);
+        drawer.addEventListener("click", (event) => {
+          if (event.target !== drawer) return;
+          const bounds = drawer.getBoundingClientRect();
+          if (event.clientX < bounds.left || event.clientX > bounds.right ||
+              event.clientY < bounds.top || event.clientY > bounds.bottom) closeDrawer();
+        }, options);
+        desktopViewport.addEventListener("change", (event) => {
+          if (event.matches) closeDrawer();
+        }, options);
+        document.addEventListener("astro:before-swap", () => {
+          if (drawer.open) {
+            document.body.style.overflow = previousOverflow;
+            drawer.close();
+          }
+          controller.abort();
+        }, { once: true, signal: controller.signal });
+      }
+
+      setupMobileNav();
+      document.addEventListener("astro:page-load", setupMobileNav);
+    </script>
   </body>
-
-  <style>
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 30;
-      background-color: var(--color-surface);
-    }
-
-    .header-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 24px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 32px;
-    }
-
-    .wordmark {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      text-decoration: none;
-      flex-shrink: 0;
-    }
-
-    .wordmark__overline {
-      font-size: 0.5625rem;
-      font-weight: 500;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--color-ink-3);
-      line-height: 1;
-    }
-
-    .wordmark__title {
-      font-family: var(--font-sans);
-      font-size: 1.25rem;
-      font-weight: 900;
-      letter-spacing: -0.04em;
-      color: var(--color-ink);
-      line-height: 1;
-    }
-
-    .wordmark__title em {
-      font-style: normal;
-      color: var(--color-primary);
-    }
-
-    .nav-list {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .mobile-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background-color: var(--color-surface);
-      border-top: 1px solid var(--color-rule);
-      height: auto;
-      min-height: 56px;
-      display: flex !important;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-evenly;
-      z-index: 40;
-      padding: 6px 0;
-    }
-
-    @media (min-width: 768px) {
-      .mobile-nav {
-        display: none !important;
-      }
-      body {
-        padding-bottom: 0;
-      }
-    }
-
-    @media (max-width: 767px) {
-      body {
-        padding-bottom: 120px;
-      }
-      .site-header {
-        display: none;
-      }
-      .mobile-nav {
-        display: flex !important;
-      }
-    }
-
-    .mobile-nav__item {
-      flex: 1 0 70px;
-      max-width: 120px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      text-decoration: none;
-      color: var(--color-ink-3);
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px 4px;
-      transition: color var(--duration);
-    }
-
-    .mobile-nav__item--active {
-      color: var(--color-primary);
-    }
-    .mobile-nav__item:hover:not(.mobile-nav__item--active) {
-      color: var(--color-ink);
-    }
-
-    .mobile-nav__dot {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background-color: currentColor;
-      opacity: 0.3;
-    }
-
-    .mobile-nav__item--active .mobile-nav__dot {
-      opacity: 1;
-    }
-
-    .mobile-nav__label {
-      font-size: 0.5rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      line-height: 1;
-    }
-  </style>
 </html>
+
+<style>
+  .institutional-stripe { height: 4px; background: var(--color-primary); }
+  .site-header { position: sticky; top: 0; z-index: 30; background: var(--color-surface); }
+  .header-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .wordmark { display: flex; flex-direction: column; gap: 2px; text-decoration: none; flex-shrink: 0; }
+  .wordmark__overline {
+    font-size: 0.625rem; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--color-ink-3); line-height: 1.2;
+  }
+  .wordmark__title {
+    font-family: var(--font-sans); font-size: 1.25rem; font-weight: 900;
+    letter-spacing: -0.04em; color: var(--color-ink); line-height: 1;
+  }
+  .wordmark__title em { font-style: normal; color: var(--color-primary); }
+  .desktop-navigation { flex: 1; }
+  .nav-list { display: flex; align-items: center; gap: 16px; list-style: none; margin: 0; padding: 0; }
+  .btn-header-chat, .btn-change-group-header {
+    min-height: 44px; padding: 8px 12px; border: 1px solid var(--color-primary); border-radius: 4px;
+    color: var(--color-primary); text-decoration: none; font-size: 0.75rem; font-weight: 700;
+    font-family: var(--font-mono); display: inline-flex; align-items: center; gap: 6px;
+    white-space: nowrap;
+  }
+  .btn-header-chat { background: var(--color-primary); color: white; }
+  .btn-change-group-header:hover { background: var(--color-muted); }
+  #main-content { max-width: 1280px; margin: 0 auto; padding: 40px 24px 80px; min-height: calc(100vh - 120px); }
+  .site-footer { border-top: 1px solid var(--color-rule); background: var(--color-surface); padding: 20px 24px; }
+  .footer-inner {
+    max-width: 1280px; margin: 0 auto; display: flex; flex-wrap: wrap;
+    justify-content: space-between; align-items: center; gap: 8px 24px;
+    font-size: 0.6875rem; color: var(--color-ink-3);
+  }
+  .footer-inner span:first-child { letter-spacing: 0.08em; text-transform: uppercase; }
+  .mobile-nav { display: none; }
+  .mobile-nav__item {
+    flex: 1 1 0; min-width: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 6px; min-height: 52px;
+    text-decoration: none; color: var(--color-ink-3); background: none; border: none;
+    cursor: pointer; padding: 8px 2px; transition: color var(--duration);
+  }
+  .mobile-nav__item--active { color: var(--color-primary); }
+  .mobile-nav__item:hover { color: var(--color-ink); }
+  .mobile-nav__dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: 0.3; }
+  .mobile-nav__item--active .mobile-nav__dot { opacity: 1; }
+  .mobile-nav__label { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.01em; text-transform: uppercase; line-height: 1.3; }
+  #mobile-drawer {
+    position: fixed; inset: auto 0 0; width: 100%; max-width: none;
+    max-height: 85dvh; margin: 0; padding: 16px 24px max(24px, env(safe-area-inset-bottom));
+    overflow-y: auto; overscroll-behavior: contain;
+    border: 0; border-top: 1px solid var(--color-rule);
+    background: var(--color-surface); color: var(--color-ink);
+  }
+  #mobile-drawer::backdrop { background: rgba(26, 26, 26, 0.5); }
+  .drawer-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 8px; }
+  .drawer-heading h2 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-3); }
+  #btn-close-drawer {
+    display: grid; place-items: center; min-height: 44px; min-width: 44px;
+    background: none; border: none; color: var(--color-ink-2); font-size: 1.5rem; cursor: pointer;
+  }
+  .drawer-navigation { display: flex; flex-direction: column; }
+  .drawer-navigation a { display: block; padding: 12px 0; min-height: 48px; font-size: 1rem; font-weight: 600; border-bottom: 1px solid var(--color-rule); }
+  .drawer-navigation a[aria-current="page"] { color: var(--color-primary); font-weight: 800; }
+  .no-script-navigation { display: flex; flex-wrap: wrap; gap: 16px; padding: 24px; }
+  .no-script-navigation a { text-decoration: underline; }
+  @media (max-width: 1199px) {
+    body { padding-bottom: calc(68px + env(safe-area-inset-bottom)); }
+    .site-header { display: none; }
+    .mobile-nav {
+      display: flex; position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--color-surface); border-top: 1px solid var(--color-rule);
+      align-items: center; justify-content: space-evenly; z-index: 40;
+      padding: 4px 4px calc(4px + env(safe-area-inset-bottom));
+    }
+  }
+  @media (max-width: 767px) { #main-content { padding: 24px 16px 48px; } }
+</style>

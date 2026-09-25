@@ -9,9 +9,10 @@ const isFromLanding = fromParam === "landing";
 
 let profesores = [];
 let activeGroup = null;
+let loadError = false;
 
 try {
-  const allProfessors = await cargarProfesores();
+  const allProfessors = await cargarProfesores({ throwOnError: true });
 
   if (isFromLanding) {
     profesores = allProfessors;
@@ -49,6 +50,7 @@ try {
     }
   }
 } catch(e) {
+  loadError = true;
   console.error("Error loading teachers:", e);
 }
 ---
@@ -64,7 +66,9 @@ try {
     <div class="page-header__title">
       <span class="overline overline--primary">Claustro Académico FIME</span>
       <h1 class="page-title">Directorio de Profesores</h1>
-      {isFromLanding ? (
+      {loadError ? (
+        <p class="page-subtitle">El directorio no está disponible en este momento.</p>
+      ) : isFromLanding ? (
         <p class="page-subtitle">
           Docentes, investigadores y catedráticos de la Universidad de Colima ({profesores.length} profesores)
         </p>
@@ -86,13 +90,21 @@ try {
 
     <!-- Buscador en vivo de profesores -->
     <div style="margin-top: 16px; max-width: 480px;">
+      <label for="teacher-search-input" class="field-label" style="display: block; margin-bottom: 8px;">Buscar profesores</label>
       <input
         type="search"
         id="teacher-search-input"
         class="input"
+        disabled={loadError}
+        aria-controls="teachers-grid-wrapper"
+        aria-describedby="teacher-search-help"
         placeholder="Buscar por nombre o departamento..."
         style="width: 100%; box-sizing: border-box;"
       />
+      <p id="teacher-search-help" style="margin-top: 8px; font-size: 0.8125rem; color: var(--color-ink-2);">Escribe un nombre o departamento. Puedes buscar con o sin acentos.</p>
+      <p id="teacher-search-status" role="status" aria-live="polite" aria-atomic="true" style="margin-top: 8px; font-size: 0.8125rem; color: var(--color-ink-2);">
+        {loadError ? 'No pudimos consultar los profesores.' : `${profesores.length} ${profesores.length === 1 ? 'profesor disponible' : 'profesores disponibles'}`}
+      </p>
     </div>
   </div>
 
@@ -102,23 +114,57 @@ try {
   <div id="teachers-grid-wrapper">
     <TeacherGrid profesores={profesores} />
   </div>
+  {loadError ? (
+    <p role="alert">No pudimos cargar el directorio. <a href={Astro.url.pathname + Astro.url.search} class="link">Volver a intentar</a></p>
+  ) : profesores.length === 0 ? (
+    <p>Todavía no hay profesores disponibles{activeGroup ? ' para este grupo' : ''}. {activeGroup && <a href="/profesores?from=landing" class="link">Ver directorio completo FIME</a>}</p>
+  ) : (
+    <div id="teacher-search-empty" hidden>
+      <p>No encontramos profesores con esa búsqueda. Prueba otro nombre o departamento.</p>
+      <button id="teacher-search-clear" type="button" class="btn" style="margin-top: 12px;">Limpiar búsqueda</button>
+    </div>
+  )}
 
   <script>
+    function normalizeSearch(value: string) {
+      return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("es").trim();
+    }
+
     function setupTeacherSearch() {
       const searchInput = document.getElementById("teacher-search-input") as HTMLInputElement | null;
-      const cards = document.querySelectorAll(".teacher-card");
+      if (!searchInput || searchInput.disabled || searchInput.dataset.searchReady) return;
+      searchInput.dataset.searchReady = "true";
+      const status = document.getElementById("teacher-search-status");
+      const empty = document.getElementById("teacher-search-empty");
+      const cards = [...document.querySelectorAll<HTMLElement>("#teachers-grid-wrapper .teacher-card")].map(card => ({
+        element: card,
+        text: normalizeSearch(card.textContent || ""),
+      }));
 
-      searchInput?.addEventListener("input", (e) => {
-        const term = (e.target as HTMLInputElement).value.toLowerCase().trim();
-        cards.forEach((card) => {
-          const text = card.textContent?.toLowerCase() || "";
-          if (text.includes(term)) {
-            (card as HTMLElement).style.display = "flex";
-          } else {
-            (card as HTMLElement).style.display = "none";
-          }
+      function filterTeachers() {
+        const terms = normalizeSearch(searchInput!.value).split(/\s+/).filter(Boolean);
+        let count = 0;
+        cards.forEach(({ element, text }) => {
+          const matches = terms.every(term => text.includes(term));
+          element.hidden = !matches;
+          // TeacherGrid has an inline display declaration; keep hidden cards
+          // out of both the visual layout and the keyboard focus order.
+          element.style.display = matches ? "flex" : "none";
+          if (matches) count += 1;
         });
+        if (status) status.textContent = terms.length
+          ? `${count} de ${cards.length} profesores coinciden con tu búsqueda.`
+          : `${cards.length} ${cards.length === 1 ? 'profesor disponible' : 'profesores disponibles'}.`;
+        if (empty) empty.hidden = count > 0 || terms.length === 0;
+      }
+
+      searchInput.addEventListener("input", filterTeachers);
+      document.getElementById("teacher-search-clear")?.addEventListener("click", () => {
+        searchInput.value = "";
+        filterTeachers();
+        searchInput.focus();
       });
+      filterTeachers();
     }
 
     setupTeacherSearch();

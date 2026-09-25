@@ -1,0 +1,91 @@
+[
+  {
+    "id": "studenthub",
+    "name": "Student Hub",
+    "category": "Vida académica",
+    "label": "Tu horario, a un paso",
+    "description": "Elige carrera, semestre y grupo para consultar tu horario semanal, materias y fechas de evaluación.",
+    "url": "/studenthub",
+    "icon": "H",
+    "access": "Sin cuenta",
+    "aliases": [
+      "horarios",
+      "materias",
+      "evaluaciones",
+      "grupos"
+    ]
+  },
+  {
+    "id": "mapa",
+    "name": "Mapa del campus",
+    "category": "Vida académica",
+    "label": "Encuentra tu aula",
+    "description": "Localiza edificios, aulas y laboratorios del campus Coquimatlán y consulta sus espacios.",
+    "url": "/mapa",
+    "icon": "M",
+    "access": "Sin cuenta",
+    "aliases": [
+      "ubicación",
+      "laboratorios",
+      "aulas"
+    ]
+  },
+  {
+    "id": "profesores",
+    "name": "Directorio de profesores",
+    "category": "Vida académica",
+    "label": "Conoce al equipo docente",
+    "description": "Busca profesores de la FIME y consulta sus perfiles. También puedes ver los docentes de tu grupo.",
+    "url": "/profesores?from=landing",
+    "icon": "P",
+    "access": "Sin cuenta",
+    "aliases": [
+      "docentes",
+      "investigadores"
+    ]
+  },
+  {
+    "id": "sara",
+    "name": "SARA",
+    "category": "Estudio",
+    "label": "Aprende a tu ritmo",
+    "description": "Organiza tus materias, trabaja con documentos y refuerza lo aprendido con actividades y evaluaciones.",
+    "url": "https://sara.ici-labs.com",
+    "icon": "S",
+    "access": "Cuenta SARA"
+  },
+  {
+    "id": "sarapad",
+    "name": "SARA Pad",
+    "category": "Programación",
+    "label": "De la idea al código",
+    "description": "Practica programación con ejercicios, ejecuta tus soluciones y consulta la retroalimentación de tus actividades.",
+    "url": "https://sarapad.ici-labs.com",
+    "icon": "</>",
+    "access": "Cuenta SARA"
+  },
+  {
+    "id": "smartdoc",
+    "name": "SARA DocReader",
+    "category": "Documentos",
+    "label": "Lee, pregunta, comprende",
+    "description": "Consulta documentos y explora su contenido con ayuda de un asistente para apoyar tu estudio e investigación.",
+    "url": "https://saradoc.ici-labs.com",
+    "icon": "D",
+    "access": "Acceso temporal o cuenta SARA",
+    "aliases": [
+      "SmartDoc",
+      "lector de documentos"
+    ]
+  },
+  {
+    "id": "fimebot",
+    "name": "FimeBot",
+    "category": "Orientación",
+    "label": "Ubícate en tu facultad",
+    "description": "Resuelve dudas sobre la FIME y encuentra orientación institucional con fuentes de consulta.",
+    "url": "/#fimebot-chat",
+    "icon": "F",
+    "access": "Acceso libre"
+  }
+]

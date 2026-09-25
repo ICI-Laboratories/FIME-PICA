@@ -32,7 +32,7 @@ function resolveTeacherPhoto(slug, existingPhotoUrl) {
   return null;
 }
 
-export async function cargarProfesores() {
+export async function cargarProfesores({ throwOnError = false } = {}) {
   try {
     const rows = await fetchFromService('professors', '/professors');
     return rows.map(row => {
@@ -54,6 +54,7 @@ export async function cargarProfesores() {
       return profile;
     });
   } catch (err) {
+    if (throwOnError) throw err;
     console.error('Error loading teachers from professors-service:', err);
     return [];
   }
@@ -90,4 +91,3 @@ export async function cargarProfesor(slug) {
     return null;
   }
 }
-

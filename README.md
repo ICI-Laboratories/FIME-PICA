@@ -1,3 +1,5 @@
+> Estado actual: se conserva el diseño original y el acceso público a mapa, horarios, profesores y materias. El catálogo en `/aplicaciones` es un apartado adicional; la cuenta SARA es opcional para la navegación académica. El autenticador local no se ejecuta. Ver [registro del despliegue](docs/DEPLOYMENT-2026-09-24.md).
+
 # Student Hub - Producción Standalone
 
 Este repositorio contiene la versión migrada e independiente de **Student Hub** lista para ser desplegada en producción.

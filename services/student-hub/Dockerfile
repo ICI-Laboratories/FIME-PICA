@@ -1,17 +1,19 @@
 # Stage 1: Build
 FROM node:22-alpine AS build
 WORKDIR /app
+ENV ASTRO_TELEMETRY_DISABLED=1
 
 # Copiar package definitions del subproyecto
 COPY services/student-hub/package*.json ./services/student-hub/
 
 # Instalar dependencias en el subproyecto
-RUN cd services/student-hub && npm install --legacy-peer-deps
+RUN cd services/student-hub && npm ci --legacy-peer-deps
 
 # Copiar los recursos y código fuente requeridos
 COPY data ./data
 COPY scripts ./scripts
 COPY services/student-hub ./services/student-hub
+COPY services/portal/apps.json ./services/portal/apps.json
 
 # Compilar la aplicación Astro SSR
 RUN cd services/student-hub && npm run build
@@ -24,7 +26,7 @@ WORKDIR /app/services/student-hub
 COPY services/student-hub/package*.json ./
 
 # Instalar dependencias de producción
-RUN npm install --omit=dev --legacy-peer-deps
+RUN npm ci --omit=dev --legacy-peer-deps
 
 # Copiar el output compilado y los datos de referencia
 COPY --from=build /app/services/student-hub/dist ./dist

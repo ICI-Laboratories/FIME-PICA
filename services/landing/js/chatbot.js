@@ -30,12 +30,14 @@ function setSending(sending) {
 toggleChatBtn.addEventListener("click", () => {
   const open = transformCont.classList.toggle("show-chat");
   toggleChatBtn.setAttribute("aria-expanded", String(open));
+  toggleChatBtn.setAttribute("aria-label", `${open ? "Cerrar" : "Abrir"} asistente virtual FimeBot`);
   if (open) chatInput.focus();
 });
 
 closeChatBtn.addEventListener("click", () => {
   transformCont.classList.remove("show-chat");
   toggleChatBtn.setAttribute("aria-expanded", "false");
+  toggleChatBtn.setAttribute("aria-label", "Abrir asistente virtual FimeBot");
   toggleChatBtn.focus();
 });
 
@@ -279,41 +281,7 @@ function scrollChat() {
   container.scrollTop = container.scrollHeight;
 }
 /*****************************************************
-  9. CARRUSEL FUNCIONAL
-*****************************************************/
-const carousel = document.querySelector(".carousel");
-const slides = document.querySelectorAll(".slide");
-
-const prevBtn = document.getElementById("prev-slide");
-const nextBtn = document.getElementById("next-slide");
-
-let currentIndex = 0;
-
-function showSlide(index) {
-  if (index < 0) {
-    index = slides.length - 1;
-  } else if (index >= slides.length) {
-    index = 0;
-  }
-
-  const offset = index * 100;
-  carousel.style.transform = `translateX(-${offset}%)`;
-
-  currentIndex = index;
-}
-
-prevBtn.addEventListener("click", () => {
-  showSlide(currentIndex - 1);
-});
-nextBtn.addEventListener("click", () => {
-  showSlide(currentIndex + 1);
-});
-
- setInterval(() => {
-   showSlide(currentIndex + 1);
- }, 4000);
-/*****************************************************
-  10. Aviso de Privacidad
+  9. Aviso de Privacidad
 *****************************************************/
 document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("privacy-modal");

@@ -1,0 +1,112 @@
+---
+import InstitutionalLayout from '../layouts/InstitutionalLayout.astro';
+import entries from '../../../portal/apps.json';
+import { matchesApp, resultLabel, searchText, validateCatalog } from '../lib/catalog.js';
+
+const apps = validateCatalog(entries);
+const categories = [...new Set(apps.map(app => app.category))];
+const query = (Astro.url.searchParams.get('q') ?? '').slice(0, 120);
+const requestedCategory = Astro.url.searchParams.get('categoria') ?? '';
+const category = categories.includes(requestedCategory) ? requestedCategory : '';
+const count = apps.filter(app => matchesApp(app, query, category)).length;
+---
+<InstitutionalLayout title="Aplicaciones" description="Herramientas académicas y aplicaciones disponibles para estudiantes de FIME.">
+  <section class="apps-catalog" aria-labelledby="catalog-title">
+    <p class="overline overline--primary">HERRAMIENTAS PARA ESTUDIANTES</p>
+    <h1 id="catalog-title">Aplicaciones y recursos</h1>
+    <p class="catalog-intro">Encuentra tu horario, ubica un aula o elige una herramienta para estudiar. Cada recurso indica el tipo de acceso que ofrece.</p>
+    <form action="/aplicaciones" method="get" role="search" aria-label="Buscar herramientas" class="catalog-filters">
+      <div class="search-field">
+        <label for="app-search">Buscar una herramienta</label>
+        <input id="app-search" name="q" type="search" value={query} maxlength="120" placeholder="Nombre, tema o actividad" aria-controls="catalog-list" />
+      </div>
+      <div>
+        <label for="app-category">Categoría</label>
+        <select id="app-category" name="categoria" aria-controls="catalog-list">
+          <option value="">Todas las categorías</option>
+          {categories.map(item => <option value={item} selected={category === item}>{item}</option>)}
+        </select>
+      </div>
+      <button type="submit" class="btn btn--primary">Buscar</button>
+      <a class="clear-search" href="/aplicaciones" id="clear-catalog">Limpiar filtros</a>
+    </form>
+    <p id="catalog-count" class="catalog-count" role="status" aria-live="polite" aria-atomic="true">{resultLabel(count)}</p>
+    <ul class="app-grid" id="catalog-list" role="list">
+      {apps.map(app => <li hidden={!matchesApp(app, query, category)} data-search={searchText(app)} data-category={app.category}>
+        <article aria-labelledby={`app-${app.id}`}>
+          <div class="card-meta"><span class="tag">{app.category}</span><span class="access-label">{app.access}</span></div>
+          <h2 id={`app-${app.id}`}>{app.name}</h2>
+          <p>{app.description}</p>
+          <a class="app-link" href={app.url}>Abrir {app.name} <span aria-hidden="true">→</span></a>
+        </article>
+      </li>)}
+    </ul>
+    <div id="no-results" class="empty-results" hidden={count > 0}>
+      <h2>No encontramos coincidencias</h2><p>Prueba con otra palabra o elige «Todas las categorías».</p>
+    </div>
+    <aside class="account-note" aria-label="Información de acceso">
+      <h2>El acceso académico sigue siendo libre</h2>
+      <p>Horarios, mapa, profesores, materias y evaluaciones se consultan sin iniciar sesión. Las aplicaciones SARA indican cuándo necesitas tu cuenta central.</p>
+      <a href="https://auth.ici-labs.com">Gestionar mi cuenta SARA <span aria-hidden="true">→</span></a>
+    </aside>
+  </section>
+</InstitutionalLayout>
+<script>
+  import { matchesSearch, resultLabel } from '../lib/catalog.js';
+  const form = document.querySelector<HTMLFormElement>('.catalog-filters');
+  const input = document.querySelector<HTMLInputElement>('#app-search');
+  const select = document.querySelector<HTMLSelectElement>('#app-category');
+  const cards = [...document.querySelectorAll<HTMLElement>('#catalog-list > li')];
+  const status = document.querySelector<HTMLElement>('#catalog-count');
+  const empty = document.querySelector<HTMLElement>('#no-results');
+  let announcement: ReturnType<typeof setTimeout>;
+
+  function filterCatalog() {
+    if (!input || !select || !status || !empty) return;
+    let count = 0;
+    for (const card of cards) {
+      const matches = (!select.value || card.dataset.category === select.value) && matchesSearch(card.dataset.search, input.value);
+      card.hidden = !matches;
+      if (matches) count++;
+    }
+    empty.hidden = count > 0;
+    clearTimeout(announcement);
+    announcement = setTimeout(() => { status.textContent = resultLabel(count); }, 200);
+    const url = new URL(window.location.href);
+    input.value.trim() ? url.searchParams.set('q', input.value.trim()) : url.searchParams.delete('q');
+    select.value ? url.searchParams.set('categoria', select.value) : url.searchParams.delete('categoria');
+    window.history.replaceState(null, '', url);
+  }
+  input?.addEventListener('input', filterCatalog);
+  select?.addEventListener('change', filterCatalog);
+  form?.addEventListener('submit', event => { event.preventDefault(); filterCatalog(); });
+  document.querySelector('#clear-catalog')?.addEventListener('click', event => {
+    if (!input || !select) return;
+    event.preventDefault(); input.value = ''; select.value = ''; filterCatalog(); input.focus();
+  });
+</script>
+<style>
+  .apps-catalog { max-width: 1080px; margin: auto; }
+  h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); margin: 12px 0; letter-spacing: -.03em; }
+  p { line-height: 1.7; color: var(--color-ink-2); }
+  .catalog-intro { max-width: 720px; }
+  .catalog-filters { display: flex; align-items: end; gap: 16px; flex-wrap: wrap; margin: 28px 0 16px; }
+  .search-field { flex: 1 1 260px; }
+  label { display: block; font-size: .875rem; font-weight: 600; margin-bottom: 8px; }
+  input, select { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--color-rule-strong); border-radius: 4px; font: inherit; background: var(--color-surface); color: var(--color-ink); }
+  a { color: var(--color-primary); font-weight: 600; text-underline-offset: 3px; }
+  .clear-search { display: inline-flex; align-items: center; min-height: 44px; }
+  .catalog-count { font-size: .875rem; }
+  .app-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; padding: 0; margin: 20px 0; list-style: none; }
+  article { height: 100%; border: 1px solid var(--color-rule); padding: 24px; background: var(--color-surface); border-radius: 4px; display: flex; flex-direction: column; }
+  .card-meta { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .access-label { font-size: .8125rem; color: var(--color-ink-2); }
+  h2 { font-size: 1.25rem; margin: 18px 0 0; line-height: 1.4; }
+  article p { flex: 1; font-size: .9375rem; }
+  .app-link { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; border-top: 1px solid var(--color-rule); padding-top: 12px; }
+  .account-note { border-top: 1px solid var(--color-rule); padding-top: 12px; margin-top: 32px; font-size: .9375rem; }
+  .account-note h2 { font-size: 1.0625rem; }
+  .empty-results { border: 1px dashed var(--color-rule-strong); padding: 24px; }
+  [hidden] { display: none !important; }
+  @media(max-width: 640px) { .app-grid { grid-template-columns: 1fr; } .catalog-filters > div { width: 100%; } article { padding: 20px; } }
+</style>

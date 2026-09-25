@@ -3,9 +3,11 @@ import InstitutionalLayout from "../layouts/InstitutionalLayout.astro";
 import { fetchFromService } from "../lib/api-client.js";
 
 let schedules = [];
+let schedulesAvailable = true;
 try {
   schedules = await fetchFromService('academic', '/schedules');
 } catch (e) {
+  schedulesAvailable = false;
   console.error("Error al cargar horarios para el mapa:", e);
 }
 
@@ -43,14 +45,18 @@ const schedulesJson = JSON.stringify(schedules);
             type="search" 
             id="map-search-input" 
             class="input" 
-            placeholder="Ej. Mecatrónica, Dirección, Aula 1..."
+            placeholder="Cargando espacios…"
+            disabled
             autocomplete="off"
             aria-controls="search-suggestions"
+            aria-describedby="map-search-help map-search-results"
             style="flex: 1;"
           />
-          <button id="btn-clear-search" class="btn btn--ghost" style="height: 44px; display: none;">Limpiar</button>
+          <button type="button" id="btn-clear-search" class="btn btn--ghost" style="height: 44px; display: none;">Limpiar</button>
         </div>
-        <div id="search-suggestions" class="search-suggestions" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--color-surface); border: 1px solid var(--color-rule-strong); z-index: 100; max-height: 200px; overflow-y: auto;"></div>
+        <p id="map-search-help" class="map-note">Busca por edificio o aula. Usa las flechas para recorrer los resultados y Enter para seleccionar.</p>
+        <p id="map-search-results" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+        <div id="search-suggestions" role="group" aria-label="Espacios encontrados" class="search-suggestions" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--color-surface); border: 1px solid var(--color-rule-strong); z-index: 100; max-height: 200px; overflow-y: auto;"></div>
       </div>
       <div class="map-toolbar">
         <label for="map-base-layer">Vista
@@ -92,7 +98,7 @@ const schedulesJson = JSON.stringify(schedules);
         <div id="panel-content-state" style="display: none;">
           <div>
             <span id="panel-space-type" class="tag" style="margin-bottom: 8px;">Tipo</span>
-            <h2 id="panel-space-name" style="font-size: 2rem; font-weight: 800; color: var(--color-ink); line-height: 1.1; letter-spacing: -0.03em;">
+            <h2 id="panel-space-name" tabindex="-1" style="font-size: 2rem; font-weight: 800; color: var(--color-ink); line-height: 1.1; letter-spacing: -0.03em;">
               Nombre Espacio
             </h2>
           </div>
@@ -121,8 +127,9 @@ const schedulesJson = JSON.stringify(schedules);
   </div>
 
   <!-- Inyección de Datos -->
-  <script is:inline define:vars={{ schedulesJson }}>
+  <script is:inline define:vars={{ schedulesJson, schedulesAvailable }}>
     window.__SCHEDULES__ = JSON.parse(schedulesJson);
+    window.__MAP_SCHEDULES_AVAILABLE__ = schedulesAvailable;
   </script>
 
   <!-- ==========================================
@@ -272,7 +279,7 @@ const schedulesJson = JSON.stringify(schedules);
                 border-radius: 4px;
                 border: 1px solid ${getFacultyColor(room.faculty)};
                 background: ${getFacultyColor(room.faculty)}15;
-                color: ${getFacultyColor(room.faculty)};
+                color: var(--color-ink);
               `;
               tag.textContent = `${room.name} (${room.faculty})`;
               pRoomsReadOnlyList.appendChild(tag);
@@ -292,7 +299,13 @@ const schedulesJson = JSON.stringify(schedules);
 
         // Buscar clases programadas para cualquiera de los sub-espacios de este edificio
         if (pClassesList) {
-          pClassesList.innerHTML = "";
+          pClassesList.replaceChildren();
+          if (window.__MAP_SCHEDULES_AVAILABLE__ === false) {
+            const unavailable = document.createElement('p');
+            unavailable.textContent = 'No se pudieron cargar los horarios. Recarga la página para volver a intentarlo. El mapa sigue disponible.';
+            pClassesList.append(unavailable);
+            return;
+          }
           
           const classes = (Array.isArray(window.__SCHEDULES__) ? window.__SCHEDULES__ : []).filter(s => {
             if (!s.classroom_name) return false;
@@ -433,89 +446,115 @@ const schedulesJson = JSON.stringify(schedules);
           const clearBtn = document.getElementById("btn-clear-search");
           const suggestionsContainer = document.getElementById("search-suggestions");
 
+          const resultStatus = document.getElementById('map-search-results');
+          let announceTimer;
+
+          function closeSuggestions() {
+            suggestionsContainer.style.display = 'none';
+          }
+
           function performSearch(query) {
+            clearTimeout(announceTimer);
             const normalizedQuery = normalizeSearch(query);
+            suggestionsContainer.replaceChildren();
             if (!normalizedQuery) {
-              suggestionsContainer.style.display = "none";
-              clearBtn.style.display = "none";
+              closeSuggestions();
+              clearBtn.style.display = 'none';
+              if (resultStatus) resultStatus.textContent = '';
               return;
             }
-            
-            clearBtn.style.display = "block";
+            clearBtn.style.display = 'block';
             const matches = [];
-
             geojsonLayer.eachLayer(layer => {
-              const buildingName = layer.feature.properties?.name || "Edificio";
+              const buildingName = layer.feature.properties?.name || 'Edificio';
               const spaces = layer.feature.properties?.spaces || [];
               if (layer.feature.properties?.name && normalizeSearch(buildingName).includes(normalizedQuery)) {
                 matches.push({ displayName: buildingName, searchName: buildingName, layer });
               }
               spaces.forEach(space => {
                 if (space.name && normalizeSearch(space.name).includes(normalizedQuery) && normalizeSearch(space.name) !== normalizeSearch(buildingName)) {
-                  matches.push({ 
-                    displayName: `${space.name} (${buildingName})`, 
-                    searchName: space.name,
-                    layer 
-                  });
+                  matches.push({ displayName: `${space.name} (${buildingName})`, searchName: space.name, layer });
                 }
               });
             });
-
-            if (matches.length > 0) {
-              suggestionsContainer.innerHTML = matches.slice(0, 30).map((m, idx) =>
-                `<button type="button" class="suggestion-item" style="display: block; width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; border-bottom: 1px solid var(--color-rule); cursor: pointer; font-size: 0.875rem; font-family: var(--font-sans); color: var(--color-ink);" data-idx="${idx}">${escapeHtml(m.displayName)}</button>`
-              ).join('');
-              suggestionsContainer.style.display = "block";
-
-              // Add click listener to suggestions
-              suggestionsContainer.querySelectorAll(".suggestion-item").forEach(item => {
-                item.addEventListener("click", () => {
-                  const idx = parseInt(item.getAttribute("data-idx"), 10);
-                  const match = matches[idx];
-                  if (match) {
-                    match.layer.fire("click");
-                    searchInput.value = match.searchName;
-                    suggestionsContainer.style.display = "none";
-                  }
-                });
+            const visible = matches.slice(0, 30);
+            for (const match of visible) {
+              const button = document.createElement('button');
+              button.type = 'button';
+              button.className = 'suggestion-item';
+              button.style.cssText = 'display:block;width:100%;text-align:left;min-height:44px;padding:10px 16px;background:none;border:0;border-bottom:1px solid var(--color-rule);cursor:pointer;font:inherit;color:var(--color-ink);';
+              button.textContent = match.displayName;
+              button.addEventListener('click', () => {
+                match.layer.fire('click');
+                searchInput.value = match.searchName;
+                closeSuggestions();
+                clearTimeout(announceTimer);
+                if (resultStatus) resultStatus.textContent = `Seleccionado: ${match.displayName}.`;
+                pName?.focus();
               });
-            } else {
-              suggestionsContainer.innerHTML = `<div style="padding: 10px 16px; font-size: 0.875rem; color: var(--color-ink-3); font-style: italic;">No se encontraron espacios</div>`;
-              suggestionsContainer.style.display = "block";
+              suggestionsContainer.append(button);
             }
+            if (!visible.length) {
+              const empty = document.createElement('p');
+              empty.textContent = 'No se encontraron espacios. Prueba con otro nombre.';
+              empty.style.padding = '10px 16px';
+              suggestionsContainer.append(empty);
+            }
+            suggestionsContainer.style.display = 'block';
+            announceTimer = setTimeout(() => {
+              if (resultStatus) resultStatus.textContent = visible.length
+                ? `${matches.length} ${matches.length === 1 ? 'espacio encontrado' : 'espacios encontrados'}.${matches.length > 30 ? ' Se muestran los primeros 30; escribe un nombre más específico.' : ''}`
+                : 'No se encontraron espacios.';
+            }, 200);
           }
 
-          searchInput?.addEventListener("input", (e) => {
-            performSearch(e.target.value);
-          });
-
-          searchInput?.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') suggestionsContainer.style.display = 'none';
-            if (event.key === 'ArrowDown' && suggestionsContainer.style.display !== 'none') {
+          searchInput?.addEventListener('input', event => performSearch(event.target.value));
+          searchInput?.addEventListener('keydown', event => {
+            if (event.key === 'Escape') closeSuggestions();
+            if ((event.key === 'ArrowDown' || event.key === 'ArrowUp') && suggestionsContainer.style.display === 'none') {
+              performSearch(searchInput.value);
+            }
+            if (suggestionsContainer.style.display === 'none') return;
+            const buttons = [...suggestionsContainer.querySelectorAll('button')];
+            if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
               event.preventDefault();
-              suggestionsContainer.querySelector('button')?.focus();
+              (event.key === 'ArrowDown' ? buttons[0] : buttons.at(-1))?.focus();
             }
-            if (event.key === 'Enter' && suggestionsContainer.style.display !== 'none') {
+            if (event.key === 'Enter' && buttons.length) {
+              event.preventDefault(); buttons[0].click();
+            }
+          });
+          suggestionsContainer.addEventListener('keydown', event => {
+            const buttons = [...suggestionsContainer.querySelectorAll('button')];
+            const index = buttons.indexOf(document.activeElement);
+            if (event.key === 'Escape') {
+              event.preventDefault(); closeSuggestions(); searchInput.focus();
+            } else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
               event.preventDefault();
-              suggestionsContainer.querySelector('button')?.click();
+              const next = index + (event.key === 'ArrowDown' ? 1 : -1);
+              if (next < 0) searchInput.focus();
+              else buttons[Math.min(next, buttons.length - 1)]?.focus();
+            } else if (event.key === 'Home' || event.key === 'End') {
+              event.preventDefault(); (event.key === 'Home' ? buttons[0] : buttons.at(-1))?.focus();
             }
           });
-
-          clearBtn?.addEventListener("click", () => {
-            if (searchInput) searchInput.value = "";
-            suggestionsContainer.style.display = "none";
-            clearBtn.style.display = "none";
+          clearBtn?.addEventListener('click', () => {
+            searchInput.value = ''; performSearch(''); searchInput.focus();
           });
-
-          // Close suggestions when clicking outside
-          document.addEventListener("click", (e) => {
-            if (!suggestionsContainer.contains(e.target) && e.target !== searchInput) {
-              suggestionsContainer.style.display = "none";
-            }
+          document.addEventListener('click', event => {
+            if (!suggestionsContainer.contains(event.target) && event.target !== searchInput) closeSuggestions();
           });
+          document.addEventListener('focusin', event => {
+            if (!suggestionsContainer.contains(event.target) && event.target !== searchInput) closeSuggestions();
+          });
+          searchInput.disabled = false;
+          searchInput.placeholder = 'Ej. Mecatrónica, Dirección, Aula 1...';
+
         })
         .catch(err => {
           console.error('Error cargando GeoJSON:', err);
+          const unavailableSearch = document.getElementById('map-search-input');
+          if (unavailableSearch) unavailableSearch.placeholder = 'Búsqueda no disponible';
           if (baseLayerSelect?.value === 'streets') streetLayer.addTo(map);
           updateMapStatus('No se pudo cargar el directorio de edificios. Recarga la página para volver a intentarlo.');
           if (emptyState) emptyState.textContent = 'El directorio de aulas no está disponible por el momento.';

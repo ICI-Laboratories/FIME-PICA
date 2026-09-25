@@ -1,10 +1,8 @@
 ---
-import LoginPanel from "../components/LoginPanel.astro";
 import InstitutionalLayout from "../layouts/InstitutionalLayout.astro";
-import { cargarCarreras, cargarDelegaciones, cargarTodosLosGrupos, cargarGrupoConProfesores, cargarHorarioDeGrupo, cargarExamenesDeGrupo, cargarSyllabusDeCarrera } from "../lib/cargarDatos.js";
+import { cargarCarreras, cargarTodosLosGrupos, cargarGrupoConProfesores, cargarHorarioDeGrupo, cargarExamenesDeGrupo, cargarSyllabusDeCarrera } from "../lib/cargarDatos.js";
 
 const student = Astro.locals.student;
-const delegations = await cargarDelegaciones();
 const allCareers = await cargarCarreras();
 const fimeCareerIds = [349, 371, 418, 99];
 const careers = allCareers.filter(c => fimeCareerIds.includes(c.id));
@@ -230,19 +228,21 @@ function getDailySchedule(day: string) {
     <div style="max-width: 800px; margin: 80px auto; padding: 0 24px; min-height: 400px;">
       
       <!-- Paso 1: Selecciona tu Carrera -->
-      <div id="step-career" class="wizard-step">
-        <span class="overline overline--primary">Paso 1 de 3</span>
-        <h1 style="font-size: 3rem; font-weight: 900; letter-spacing: -0.04em; color: var(--color-ink); margin-top: 8px; line-height: 1.1; margin-bottom: 12px;">
+      <section id="step-career" class="wizard-step" aria-labelledby="career-heading">
+        <span id="career-progress" class="overline overline--primary">Paso 1 de 3</span>
+        <h1 id="career-heading" tabindex="-1" aria-describedby="career-progress" style="font-size: 3rem; font-weight: 900; letter-spacing: -0.04em; color: var(--color-ink); margin-top: 8px; line-height: 1.1; margin-bottom: 12px;">
           Selecciona tu Carrera
         </h1>
         <p style="font-size: 1rem; color: var(--color-ink-2); line-height: 1.5; margin-bottom: 36px;">
           Elige tu carrera académica para comenzar a visualizar tu horario.
         </p>
 
+        {careers.length === 0 && <p>No hay carreras disponibles en este momento. <a href="/studenthub?select_group=true" class="link">Volver a cargar</a></p>}
         <div class="selection-grid">
           {careers.map(career => (
             <button 
-              class="career-btn selection-card-btn" 
+              class="career-btn selection-card-btn"
+              type="button"
               data-id={career.id}
               data-name={career.name}
             >
@@ -250,12 +250,12 @@ function getDailySchedule(day: string) {
             </button>
           ))}
         </div>
-      </div>
+      </section>
 
       <!-- Paso 2: Selecciona tu Semestre -->
-      <div id="step-semester" class="wizard-step" style="display: none;">
-        <span class="overline overline--primary">Paso 2 de 3</span>
-        <h1 style="font-size: 3rem; font-weight: 900; letter-spacing: -0.04em; color: var(--color-ink); margin-top: 8px; line-height: 1.1; margin-bottom: 8px;">
+      <section id="step-semester" class="wizard-step" aria-labelledby="semester-heading" hidden>
+        <span id="semester-progress" class="overline overline--primary">Paso 2 de 3</span>
+        <h1 id="semester-heading" tabindex="-1" aria-describedby="semester-progress selected-career-label" style="font-size: 3rem; font-weight: 900; letter-spacing: -0.04em; color: var(--color-ink); margin-top: 8px; line-height: 1.1; margin-bottom: 8px;">
           Selecciona tu Semestre
         </h1>
         <p id="selected-career-label" style="font-size: 1.125rem; font-weight: 700; color: var(--color-primary); margin-bottom: 36px;"></p>
@@ -263,17 +263,19 @@ function getDailySchedule(day: string) {
         <div id="semesters-grid" class="selection-grid" style="margin-bottom: 40px;"></div>
         
         <button 
-          id="btn-back-to-career" 
+          id="btn-back-to-career"
+          type="button"
+          aria-label="Volver a elegir carrera"
           style="padding: 10px 18px; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; background: transparent; border: 1px solid var(--color-rule-strong); color: var(--color-ink); cursor: pointer; transition: all 150ms;"
         >
           ← Anterior
         </button>
-      </div>
+      </section>
 
       <!-- Paso 3: Selecciona tu Grupo -->
-      <div id="step-group" class="wizard-step" style="display: none;">
-        <span class="overline overline--primary">Paso 3 de 3</span>
-        <h1 style="font-size: 3rem; font-weight: 900; letter-spacing: -0.04em; color: var(--color-ink); margin-top: 8px; line-height: 1.1; margin-bottom: 8px;">
+      <section id="step-group" class="wizard-step" aria-labelledby="group-heading" hidden>
+        <span id="group-progress" class="overline overline--primary">Paso 3 de 3</span>
+        <h1 id="group-heading" tabindex="-1" aria-describedby="group-progress selected-career-sem-label" style="font-size: 3rem; font-weight: 900; letter-spacing: -0.04em; color: var(--color-ink); margin-top: 8px; line-height: 1.1; margin-bottom: 8px;">
           Selecciona tu Grupo
         </h1>
         <p id="selected-career-sem-label" style="font-size: 1.125rem; font-weight: 700; color: var(--color-primary); margin-bottom: 36px;"></p>
@@ -281,93 +283,94 @@ function getDailySchedule(day: string) {
         <div id="groups-grid" class="selection-grid" style="margin-bottom: 40px;"></div>
         
         <button 
-          id="btn-back-to-semester" 
+          id="btn-back-to-semester"
+          type="button"
+          aria-label="Volver a elegir semestre"
           style="padding: 10px 18px; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; background: transparent; border: 1px solid var(--color-rule-strong); color: var(--color-ink); cursor: pointer; transition: all 150ms;"
         >
           ← Anterior
         </button>
-      </div>
+      </section>
 
+      <noscript><p>Activa JavaScript para elegir tu grupo y consultar el horario. El directorio de profesores y las materias siguen disponibles desde el menú.</p></noscript>
     </div>
 
     <script is:inline define:vars={{ allGroups }}>
-      let selectedCareerId = null;
-      let selectedCareerName = "";
-      let selectedSemester = null;
-      let selectedGroupSlug = null;
+      (() => {
+        const steps = [...document.querySelectorAll('.wizard-step')];
+        const semestersGrid = document.getElementById('semesters-grid');
+        const groupsGrid = document.getElementById('groups-grid');
+        const careerLabel = document.getElementById('selected-career-label');
+        const groupLabel = document.getElementById('selected-career-sem-label');
+        let careerTrigger = null;
+        let semesterTrigger = null;
 
-      const stepCareer = document.getElementById('step-career');
-      const stepSemester = document.getElementById('step-semester');
-      const stepGroup = document.getElementById('step-group');
+        function showStep(id, focusTarget) {
+          steps.forEach(step => { step.hidden = step.id !== id; });
+          const target = focusTarget || document.querySelector(`#${id} h1`);
+          target?.focus();
+        }
 
-      const careerBtns = document.querySelectorAll('.career-btn');
-      const semestersGrid = document.getElementById('semesters-grid');
-      const groupsGrid = document.getElementById('groups-grid');
+        function showEmpty(container, message) {
+          const note = document.createElement('p');
+          note.textContent = message;
+          container.append(note);
+        }
 
-      const selectedCareerLabel = document.getElementById('selected-career-label');
-      const selectedCareerSemLabel = document.getElementById('selected-career-sem-label');
+        document.querySelectorAll('.career-btn').forEach(button => {
+          button.addEventListener('click', () => {
+            careerTrigger = button;
+            const careerId = Number(button.dataset.id);
+            const careerName = button.dataset.name || '';
+            const careerGroups = allGroups.filter(group => group.career_id === careerId);
+            const semesters = [...new Set(careerGroups.map(group => group.semester))].sort((a, b) => a - b);
+            careerLabel.textContent = careerName;
+            semestersGrid.replaceChildren();
 
-      const btnBackToCareer = document.getElementById('btn-back-to-career');
-      const btnBackToSemester = document.getElementById('btn-back-to-semester');
+            semesters.forEach(semester => {
+              const semesterButton = document.createElement('button');
+              semesterButton.type = 'button';
+              semesterButton.className = 'sem-btn selection-card-btn';
+              semesterButton.textContent = `${semester}° Semestre`;
+              semesterButton.addEventListener('click', () => {
+                semesterTrigger = semesterButton;
+                groupLabel.textContent = `${careerName} — Semestre ${semester}°`;
+                groupsGrid.replaceChildren();
+                const groups = careerGroups.filter(group => group.semester === semester);
 
-      careerBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          selectedCareerId = parseInt(btn.getAttribute('data-id'), 10);
-          selectedCareerName = btn.getAttribute('data-name');
-          
-          selectedSemester = null;
-          selectedGroupSlug = null;
-
-          selectedCareerLabel.textContent = selectedCareerName;
-
-          const careerGroups = allGroups.filter(g => g.career_id === selectedCareerId);
-          const semesters = [...new Set(careerGroups.map(g => g.semester))].sort((a, b) => a - b);
-
-          semestersGrid.innerHTML = '';
-          semesters.forEach(sem => {
-            const semBtn = document.createElement('button');
-            semBtn.className = 'sem-btn selection-card-btn';
-            semBtn.textContent = `${sem}° Semestre`;
-            semBtn.addEventListener('click', () => {
-              selectedSemester = sem;
-              selectedCareerSemLabel.textContent = `${selectedCareerName} — Semestre ${selectedSemester}°`;
-
-              const finalGroups = careerGroups.filter(g => g.semester === selectedSemester);
-              groupsGrid.innerHTML = '';
-              finalGroups.forEach(grp => {
-                const grpBtn = document.createElement('button');
-                grpBtn.className = 'grp-btn selection-card-btn';
-                grpBtn.textContent = grp.name;
-                grpBtn.addEventListener('click', () => {
-                  selectedGroupSlug = grp.slug;
-                  document.cookie = `pica_selected_group=${selectedGroupSlug}; path=/; max-age=${60 * 60 * 24 * 365}`;
-                  window.location.href = window.location.pathname;
+                groups.forEach(group => {
+                  const groupButton = document.createElement('button');
+                  groupButton.type = 'button';
+                  groupButton.className = 'grp-btn selection-card-btn';
+                  groupButton.textContent = group.name;
+                  groupButton.addEventListener('click', () => {
+                    const secure = location.protocol === 'https:' ? '; Secure' : '';
+                    document.cookie = `pica_selected_group=${encodeURIComponent(group.slug)}; Path=/; Max-Age=31536000; SameSite=Lax${secure}`;
+                    // Keep the selected group in the URL so the timetable is shareable
+                    // and still works when the browser does not store preferences.
+                    const destination = new URL('/studenthub', location.origin);
+                    destination.searchParams.set('group', group.slug);
+                    location.assign(destination.href);
+                  });
+                  groupsGrid.append(groupButton);
                 });
-
-                groupsGrid.appendChild(grpBtn);
+                if (!groups.length) showEmpty(groupsGrid, 'Todavía no hay grupos disponibles para este semestre. Puedes elegir otro semestre.');
+                showStep('step-group');
               });
-
-              stepSemester.style.display = 'none';
-              stepGroup.style.display = 'block';
+              semestersGrid.append(semesterButton);
             });
-
-            semestersGrid.appendChild(semBtn);
+            if (!semesters.length) showEmpty(semestersGrid, 'Todavía no hay horarios disponibles para esta carrera. Puedes elegir otra carrera.');
+            showStep('step-semester');
           });
-
-          stepCareer.style.display = 'none';
-          stepSemester.style.display = 'block';
         });
-      });
 
-      btnBackToCareer.addEventListener('click', () => {
-        stepSemester.style.display = 'none';
-        stepCareer.style.display = 'block';
-      });
-
-      btnBackToSemester.addEventListener('click', () => {
-        stepGroup.style.display = 'none';
-        stepSemester.style.display = 'block';
-      });
+        document.getElementById('btn-back-to-career')?.addEventListener('click', () => {
+          showStep('step-career', careerTrigger);
+        });
+        document.getElementById('btn-back-to-semester')?.addEventListener('click', () => {
+          showStep('step-semester', semesterTrigger);
+        });
+      })();
     </script>
   </InstitutionalLayout>
 ) : (
@@ -385,7 +388,7 @@ function getDailySchedule(day: string) {
           {activeGroup.tutor_name && (
             <> &mdash; Tutor: {activeGroup.tutor_name}</>
           )}
-          <a href={`${Astro.url.pathname}?select_group=true`} class="link" style="margin-left: 12px; font-weight: 700; color: var(--color-primary);">[Cambiar Grupo]</a>
+          <a href="/studenthub?select_group=true" class="link" style="margin-left: 12px; font-weight: 700; color: var(--color-primary);">[Cambiar Grupo]</a>
         </p>
       )}
     </div>
@@ -512,7 +515,7 @@ function getDailySchedule(day: string) {
 
       <!-- ── VISTA TABLA (Desktop) ── -->
       <div class="schedule-desktop" role="region" aria-label="Tabla de horario, desplazable horizontalmente" tabindex="0">
-        <table class="schedule-table" role="grid" aria-label="Horario semanal de clases">
+        <table class="schedule-table" aria-label={`Horario semanal del grupo ${activeGroup.name}`}>
           <thead>
             <tr>
               <th scope="col" class="schedule-table__time-header">Hora</th>
@@ -526,9 +529,9 @@ function getDailySchedule(day: string) {
               if (slot.isRecess) {
                 return (
                   <tr class="schedule-table__row recess-row" style="background: rgba(var(--color-primary-rgb), 0.04); font-weight: bold; border-top: 1px solid var(--color-rule-strong); border-bottom: 1px solid var(--color-rule-strong);">
-                    <td class="schedule-table__time-cell" style="height: 38px; padding: 8px 16px 8px 0; vertical-align: middle;">
+                    <th scope="row" class="schedule-table__time-cell" style="height: 38px; padding: 8px 16px 8px 0; vertical-align: middle;">
                       <span class="time-label" style="padding-top: 0;">{slot.label}</span>
-                    </td>
+                    </th>
                     <td colspan="5" class="schedule-table__cell recess-cell" style="height: 38px; text-align: center; color: var(--color-primary); letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.72rem; padding: 0; font-family: var(--font-sans); font-weight: 800; background: var(--color-surface-2); vertical-align: middle;">
                       Receso
                     </td>
@@ -538,9 +541,9 @@ function getDailySchedule(day: string) {
 
               return (
                 <tr class="schedule-table__row">
-                  <td class="schedule-table__time-cell">
+                  <th scope="row" class="schedule-table__time-cell">
                     <span class="time-label">{slot.label}</span>
-                  </td>
+                  </th>
                   {daysOfWeek.map((day, dayIdx) => {
                     const cell = gridCells[slotIdx][dayIdx];
                     if (!cell.render) return null;
@@ -556,7 +559,10 @@ function getDailySchedule(day: string) {
                             <button
                               class={`class-entry class-card-btn ${isHtiEntry ? 'independent-work' : ''}`}
                               style={cell.rowspan > 1 ? "min-height: 95px; display: flex; flex-direction: column; justify-content: center;" : ""}
-                              aria-label={`${item.subject_name}${isHtiEntry ? ' (HTI)' : ''}, ${item.professor_name}`}
+                              type="button"
+                        aria-haspopup="dialog"
+                        aria-controls="class-modal"
+                        aria-label={`Ver detalle de ${item.subject_name}${isHtiEntry ? ' (Horas de Trabajo Independiente)' : ''}, ${day}, ${item.start_time.substring(0, 5)} a ${item.end_time.substring(0, 5)}${item.professor_name ? `, ${item.professor_name}` : ''}${item.classroom_name ? `, aula ${item.classroom_name}` : ''}`}
                               data-subject={item.subject_name}
                               data-professor={item.professor_name}
                               data-professor-email={item.professor_email}
@@ -640,11 +646,12 @@ function getDailySchedule(day: string) {
             }
             dayItems.push(currentItem);
           }
+          const classCount = dayItems.filter(item => !item.isRecessCard).length;
           return (
             <div class="mobile-day">
               <div class="mobile-day__header">
-                <span class="mobile-day__name">{day}</span>
-                <span class="mobile-day__count">{dayItems.length} {dayItems.length === 1 ? 'clase' : 'clases'}</span>
+                <h2 class="mobile-day__name">{day}</h2>
+                <span class="mobile-day__count">{`${classCount} ${classCount === 1 ? 'clase' : 'clases'}`}</span>
               </div>
               {dayItems.length === 0 ? (
                 <div class="mobile-day__empty">
@@ -673,7 +680,10 @@ function getDailySchedule(day: string) {
                       <button
                         class={`mobile-class class-card-btn ${isHtiEntry ? 'independent-work' : ''}`}
                         style={`min-height: ${item.span * 72}px; padding-top: ${item.span * 12}px; padding-bottom: ${item.span * 12}px;`}
-                        aria-label={`${item.subject_name}${isHtiEntry ? ' (HTI)' : ''}, ${item.professor_name}`}
+                        type="button"
+                        aria-haspopup="dialog"
+                        aria-controls="class-modal"
+                        aria-label={`Ver detalle de ${item.subject_name}${isHtiEntry ? ' (Horas de Trabajo Independiente)' : ''}, ${day}, ${item.start_time.substring(0, 5)} a ${item.end_time.substring(0, 5)}${item.professor_name ? `, ${item.professor_name}` : ''}${item.classroom_name ? `, aula ${item.classroom_name}` : ''}`}
                         data-subject={item.subject_name}
                         data-professor={item.professor_name}
                         data-professor-email={item.professor_email}
@@ -717,20 +727,17 @@ function getDailySchedule(day: string) {
        Swiss: sin decoración. Solo información organizada
        con tipografía y espaciado. Una línea de división.
        ═══════════════════════════════════════════════════ -->
-  <div
+  <dialog
     id="class-modal"
-    role="dialog"
-    aria-modal="true"
     aria-labelledby="modal-subject-name"
     style="
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(26,26,26,0.6);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
+      margin: auto;
+      padding: 0;
+      border: none;
+      width: min(680px, calc(100% - 32px));
+      max-height: 90dvh;
+      background: var(--color-surface);
+      color: var(--color-ink);
     "
   >
     <div
@@ -782,6 +789,8 @@ function getDailySchedule(day: string) {
         </div>
         <button
           id="btn-close-modal"
+          type="button"
+          autofocus
           aria-label="Cerrar detalle"
           style="
             background: none;
@@ -790,6 +799,8 @@ function getDailySchedule(day: string) {
             color: var(--color-ink-3);
             cursor: pointer;
             padding: 0 4px;
+            min-width: 44px;
+            min-height: 44px;
             line-height: 1;
             flex-shrink: 0;
           "
@@ -873,7 +884,7 @@ function getDailySchedule(day: string) {
             <div style="display: flex; gap: 16px; margin-top: 8px; align-items: flex-start;">
               <!-- Foto del docente -->
               <div style="width: 64px; height: 64px; border: 1px solid var(--color-rule-strong); overflow: hidden; flex-shrink: 0;">
-                <img id="modal-prof-img" src="" alt="Foto del docente" style="width: 100%; height: 100%; object-fit: cover; display: none;" />
+                <img id="modal-prof-img" alt="Foto del docente" style="width: 100%; height: 100%; object-fit: cover; display: none;" />
                 <div id="modal-prof-img-placeholder" style="width: 100%; height: 100%; background: var(--color-muted); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.875rem; font-weight: 700; color: var(--color-ink-3);">
                   [•_•]
                 </div>
@@ -901,12 +912,14 @@ function getDailySchedule(day: string) {
         </div>
       </div>
     </div>
-  </div>
+  </dialog>
 
   <script type="module">
-    // ── Modal ──
+    // Native dialog contains keyboard focus and makes the background inert.
     const modal    = document.getElementById("class-modal");
     const btnClose = document.getElementById("btn-close-modal");
+    let modalTrigger = null;
+    let previousOverflow = "";
 
     const mSubject   = document.getElementById("modal-subject-name");
     const mProfLink  = document.getElementById("modal-professor-link");
@@ -940,7 +953,11 @@ function getDailySchedule(day: string) {
         const exams      = JSON.parse(btn.getAttribute("data-exams") || "[]");
 
         if (mSubject)   mSubject.textContent   = subject;
-        if (mProfLink)  { mProfLink.textContent = professor; mProfLink.href = profSlug ? `/profesores/${profSlug}` : "#"; }
+        if (mProfLink) {
+          mProfLink.textContent = professor || "Docente por asignar";
+          if (profSlug) mProfLink.href = `/profesores/${encodeURIComponent(profSlug)}`;
+          else mProfLink.removeAttribute("href");
+        }
         if (mDesc)      mDesc.textContent      = desc;
         if (mClassroom) mClassroom.textContent  = classroom;
         if (mLabType)   mLabType.textContent    = isLab ? "Laboratorio" : "Aula teórica";
@@ -948,11 +965,15 @@ function getDailySchedule(day: string) {
         if (mPhone)     mPhone.textContent      = profPhone || "—";
         if (mOffice)    mOffice.textContent     = profOffice || "—";
         if (mHours)     mHours.textContent      = profHours || "—";
-        if (mMapLink)   mMapLink.href           = `/mapa?highlight=${encodeURIComponent(classroom)}`;
+        if (mMapLink) {
+          mMapLink.href = `/mapa?highlight=${encodeURIComponent(classroom)}`;
+          mMapLink.style.display = classroom ? "inline-block" : "none";
+        }
         
         if (mImg && mImgPl) {
           if (profImage) {
             mImg.src = profImage;
+            mImg.alt = `Fotografía de ${professor}`;
             mImg.style.display = "block";
             mImgPl.style.display = "none";
           } else {
@@ -963,7 +984,7 @@ function getDailySchedule(day: string) {
 
         if (mSyllabus) {
           if (sylSlug && sylSlug !== "#") {
-            mSyllabus.href = `/materias/${sylSlug}`;
+            mSyllabus.href = `/materias/${encodeURIComponent(sylSlug)}`;
             mSyllabus.style.display = "flex";
           } else {
             mSyllabus.style.display = "none";
@@ -971,58 +992,63 @@ function getDailySchedule(day: string) {
         }
 
         if (mExams) {
-          mExams.innerHTML = "";
-          if (exams && exams.length > 0) {
-            exams.forEach(ex => {
-              const d = new Date(ex.exam_date);
-              const dateStr = d.toLocaleDateString("es-MX", { day: "numeric", month: "long", year: "numeric" });
+          mExams.replaceChildren();
+          if (Array.isArray(exams) && exams.length > 0) {
+            exams.forEach(exam => {
+              const date = new Date(exam.exam_date);
+              const dateLabel = Number.isNaN(date.getTime()) ? "Fecha por confirmar" : date.toLocaleDateString("es-MX", { day: "numeric", month: "long", year: "numeric" });
               const row = document.createElement("div");
-              row.style.cssText = "display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--color-rule);";
-              row.innerHTML = `
-                <span style="font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--color-ink);">${ex.exam_name}</span>
-                <span style="font-size:0.75rem; font-family:var(--font-mono); color:var(--color-ink-3);">${dateStr} · ${ex.exam_time?.substring(0,5)}</span>
-              `;
-              mExams.appendChild(row);
+              row.style.cssText = "display:flex; gap:12px; flex-wrap:wrap; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--color-rule);";
+              const name = document.createElement("span");
+              name.style.cssText = "font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--color-ink);";
+              name.textContent = exam.exam_name || "Evaluación";
+              const details = document.createElement("span");
+              details.style.cssText = "font-size:0.75rem; font-family:var(--font-mono); color:var(--color-ink-3);";
+              details.textContent = `${dateLabel}${exam.exam_time ? ` · ${exam.exam_time.substring(0, 5)}` : ""}`;
+              row.append(name, details);
+              mExams.append(row);
             });
           } else {
-            mExams.innerHTML = `<p style="font-size:0.75rem; color:var(--color-ink-3); padding-top:4px;">Sin exámenes programados.</p>`;
+            const empty = document.createElement("p");
+            empty.style.cssText = "font-size:0.75rem; color:var(--color-ink-3); padding-top:4px;";
+            empty.textContent = "Sin exámenes programados.";
+            mExams.append(empty);
           }
         }
 
-        if (modal) {
-          modal.style.display = "flex";
+        if (modal && !modal.open) {
+          modalTrigger = btn;
+          previousOverflow = document.body.style.overflow;
+          modal.showModal();
           document.body.style.overflow = "hidden";
-          history.pushState({ modalOpen: true }, "");
+          history.pushState({ ...history.state, academicClassModal: true }, "");
         }
       });
     });
 
-    window.addEventListener("popstate", (e) => {
-      if (modal && modal.style.display === "flex") {
-        modal.style.display = "none";
-        document.body.style.overflow = "";
-      }
-    });
-
-    function closeModal() {
-      if (modal) { 
-        modal.style.display = "none"; 
-        document.body.style.overflow = ""; 
-        if (history.state && history.state.modalOpen) {
-          history.back();
-        }
-      }
+    function closeModal(fromHistory = false) {
+      if (!modal?.open) return;
+      modal.close();
+      document.body.style.overflow = previousOverflow;
+      modalTrigger?.focus({ preventScroll: true });
+      if (!fromHistory && history.state?.academicClassModal) history.back();
     }
 
-    btnClose?.addEventListener("click", closeModal);
-    modal?.addEventListener("click", e => { if (e.target === modal) closeModal(); });
-    document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+    window.addEventListener("popstate", () => closeModal(true));
+    btnClose?.addEventListener("click", () => closeModal());
+    modal?.addEventListener("cancel", event => {
+      event.preventDefault();
+      closeModal();
+    });
+    modal?.addEventListener("click", event => {
+      if (event.target !== modal) return;
+      const bounds = modal.getBoundingClientRect();
+      if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) closeModal();
+    });
   </script>
 
   </InstitutionalLayout>
 )}
-
-</style>
 
 <style is:global>
   /* ══════════════════════════════════════════════════
@@ -1209,6 +1235,7 @@ function getDailySchedule(day: string) {
   }
 
   .schedule-table__time-cell {
+    text-align: left;
     padding: 16px 16px 16px 0;
     vertical-align: top;
   }
@@ -1334,6 +1361,7 @@ function getDailySchedule(day: string) {
   }
 
   .mobile-day__name {
+    margin: 0;
     font-family: var(--font-sans);
     font-size: 0.875rem;
     font-weight: 800;
@@ -1513,6 +1541,10 @@ function getDailySchedule(day: string) {
   /* ══════════════════════════════════════════════════
      MODAL
      ══════════════════════════════════════════════════ */
+  #class-modal::backdrop {
+    background: rgba(26, 26, 26, 0.6);
+  }
+
   .modal-body {
     display: grid;
     grid-template-columns: 1fr;
@@ -1520,7 +1552,11 @@ function getDailySchedule(day: string) {
   }
 
   @media (min-width: 560px) {
-    .modal-body {
+    #class-modal::backdrop {
+    background: rgba(26, 26, 26, 0.6);
+  }
+
+  .modal-body {
       grid-template-columns: 1fr 1px 1fr;
     }
   }
